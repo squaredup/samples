@@ -1,5 +1,5 @@
 # SquaredUp Samples
-SquaredUp Samples is for sharing dashboards, scripts and snippets with the wider community. In this project you will find useful samples to enhance your experiance of SquaredUp:
+SquaredUp Samples is for sharing dashboards, scripts and snippets with the wider community. In this project you will find useful samples to enhance your experiance of building amazing dashboards in SquaredUp:
 
 * [Dashboards](https://github.com/squaredup/samples/tree/master/Dashboards) - built by the community, JSON exports that can be configured and used to quickstart your dashboarding projects.
 * [EAM PowerShell Montiors](https://github.com/squaredup/samples/tree/master/EAM%20PowerShell%20Monitors) - sample scripts for custom montioring in SquaredUp Enterprise Applications.
