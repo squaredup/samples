@@ -1,6 +1,6 @@
 # Calculating “expected maximum” from the Actual CPU %
 
-This KQL example will shows a calculated “expected maximum” from the Actual CPU % in a Line Graph visualization which could helping quickly identify anomalies (standard deviations from the normal range) on this Virtual Machine.
+This KQL example will show a calculated “expected maximum” from the Actual CPU % in a Line Graph visualization which could help quickly identify anomalies (standard deviations from the normal range) on this Virtual Machine.
 
 `
 InsightsMetrics 
