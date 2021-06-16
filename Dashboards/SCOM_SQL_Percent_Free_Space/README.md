@@ -10,7 +10,7 @@ The dashboard has the same basic SQL query, but presents the data in four differ
 - Retrieve most recent data (does not change with page date-picker).
  
 ## Images
-![](https://github.com/squaredup/samples/tree/master/Dashboards/SCOM_SQL_Percent_Free_Space/images/dashboard.png)
+![](https://github.com/squaredup/samples/blob/Sample_SCOM_SQL_Dashboard/Dashboards/SCOM_SQL_Percent_Free_Space/images/dashboard.png?raw=true)
 
 
 ## Dashboard breakdown
