@@ -1,0 +1,134 @@
+{
+	"id": "64fbe665-0888-44f9-9609-9c633a5c48d2",
+	"type": "page/dashboard",
+	"title": "Percent Free Space with SQL",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/sql-as-table",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n--WHERE objectName in ('LogicalDisk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n--Use this for Linux\n--WHERE objectName in ('Logical Disk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n\n--DEBUG: Display the records that have been selected\n--SELECT * FROM @CounterIDs\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT * \nFROM @CounterResults\nWHERE PercentFree < 40\nOrder by PercentFree\n"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"path": {
+														"template": "{{value.split('.')[0]}}"
+													},
+													"dateTime": {
+														"template": "{{timeago(value)}}"
+													},
+													"percentFree": {
+														"template": "<img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAAZCAMAAACihhEbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADMUExURQCPpwCPqACPqQCQqQCQqgCRqgCRqwCSqwCSrACTrACTrQCUrgCVrwCUrwCVsACWsACWsQCXsQCXsgCYsgCYswCZswCZtACZtQCatQCatgCbtgCbtwCctwCcuACduACduQCeugCfuwCeuwCfvACgvACgvQChvQChvgCivgCivwCjvwCjwACkwQCjwQCkwgClwgClwwCmwwCmxACnxACnxQCoxgCoxQCoxwCpxwCpyACqyACqyQCryQCrygCsygCsywCtzACUrQCtywCeuR0ryowAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJCSURBVGhD7ZXbVhpREAUH1BiTeCEqCiK5GIwmgIoiSIiS+P//ZHWfnpmzZsiah8hbV31Cre6dJDWo19Zqa3WEddxYD77ZQNjEt5sIW/hONN6LxgdxG2EHd3cQ9rCxF/zYQNjHg32Ew4NmUDlqHovQwrbYardO2upJB0876mkXP4nGZ9H4In5FOMNvZwg9PO8Fv58jXODlBcIP/CkafXHQV4b9q/7VEOEab67F0Y06usW70d0twjh4P4bJeCpOpvCAs+nsQfw1Q5jj7znCIz6JxkJcJAmFQqW4EUgj6VNqtIXwB5c0Uii0rJEUopEUihtZpUIjqVRo1F7aqLviRgaFyo1AGkmhuNF9KKSNtJAYNwJpNJ9JoUKjR4S/GBoJ4Z6s1H+22g6tDEpZKyllrUKphnYSrZV2OgyltFPz+CiUohWd2pB2ylqBtuqGUs+4pJVS3eryH60GUSu9Jm0lndJWhWuSVopek6GdJtE9yTWlrbRUVaskqYevV8sa2dfTn8fXKzV69Z8X35N1MtJ7CpWsU7inTnRP2kkbPUeNrFLWCKVRD0r3JBqlexqErzeUTqWfZ51AO2X3pBdlnezrKXpP2kl/nnXSRlTKfp5WSn9efk++T75Pvk9m3Mj3yfcpbeT7lN9T2sn3qfj78nvyffJ9MrSR4fvk+1TdyvfJ98n3CX2f8ntabSPD98n3qbqV75Pvk+8T+j7l97TaRobvk+9TdSvfJ98n3yf0fcrvabWNDN8n36fqVr5Pvk++T/gq+7RYvAAy+UTDp8jJTAAAAABJRU5ErkJggg==\"  width={{value*4}} height=15 /><img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAAAZCAMAAAABp+KxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABFUExURSwxNy0xNywxNi0xNi0yNy4yOC0yOC4zOC4zOS8zOS80OS80OjA0OjA1OjA1OzE1OzE2OzE2PDI2PDI3PDI3PTM3PTM4PmYWE4sAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7dNLcoQwDARQmMGAAWM+Ge5/1LQk2wiSmiTrSF3N/hXuqqofyLN+NHVdNyquaVGV1rWdO9Mjvus7n9P7fqD6gepHysAdJsooCZQpjPOUElJwEVm4y7xSIjeuC5JuQ3d8P3I2dMdX3Qs97qGrKjCfVyZVpXVN55xioh1RC1OohVmoQKKjUAOVmSEzhTrPIRYqMdErk6knc9dUYu5sTHcAq5DEFCpd+ruUG7tFmXtllz98stMf/gsbec+OwpY/TOyY2XTbV/YK6Y19+8PEpr97DdNUNJGZmijM/Ig5ieiZ+ItHrInqEQvx8og3AG/Enx7xC9Vn27Xtcmy7iWnbPdm23cz85hHbdm27hWjbpbPtytl2NRGx7QrbtivMN4/YtjvbdgvRtmvbte3adun+1XaP4xMyMh9m2isL3gAAAABJRU5ErkJggg==\"  width={{(100-value)*4}} height=15 /> {{value}} %"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"path",
+													"instanceName",
+													"dateTime",
+													"percentFree"
+												],
+												"autohide": false,
+												"rowLink": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{guid}}"
+											}
+										},
+										"title": "(SQL Grid) Percent Remaining Query",
+										"description": "Shows servers with Less Than 40% Free Space"
+									},
+									{
+										"_type": "tile/sql-as-bar",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"columnOverrides": {
+													"value": "percentFree",
+													"grouping": "path"
+												},
+												"split": false,
+												"connectionstring": "global:dw",
+												"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n--WHERE objectName in ('LogicalDisk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n--Use this for Linux\n--WHERE objectName in ('Logical Disk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n\n--DEBUG: Display the records that have been selected\n--SELECT * FROM @CounterIDs\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT * \nFROM @CounterResults\nWHERE PercentFree < 40\nOrder by PercentFree\n"
+											},
+											"display": {
+												"range": "percentage",
+												"label": "custom",
+												"customLabel": "{{properties.instanceName}} - {{properties.path.split('.')[0]}}",
+												"multipleColours": false
+											}
+										},
+										"title": "(SQL Bar) Percent Remaining Query",
+										"description": "Shows servers with Less Than 40% Free Space"
+									},
+									{
+										"_type": "tile/sql-as-status",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n--WHERE objectName in ('LogicalDisk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n--Use this for Linux\n--WHERE objectName in ('Logical Disk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n\n--DEBUG: Display the records that have been selected\n--SELECT * FROM @CounterIDs\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 12 [DateTime]\n, PercentFree\n, Path as name\n, GUID as ID\n, MERowID\n, RuleRowID\n, InstanceName\n, ObjectName\n, CounterName\n, case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree"
+											},
+											"display": {
+												"label": "custom",
+												"columns": 5,
+												"height": 5,
+												"fontsize": 5,
+												"sublabel": "custom",
+												"drilldownTemplate": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{id}}",
+												"zoom": "column",
+												"sublabelCustomLabel": "{{properties.percentFree}}% Free",
+												"customLabel": "{{properties.name.split('.')[0]}}"
+											}
+										},
+										"description": "",
+										"title": "(SQL Status Icons) Percent Remaining Query"
+									},
+									{
+										"_type": "tile/sql-as-status-block",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n--WHERE objectName in ('LogicalDisk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n--Use this for Linux\n--WHERE objectName in ('Logical Disk') AND ((counterName = '% Free Space' ) OR (counterName = 'Free Megabytes'))\n\n--DEBUG: Display the records that have been selected\n--SELECT * FROM @CounterIDs\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 12 [DateTime]\n, PercentFree\n, Path as name\n, GUID as ID\n, MERowID\n, RuleRowID\n, InstanceName\n, ObjectName\n, CounterName\n, case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree"
+											},
+											"display": {
+												"label": "custom",
+												"columns": 3,
+												"height": 5,
+												"fontsize": 5,
+												"sublabel": "custom",
+												"drilldownTemplate": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{id}}",
+												"sublabelCustomLabel": "<img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=\"  width={{properties.percentFree*2}} height=25 /><img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2hoaAAAAwQBgeEJFSwAAAAASUVORK5CYII=\"  width={{(100-properties.percentFree)*2}} height=25 /> {{properties.percentFree}} % <br> {{properties.instanceName}}",
+												"customLabel": "{{properties.name.split('.')[0]}}"
+											}
+										},
+										"title": "(SQL Status Block) Percent Remaining Query",
+										"description": "Shows Top 12 "
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
