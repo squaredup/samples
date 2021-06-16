@@ -1,6 +1,6 @@
 # Percent Free Space `SQL` `SquaredUp for SCOM`
 
-This dashboard was created for a custom that had specific requirements for their Operation Center.  In this case, the customer wanted to present the data in different ways to different audiences, but with very specific requirements.
+This dashboard was created for a customer that had specific requirements for their Operation Center.  In this case, the customer wanted to present the Free Space informaation in different ways to different audiences, but with very specific requirements.
 
 The dashboard has the same basic SQL query, but presents the data in four different visualization.
 
