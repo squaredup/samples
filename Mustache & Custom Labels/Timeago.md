@@ -1,5 +1,7 @@
 ## Timeago
 
+---
+
 Timeago takes a few parameters:.
 
 `function  (dateTime, showAbsolute, showTime, withoutSuffix, withPrefix)`
@@ -11,6 +13,8 @@ Timeago takes a few parameters:.
 | showTime | true/false | yes | true | Add time onto date (eg Aug 10 2018 16:20) |
 | withoutSuffix | true/false | yes | false | adds "ago" onto the end (eg 2 hours ago) |
 | withPrefix | true/false | yes | false | Adds for/since onto the start (eg since Aug 10 2018) |
+
+---
 
 #### Examples
 
