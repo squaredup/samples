@@ -12,8 +12,8 @@ This custom label takes a fixed range of characters from the original string. In
 ### Splits
 This custom label splits the original string at a specific character then keeps a specific index of that new array. In this example, the original string was `{{value}}` and we're keeping index 0 of the new split array i.e. the part of the string before the splitting character.
 
-`hello.this.is.a.string` becomes `hello` when index is `0`
-`hello.this.is.a.string` becomes `is` when index is `2`
+- `hello.this.is.a.string` becomes `hello` when index is `0`
+- `hello.this.is.a.string` becomes `is` when index is `2`
 
 `{{value.split('.')[0]}}`
 
