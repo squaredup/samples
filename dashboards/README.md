@@ -26,7 +26,7 @@ Making use of these sample files is simple.
 
 Contributions to this repo are vital to make it as diverse and useful as possible. If you have something to share, check out the [Contributions](https://github.com/squaredup/samples/blob/master/CONTRIBUTING.md) guidelines for an overview of the process.
 
-There are a couple of tips specific to sharing a dashboard or tile too...
+There are a couple of tips specific to sharing a dashboard or tile...
 
 1. Dashboards may contain sensitive data. Ensure you remove/replace this before submitting.
 2. Where a dashboard references a specific object or list of objects in your environment, make sure you call this out in the readme with guidance on what to update.
