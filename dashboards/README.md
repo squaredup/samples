@@ -34,5 +34,3 @@ There are a couple of tips specific to sharing a dashboard or tile too...
 3. Dashboards that use WebAPI or PowerShell tiles may contain a JSON block called `_signing`. You should remove this before submitting.
 
 > **NOTE:**  If you're really stuck and need to ask a question, head over to [Community Answers](https://community.squaredup.com/) or the [SquaredUp KB](https://support.squaredup.com/).
-
----
