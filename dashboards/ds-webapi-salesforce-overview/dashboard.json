@@ -1,0 +1,151 @@
+{
+	"id": "b30abfb6-ba7a-4132-ba9e-c50fd0dc3ebf",
+	"type": "page/dashboard",
+	"title": "Salesforce",
+	"content": {
+		"_type": "layout/list",
+		"contents": [{
+				"_type": "layout/column",
+				"columns": [{
+						"width": 33.333,
+						"contents": [{
+							"_type": "layout/list",
+							"contents": [{
+								"_type": "tile/generic-webapi-scalar",
+								"config": {
+									"context": {},
+									"source": {
+										"_security": "signing",
+										"method": "GET",
+										"provider": "Salesforce",
+										"url": "query",
+										"data": [{
+											"key": "q",
+											"value": "SELECT Count(Name)\nFROM Account"
+										}],
+										"keypath": "records.0.expr0"
+									},
+									"display": {
+										"fontsize": 90,
+										"coerceObject": false
+									}
+								},
+								"description": "",
+								"title": "Accounts"
+							}]
+						}]
+					},
+					{
+						"contents": [{
+							"_type": "layout/list",
+							"contents": [{
+								"_type": "tile/generic-webapi-scalar",
+								"config": {
+									"context": {},
+									"source": {
+										"_security": "signing",
+										"method": "GET",
+										"provider": "Salesforce",
+										"url": "query",
+										"data": [{
+											"key": "q",
+											"value": "SELECT Count(Name)\nFROM Contact"
+										}],
+										"keypath": "records.0.expr0"
+									},
+									"display": {
+										"fontsize": 90,
+										"coerceObject": false
+									}
+								},
+								"title": "Contacts",
+								"description": ""
+							}]
+						}],
+						"width": 33.333
+					},
+					{
+						"contents": [{
+							"_type": "layout/list",
+							"contents": [{
+								"_type": "tile/generic-webapi-scalar",
+								"config": {
+									"context": {},
+									"source": {
+										"_security": "signing",
+										"method": "GET",
+										"provider": "Salesforce",
+										"url": "query",
+										"data": [{
+											"key": "q",
+											"value": "SELECT Count(Name)\nFROM Opportunity"
+										}],
+										"keypath": "records.0.expr0"
+									},
+									"display": {
+										"fontsize": 90,
+										"coerceObject": false
+									}
+								},
+								"title": "Opportunities",
+								"description": ""
+							}]
+						}],
+						"width": 33.33333333333333
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [{
+					"width": 100,
+					"contents": [{
+						"_type": "layout/list",
+						"contents": [{
+							"_type": "tile/generic-webapi-table",
+							"config": {
+								"context": {},
+								"source": {
+									"_security": "signing",
+									"method": "GET",
+									"provider": "Salesforce",
+									"url": "query",
+									"data": [{
+										"key": "q",
+										"value": "SELECT ID, Subject, Owner.Name, Owner.Email, CreatedBy.Name, ActivityDate, Status, Priority\nFROM Task\nWHERE Status != 'Completed' AND ActivityDate = TODAY"
+									}],
+									"keypath": "records"
+								},
+								"display": {
+									"showHeaders": true,
+									"columnOverrides": {
+										"Owner": {
+											"template": "{{value.Name}}"
+										},
+										"CreatedBy": {
+											"template": "{{value.Name}}"
+										}
+									},
+									"customColumns": {},
+									"columns": [
+										"Subject",
+										"Owner",
+										"CreatedBy",
+										"ActivityDate",
+										"Status",
+										"Priority"
+									],
+									"autohide": true
+								}
+							},
+							"description": "",
+							"title": "Tasks Due Today"
+						}]
+					}]
+				}]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
