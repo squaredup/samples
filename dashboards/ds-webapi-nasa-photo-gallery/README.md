@@ -9,3 +9,4 @@ This dashboard is a great example of how to abuse custom labels and the WebAPI s
 - Personal keys can be requested from https://api.nasa.gov for free.
  
 ## Images
+![](https://github.com/squaredup/samples/blob/master/dashboards/ds-webapi-nasa-photo-gallery/images/screenshot.png?raw=true)
