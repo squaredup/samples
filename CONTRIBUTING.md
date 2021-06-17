@@ -29,8 +29,8 @@ Please use [SquaredUp Community Answers](https://community.squaredup.com) to ask
 ## <a name="problem"></a>Found a problem?
 If you find a bug or a problem, you can help us by:
 
-* [submitting an issue](https://github.com/squaredup/samples/issues) to our [GitHub Repository][github].
-* Even better, submit a Pull Request with a fix.
+* [Submitting an issue](https://github.com/squaredup/samples/issues) to our GitHub Repository.
+* Even better, create a Pull Request with a fix!
 
 ## <a name="contribute"></a> Got something to share?
 If you would like to *share* a new dashboard, or a useful script you've created, please submit a Pull Request with your work first.
@@ -49,4 +49,3 @@ That's it! Thank you for your contribution!
 <hr>
 
 [coc]: https://github.com/squaredup/samples/blob/master/CODE_OF_CONDUCT.md
-[github]: https://github.com/squaredup/samples
