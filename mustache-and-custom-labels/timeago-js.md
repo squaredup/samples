@@ -1,4 +1,4 @@
-## Timeago
+# Timeago
 
 ---
 
@@ -16,7 +16,7 @@ Timeago takes a few parameters:.
 
 ---
 
-#### Examples
+### Examples
 
 ```
 timeago(<some time>, true, false)
