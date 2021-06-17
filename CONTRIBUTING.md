@@ -14,7 +14,7 @@ As a contributor, here are the guidelines we would like you to follow:
 ## <a name="coc"></a> Code of Conduct
 
 Help us keep SquaredUp Samples open and inclusive.
-Please read and follow our [Code of Conduct][coc].
+Please read and follow our [Code of Conduct][https://github.com/squaredup/samples/blob/master/CODE_OF_CONDUCT.md].
 
 ## <a name="question"></a> Got a Question?
 
@@ -44,8 +44,4 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 3. Include an images folder with screenshots where relevant
 4. Commit your changes using a descriptive commit message.
 
-That's it! Thank you for your contribution!
-
-<hr>
-
-[coc]: https://github.com/squaredup/samples/blob/master/CODE_OF_CONDUCT.md
+That's it, thank you for your contribution! 
