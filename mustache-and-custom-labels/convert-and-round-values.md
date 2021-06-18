@@ -15,4 +15,5 @@ Scalar Vaue formatter
 
 Result
 
-![image](https://user-images.githubusercontent.com/18680913/122580806-43e46480-d04e-11eb-87ce-bc8ad6ab53eb.png)
+![image](https://user-images.githubusercontent.com/18680913/122589115-c58cc000-d057-11eb-955c-12de75a392cb.png)
+
