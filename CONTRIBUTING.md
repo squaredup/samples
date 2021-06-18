@@ -33,15 +33,27 @@ If you find a bug or a problem, you can help us by:
 * Even better, create a Pull Request with a fix!
 
 ## <a name="contribute"></a> Got something to share?
-If you would like to *share* a new dashboard, or a useful script you've created, please submit a Pull Request with your work first.
-### <a name="submit"></a> Submitting a Pull Request (PR)
+If you would like to *share* a new dashboard, or a useful script you've created, please submit a Pull Request with your work.
 
+### <a name="submit"></a> Submitting a Pull Request (PR)
 Before you submit your Pull Request (PR) consider the following guidelines:
 
 1. Search [GitHub](https://github.com/squaredup/samples/pulls) for an open or closed PR
   that relates to your submission. You don't want to duplicate effort.
-2. Include a readme.md that helps others use your work
-3. Include an images folder with screenshots where relevant
-4. Commit your changes using a descriptive commit message.
+2. Include supporting information (readme.md & screenshots).
+3. Commit your changes using a descriptive commit message.
+
+#### Creating a pull request for a Dashboard
+1. Create a sub-folder in [dashboards](https://github.com/squaredup/samples/tree/master/dashboards) following the naming convention of product-type-title.
+2. Add a dashboard.json file with the JSON from your SquaredUp dashboard.
+3. Include a README.md file which includes a brief description and everything that another user needs to know in order to implement your dashboard.
+4. Create an images sub-folder for your supporting screenshots.
+
+#### Creating a pull request for code snippets & scripts
+1. Add an .md file into the relevant folder.
+2. Make sure the .md filename accurately describes the sample.
+3. Provide instructions on how and where to use the sample.
+4. Format the code sample using [code blocks](https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks).
+5. Optionally, include a screenshot in the .md.
 
 That's it, thank you for your contribution! 
