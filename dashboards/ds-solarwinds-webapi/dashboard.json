@@ -26,7 +26,7 @@
                         "scrolling": false,
                         "refresh": false,
                         "src": "",
-                        "content": "<img src=\"https://preview.squaredup.com/images/logos/solarwinds.png\" height=\"70\"/>"
+                        "content": "<img src=\"/images/logos/solarwinds.png\" height=\"70\"/>"
                       }
                     },
                     "description": "",
@@ -301,7 +301,7 @@
                           "StatusDescription"
                         ],
                         "autohide": false,
-                        "rowLink": "http://int-solarwinds.int.squaredup.com:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
+                        "rowLink": "http://your-server:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
                       }
                     },
                     "description": "",
@@ -409,7 +409,7 @@
       }
     ]
   },
-  "derivedFrom": "4f96ae16-5455-45ac-bad5-932d5125c8c1",
+  "derivedFrom": "00000000-0000-0000-0000-000000000000",
   "draft": true,
   "openAccess": {
     "enabled": true,
