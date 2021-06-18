@@ -1,6 +1,6 @@
 # Contributing to SquaredUp Samples
 
-SquaredUp actively encourages external contributions so that the project can move develop in such a way that benefits the wider SquaredUp community.
+SquaredUp actively encourages external contributions so that the project can develop in such a way that benefits the wider SquaredUp community.
 
 As a contributor, here are the guidelines we would like you to follow:
 
@@ -14,7 +14,7 @@ As a contributor, here are the guidelines we would like you to follow:
 ## <a name="coc"></a> Code of Conduct
 
 Help us keep SquaredUp Samples open and inclusive.
-Please read and follow our [Code of Conduct][https://github.com/squaredup/samples/blob/master/CODE_OF_CONDUCT.md].
+Please read and follow our [Code of Conduct](https://github.com/squaredup/samples/blob/master/CODE_OF_CONDUCT.md).
 
 ## <a name="question"></a> Got a Question?
 
