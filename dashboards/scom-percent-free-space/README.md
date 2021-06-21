@@ -10,7 +10,7 @@ The dashboard has the same basic SQL query, but presents the data in four differ
 - Retrieve most recent data (does not change with page date-picker).
  
 ## Images
-![](https://github.com/squaredup/samples/blob/master/dashboards/scom-sql-percent-free-space/images/dashboard.png?raw=true)
+![](https://github.com/squaredup/samples/blob/master/dashboards/scom-percent-free-space/images/dashboard.png?raw=true)
 
 
 ## Dashboard breakdown
@@ -110,7 +110,7 @@ For the SQL Status (icons) and the SQL Status (block) tiles, add this block of S
 ### Custom Grid Column
 For the SQL (grid) tile, a custom label was applied that looks like this:
 
-![](https://github.com/squaredup/samples/blob/master/dashboards/scom-sql-percent-free-space/images/SQL%20(grid)%20tile.png?raw=true)
+![](https://github.com/squaredup/samples/blob/master/dashboards/scom-percent-free-space/images/SQL%20(grid)%20tile.png?raw=true)
 
 Code:
 
@@ -118,7 +118,7 @@ Code:
 
 For the SQL Status (Block) tile, a custom sublabel was applied that looks like this:
 
-![](https://github.com/squaredup/samples/blob/master/dashboards/scom-sql-percent-free-space/images/SQL%20Status%20(block).png?raw=true)  
+![](https://github.com/squaredup/samples/blob/master/dashboards/scom-percent-free-space/images/SQL%20Status%20(block).png?raw=true)  
 
 Code:
 
