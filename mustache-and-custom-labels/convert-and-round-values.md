@@ -11,7 +11,7 @@ We're calling an API that responds with the total number amount of space on a di
 
 Scalar Vaue formatter
 
-```{{Number(value/1073741824).toFixed(2)}}```
+```{{Number(value/1024/1024/1024).toFixed(2)}}```
 
 Result
 
