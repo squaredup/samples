@@ -15,7 +15,7 @@
 								"_type": "layout/list",
 								"contents": [
 									{
-										"_type": "tile/azure-resources-webapi-table,
+										"_type": "tile/azure-resources-webapi-table",
 										"config": {
 											"context": {},
 											"source": {
