@@ -4,7 +4,7 @@ This folder contains sample dashboards from the community that can be used to ge
 
 You'll find a mix of complete dashboards with loads of awesome examples or just simple views to share a single tile.
 
-Note the folder strucutre of `product-type-description` when browsing.
+Note the folder strucutre of `product-description` when browsing.
 
 ---
 
