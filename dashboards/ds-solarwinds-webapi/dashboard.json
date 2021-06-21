@@ -412,7 +412,7 @@
   "derivedFrom": "00000000-0000-0000-0000-000000000000",
   "draft": true,
   "openAccess": {
-    "enabled": true,
+    "enabled": false,
     "contexts": []
   }
 }
