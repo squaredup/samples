@@ -99,7 +99,7 @@
 								"_type": "layout/list",
 								"contents": [
 									{
-										"_type": "tile/	azure-resources-webapi-status-block",
+										"_type": "tile/azure-resources-webapi-status-block",
 										"config": {
 											"context": {
 												"sign": true
