@@ -5,7 +5,7 @@ This dashboard gives an overview of nodes alongside summary of heatlh from Solar
 ## Requirements
 - The images folder needs to exist specifically in the IIS root i.e. C:\inetpub\wwwroot and the structure of \health-icons\ and \logos\ should be maintained (or the dashboard JSON updated to suit).
 - Create a WebAPI (Basic Auth) provider under Settings > Integrations. Name it exactly “Solarwinds” (if you name it differently, you will need to select the provider manually for each tile on the dashboard). Fill in all the required details to connect to your own SolarWinds environment (url, username, password, ignore invalid ssl, etc).
-- Create a new dashboard, select the <> on the top right and copy the content of the dashboard.json file and click Apply Changes
+- Create a new dashboard, select the </> on the top right and copy the content of the dashboard.json file and click Apply Changes
 - Edit the Unhealthy Nodes and All Nodes to replace the row link URL to that of your SolarWinds environment
  
 ## Images
