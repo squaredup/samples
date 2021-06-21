@@ -7,7 +7,7 @@ This snippet of JavaScript can be used in the SquaredUp mustache and label field
 ```{{Number(value/"something").toFixed("decimal")}}```
 
 ## Working example: Converting bytes to gigabytes
-We're calling an API that responds with the total number amount of space on a disk as 221,300,711,424 Bytes, and want to show that in a Scalar tile as Gigabytes to two decimal places.
+We're calling an API that responds with the total number amount of space on a disk as 221,300,711,424 bytes, and want to show that in a Scalar tile as Gigabytes to two decimal places.
 
 ### Scalar Vaue formatter
 
@@ -15,5 +15,4 @@ We're calling an API that responds with the total number amount of space on a di
 
 ### Result
 
-![image](https://user-images.githubusercontent.com/18680913/122589115-c58cc000-d057-11eb-955c-12de75a392cb.png)
-
+![image](https://user-images.githubusercontent.com/18680913/122749161-e6862880-d284-11eb-857f-d78a6edf5a55.png)
