@@ -28,9 +28,14 @@ Contributions to this repo are vital to make it as diverse and useful as possibl
 
 There are a couple of tips specific to sharing a dashboard or tile...
 
-1. Dashboards may contain sensitive data. Ensure you remove/replace this before submitting.
-2. Where a dashboard references a specific object or list of objects in your environment, make sure you call this out in the readme with guidance on what to update.
-3. Where a dashboard references a group or class from a specific SCOM management pack, make sure you call this out in the readme.
-3. Dashboards that use WebAPI or PowerShell tiles may contain a JSON block called `_signing`. You should remove this before submitting.
+1. Dashboards may contain **sensitive data**. Ensure you replace this with a useful placeholder before submitting. You should check for...
+    - Keys or credentials stored in headers/URLs/scripts.
+    - The names of servers / networks / resources referenced in scopes, queries and tile names.
+    - URLs contained in queries, row links or task buttons.
+    - Any other information that specifically identifies your environment or provides access to it.
+2. Where you've inserted placeholders per the previous point, make sure you call this out in your readme with guidance on what to update.
+3. Where a SCOM dashboard references a group or class from a specific management pack, make sure you call this out in the readme.
+4. Dashboards that use WebAPI or PowerShell tiles may contain a JSON block called `_signing`. You should remove this before submitting.
+5. Open Access should be disabled by default. Either make this change in SquaredUp before copying your JSON, or update the `"openAccess"` code block in the footer.
 
 > **NOTE:**  If you're really stuck and need to ask a question, head over to [Community Answers](https://community.squaredup.com/) or the [SquaredUp KB](https://support.squaredup.com/).
