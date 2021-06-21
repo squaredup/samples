@@ -1,0 +1,170 @@
+{
+	"id": "df056c5e-3753-4c6a-8005-9a024f1cebdc",
+	"type": "page/dashboard",
+	"title": "NASA Photo Gallery",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-webapi-table,
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "generic",
+												"url": "https://api.nasa.gov/mars-photos/api/v1/rovers",
+												"data": [
+													{
+														"key": "api_key",
+														"value": "DEMO_KEY"
+													}
+												],
+												"keypath": "rovers"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"id": {
+														"displayName": "Rover ID"
+													},
+													"name": {
+														"displayName": "Name"
+													},
+													"launch_date": {
+														"displayName": "Launched",
+														"template": "{{timeago(value,true,false)}}"
+													},
+													"landing_date": {
+														"displayName": "Landed",
+														"template": "{{timeago(value,true,false)}}"
+													},
+													"status": {
+														"displayName": "Status"
+													},
+													"max_sol": {
+														"displayName": "Max Sol"
+													},
+													"max_date": {
+														"displayName": "Max Date",
+														"template": "{{timeago(value,true,false)}}"
+													},
+													"total_photos": {
+														"displayName": "Photos"
+													},
+													"cameras": {
+														"displayName": "Cameras",
+														"template": "{{#each value}}\n\t[ {{name}} ]\n{{/each}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"id",
+													"name",
+													"launch_date",
+													"landing_date",
+													"status",
+													"max_sol",
+													"max_date",
+													"total_photos"
+												],
+												"autohide": true
+											}
+										},
+										"description": "",
+										"title": "Rovers"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/	azure-resources-webapi-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"healthTransform": {
+													"healthTemplate": "",
+													"healthyValue": null,
+													"warningValue": null,
+													"criticalValue": null,
+													"states": [
+														{
+															"key": "Success",
+															"value": ""
+														},
+														{
+															"key": "Warning",
+															"value": ""
+														},
+														{
+															"key": "Error",
+															"value": ""
+														}
+													]
+												},
+												"provider": "generic",
+												"url": "https://api.nasa.gov/mars-photos/api/v1/rovers/perseverance/photos",
+												"keypath": "photos",
+												"data": [
+													{
+														"key": "api_key",
+														"value": "DEMO_KEY"
+													},
+													{
+														"key": "sol",
+														"value": "107"
+													}
+												]
+											},
+											"display": {
+												"label": "custom",
+												"columns": 6,
+												"height": 53,
+												"fontsize": 1,
+												"sublabel": "custom",
+												"customLabel": "<img src=\"{{properties.img_src}}\" height=\"280\"/>",
+												"sublabelCustomLabel": "{{properties.camera.full_name}}"
+											}
+										},
+										"description": "",
+										"title": "Latest Images from Perseverance"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": false
+	}
+}
