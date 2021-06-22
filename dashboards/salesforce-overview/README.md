@@ -1,4 +1,4 @@
-# Salesforce Overview `API` `Dashboard Server`
+# Salesforce Overview `API`
 
 This is a really simple dashboard showing how to use the Salesforce API to query for data using SOQL (Salesforce Object Query Language).
 
