@@ -90,8 +90,7 @@
                               }
                             ],
                             "keypath": "results"
-                          },
-                          "signature": "84a046d923853d8b75498a95335a2256a9f14b1949ef124e17ac432df7bce61f8dfe0b8d49a17bc2ac6b2fba3cd7ec70+1624032394782"
+                          }
                         }
                       },
                       "display": {
@@ -152,8 +151,7 @@
                             "keypath": "results",
                             "desc": true,
                             "topn": 0
-                          },
-                          "signature": "b84dd049f57da5d916c0bfce5329dc5db5432edfbd10e4b8ce5188b08e1ecf2bc44471626c8f383fb6702c6c1695a467+1624032394782"
+                          }
                         }
                       },
                       "display": {
@@ -217,8 +215,7 @@
                             "keypath": "results",
                             "desc": true,
                             "topn": 0
-                          },
-                          "signature": "c6303d6150f3a4d4175330fb72c70dd1e9cb5ff58e0b9c145154be820e7f833f69bab4ce3190bfcb031564544ec548c4+1624032394782"
+                          }
                         }
                       },
                       "display": {
@@ -275,8 +272,7 @@
                                 "value": "SELECT NodeID, Description, SysName, Status, StatusDescription\nFROM Orion.Nodes\nWHERE Status <> 1\nORDER by SysName"
                               }
                             ]
-                          },
-                          "signature": "0614530cfef1ebfac7cc5e5f648a419fedec1eef9e466ac8ed505c764388558d2f0793f454eb0a08b4f30d5f5560e45b+1624032394782"
+                          }
                         }
                       },
                       "display": {
@@ -338,8 +334,7 @@
                                 "value": "SELECT NodeID, Description, SysName, Vendor, Location, Status, LastBoot, SystemUpTime, StatusDescription, AvgResponseTime, CPUCount, IPAddress\nFROM Orion.Nodes\nORDER by SysName"
                               }
                             ]
-                          },
-                          "signature": "02807a1005ba15e52e662f4f7801ce9241b0360a7a259cf9dbc3720df4dcb20537441f541ddde4937155ce0c948d12bd+1624032394782"
+                          }
                         }
                       },
                       "display": {
