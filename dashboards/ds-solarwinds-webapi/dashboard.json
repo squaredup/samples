@@ -394,7 +394,7 @@
                           "StatusDescription"
                         ],
                         "autohide": false,
-                        "rowLink": "http://int-solarwinds.int.squaredup.com:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
+                        "rowLink": "http://your-server:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
                       }
                     },
                     "description": "",
