@@ -1,4 +1,4 @@
-# NASA Mars Rover Photo Gallery `API` `Dashboard Server`
+# NASA Mars Rover Photo Gallery `API`
 
 This dashboard is a great example of how to abuse custom labels and the WebAPI status blocks tile to show a gallery of images. In this case, an API call is being made to NASA's public API to return photos from the Mars Rover "Perseverance". You can tweak which day to show, and even which camera.
 
