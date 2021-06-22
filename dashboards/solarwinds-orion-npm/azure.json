@@ -1,0 +1,408 @@
+{
+  "id": "4daec143-9a40-4b86-b785-b09af9f16f0d",
+  "type": "page/dashboard",
+  "title": "SolarWinds Orion Nodes",
+  "content": {
+    "_type": "layout/list",
+    "contents": [
+      {
+        "_type": "layout/column",
+        "columns": [
+          {
+            "width": 100,
+            "contents": [
+              {
+                "_type": "layout/list",
+                "contents": [
+                  {
+                    "_type": "tile/web-content",
+                    "config": {
+                      "context": {},
+                      "source": {},
+                      "display": {
+                        "height": 70,
+                        "zoom": 1,
+                        "border": false,
+                        "scrolling": false,
+                        "refresh": false,
+                        "src": "",
+                        "content": "<img src=\"/images/logos/solarwinds.png\" height=\"70\"/>"
+                      }
+                    },
+                    "description": "",
+                    "title": ""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "_type": "layout/column",
+        "columns": [
+          {
+            "width": 24.854,
+            "contents": [
+              {
+                "_type": "layout/list",
+                "contents": [
+                  {
+                    "_type": "tile/azure-resources-webapi-donut",
+                    "config": {
+                      "context": {
+                        "sign": true
+                      },
+                      "source": {
+                        "_security": "signing",
+                        "method": "GET",
+                        "columns": {
+                          "aggregation": "count",
+                          "isCategoryOptional": false,
+                          "values": [],
+                          "category": "{{#if Status == \"0\" }} Unknown {{elseif Status == \"1\" }} Healthy {{elseif Status == \"2\" }} Down {{elseif Status == \"3\" }} Warning {{elseif Status == \"14\" }} Critical {{/if}}"
+                        },
+                        "provider": "Solarwinds",
+                        "url": "query",
+                        "data": [
+                          {
+                            "key": "query",
+                            "value": "SELECT NodeID, Status\nFROM Orion.Nodes"
+                          }
+                        ],
+                        "keypath": "results",
+                        "__signed": {
+                          "payload": {
+                            "_security": "signing",
+                            "method": "GET",
+                            "columns": {
+                              "aggregation": "count",
+                              "isCategoryOptional": false,
+                              "values": [],
+                              "category": "{{#if Status == \"0\" }} Unknown {{elseif Status == \"1\" }} Healthy {{elseif Status == \"2\" }} Down {{elseif Status == \"3\" }} Warning {{elseif Status == \"14\" }} Critical {{/if}}"
+                            },
+                            "provider": "Solarwinds",
+                            "url": "query",
+                            "data": [
+                              {
+                                "key": "query",
+                                "value": "SELECT NodeID, Status\nFROM Orion.Nodes"
+                              }
+                            ],
+                            "keypath": "results"
+                          }
+                        }
+                      },
+                      "display": {
+                        "sizeMode": "fill",
+                        "legendScale": 10,
+                        "showLegend": true,
+                        "legendPosition": "right",
+                        "palette": 1
+                      }
+                    },
+                    "title": "Nodes by Status",
+                    "description": ""
+                  },
+                  {
+                    "_type": "tile/azure-resources-webapi-bargraph",
+                    "config": {
+                      "context": {
+                        "sign": true
+                      },
+                      "source": {
+                        "_security": "signing",
+                        "method": "GET",
+                        "columns": {
+                          "aggregation": "count",
+                          "isCategoryOptional": false,
+                          "values": [],
+                          "category": "{{Description}}"
+                        },
+                        "provider": "Solarwinds",
+                        "url": "query",
+                        "data": [
+                          {
+                            "key": "query",
+                            "value": "SELECT NodeID, Description\nFROM Orion.Nodes"
+                          }
+                        ],
+                        "keypath": "results",
+                        "desc": true,
+                        "topn": 0,
+                        "__signed": {
+                          "payload": {
+                            "_security": "signing",
+                            "method": "GET",
+                            "columns": {
+                              "aggregation": "count",
+                              "isCategoryOptional": false,
+                              "values": [],
+                              "category": "{{Description}}"
+                            },
+                            "provider": "Solarwinds",
+                            "url": "query",
+                            "data": [
+                              {
+                                "key": "query",
+                                "value": "SELECT NodeID, Description\nFROM Orion.Nodes"
+                              }
+                            ],
+                            "keypath": "results",
+                            "desc": true,
+                            "topn": 0
+                          }
+                        }
+                      },
+                      "display": {
+                        "range": "zero-fit",
+                        "label": "auto",
+                        "sort": {
+                          "order": "desc",
+                          "property": "values",
+                          "option": "values"
+                        },
+                        "multipleColours": true
+                      }
+                    },
+                    "title": "Nodes by Type",
+                    "description": ""
+                  },
+                  {
+                    "_type": "tile/azure-resources-webapi-bargraph",
+                    "config": {
+                      "context": {
+                        "sign": true
+                      },
+                      "source": {
+                        "_security": "signing",
+                        "method": "GET",
+                        "columns": {
+                          "aggregation": "count",
+                          "isCategoryOptional": false,
+                          "values": [],
+                          "category": "{{Location}}"
+                        },
+                        "provider": "Solarwinds",
+                        "url": "query",
+                        "data": [
+                          {
+                            "key": "query",
+                            "value": "SELECT NodeID, Location\nFROM Orion.Nodes"
+                          }
+                        ],
+                        "keypath": "results",
+                        "desc": true,
+                        "topn": 0,
+                        "__signed": {
+                          "payload": {
+                            "_security": "signing",
+                            "method": "GET",
+                            "columns": {
+                              "aggregation": "count",
+                              "isCategoryOptional": false,
+                              "values": [],
+                              "category": "{{Location}}"
+                            },
+                            "provider": "Solarwinds",
+                            "url": "query",
+                            "data": [
+                              {
+                                "key": "query",
+                                "value": "SELECT NodeID, Location\nFROM Orion.Nodes"
+                              }
+                            ],
+                            "keypath": "results",
+                            "desc": true,
+                            "topn": 0
+                          }
+                        }
+                      },
+                      "display": {
+                        "range": "zero-fit",
+                        "label": "auto",
+                        "sort": {
+                          "order": "desc",
+                          "property": "values",
+                          "option": "values"
+                        },
+                        "multipleColours": true
+                      }
+                    },
+                    "title": "Nodes by Location",
+                    "description": ""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "contents": [
+              {
+                "_type": "layout/list",
+                "contents": [
+                  {
+                    "_type": "tile/azure-resources-webapi-table",
+                    "config": {
+                      "context": {
+                        "sign": true
+                      },
+                      "source": {
+                        "_security": "signing",
+                        "method": "GET",
+                        "provider": "Solarwinds",
+                        "url": "Query",
+                        "keypath": "results",
+                        "data": [
+                          {
+                            "key": "query",
+                            "value": "SELECT NodeID, Description, SysName, Status, StatusDescription\nFROM Orion.Nodes\nWHERE Status <> 1\nORDER by SysName"
+                          }
+                        ],
+                        "__signed": {
+                          "payload": {
+                            "_security": "signing",
+                            "method": "GET",
+                            "provider": "Solarwinds",
+                            "url": "Query",
+                            "keypath": "results",
+                            "data": [
+                              {
+                                "key": "query",
+                                "value": "SELECT NodeID, Description, SysName, Status, StatusDescription\nFROM Orion.Nodes\nWHERE Status <> 1\nORDER by SysName"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "display": {
+                        "showHeaders": true,
+                        "columnOverrides": {
+                          "Status": {
+                            "displayName": "Status",
+                            "template": "{{#if value == \"0\" }}<img src=\"/images/health-icons/unknown.png\" height=\"16\"/>{{elseif value == \"1\" }}<img src=\"/images/health-icons/up.png\" height=\"16\"/>{{elseif value == \"2\" }}<img src=\"/images/health-icons/down.png\" height=\"16\"/>{{elseif value == \"3\" }}<img src=\"/images/health-icons/warning.png\" height=\"16\"/>{{elseif value == \"14\" }}<img src=\"/images/health-icons/critical.png\" height=\"16\"/>{{else}}<img src=\"/images/health-icons/unknown.png\" height=\"16\"/>{{/if}}"
+                          },
+                          "SysName": {
+                            "displayName": "Node"
+                          },
+                          "StatusDescription": {
+                            "displayName": "Summary"
+                          }
+                        },
+                        "customColumns": {},
+                        "columns": [
+                          "Status",
+                          "SysName",
+                          "Description",
+                          "StatusDescription"
+                        ],
+                        "autohide": false,
+                        "rowLink": "http://your-server:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
+                      }
+                    },
+                    "description": "",
+                    "title": "Unhealthy Nodes"
+                  },
+                  {
+                    "_type": "tile/azure-resources-webapi-table",
+                    "config": {
+                      "context": {
+                        "sign": true
+                      },
+                      "source": {
+                        "_security": "signing",
+                        "method": "GET",
+                        "provider": "Solarwinds",
+                        "url": "Query",
+                        "keypath": "results",
+                        "data": [
+                          {
+                            "key": "query",
+                            "value": "SELECT NodeID, Description, SysName, Vendor, Location, Status, LastBoot, SystemUpTime, StatusDescription, AvgResponseTime, CPUCount, IPAddress\nFROM Orion.Nodes\nORDER by SysName"
+                          }
+                        ],
+                        "__signed": {
+                          "payload": {
+                            "_security": "signing",
+                            "method": "GET",
+                            "provider": "Solarwinds",
+                            "url": "Query",
+                            "keypath": "results",
+                            "data": [
+                              {
+                                "key": "query",
+                                "value": "SELECT NodeID, Description, SysName, Vendor, Location, Status, LastBoot, SystemUpTime, StatusDescription, AvgResponseTime, CPUCount, IPAddress\nFROM Orion.Nodes\nORDER by SysName"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "display": {
+                        "showHeaders": true,
+                        "columnOverrides": {
+                          "Status": {
+                            "displayName": "Status",
+                            "template": "{{#if value == \"0\" }}<img src=\"/images/health-icons/unknown.png\" height=\"16\"/>{{elseif value == \"1\" }}<img src=\"/images/health-icons/up.png\" height=\"16\"/>{{elseif value == \"2\" }}<img src=\"/images/health-icons/down.png\" height=\"16\"/>{{elseif value == \"3\" }}<img src=\"/images/health-icons/warning.png\" height=\"16\"/>{{elseif value == \"14\" }}<img src=\"/images/health-icons/critical.png\" height=\"16\"/>{{else}}<img src=\"/images/health-icons/unknown.png\" height=\"16\"/>{{/if}}"
+                          },
+                          "SysName": {
+                            "displayName": "Node"
+                          },
+                          "Vendor": {
+                            "displayName": "Vendor"
+                          },
+                          "Description": {
+                            "displayName": "Description"
+                          },
+                          "Location": {
+                            "displayName": "Location"
+                          },
+                          "CPUCount": {
+                            "displayName": "# CPU"
+                          },
+                          "IPAddress": {
+                            "displayName": "IP Address"
+                          },
+                          "AvgResponseTime": {
+                            "displayName": "Response Time",
+                            "template": "{{value}} ms"
+                          },
+                          "LastBoot": {
+                            "displayName": "Last Boot",
+                            "template": "{{timeago(value)}}"
+                          },
+                          "StatusDescription": {
+                            "displayName": "Summary",
+                            "template": "{{value.substr(0,100)}}"
+                          }
+                        },
+                        "customColumns": {},
+                        "columns": [
+                          "Status",
+                          "SysName",
+                          "Vendor",
+                          "Description",
+                          "Location",
+                          "CPUCount",
+                          "IPAddress",
+                          "AvgResponseTime",
+                          "LastBoot",
+                          "StatusDescription"
+                        ],
+                        "autohide": false,
+                        "rowLink": "http://your-server:8787/Orion/NetPerfMon/NodeDetails.aspx?NetObject=N:{{NodeID}}"
+                      }
+                    },
+                    "description": "",
+                    "title": "All Nodes"
+                  }
+                ]
+              }
+            ],
+            "width": 75.146
+          }
+        ]
+      }
+    ]
+  },
+  "derivedFrom": "00000000-0000-0000-0000-000000000000"
+}
