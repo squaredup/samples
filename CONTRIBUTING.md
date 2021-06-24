@@ -56,4 +56,7 @@ Before you submit your Pull Request (PR) consider the following guidelines:
 4. Format the code sample using [code blocks](https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/creating-and-highlighting-code-blocks).
 5. Optionally, include a screenshot in the .md.
 
+#### Don't have a GitHub account?
+If you are unable to contribute directly into GitHub, feel free to contact support@squaredup.com for assistance.
+
 That's it, thank you for your contribution! 
