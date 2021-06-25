@@ -1,0 +1,241 @@
+{
+	"id": "6bfa786d-7c68-44a8-ac1c-8a23a583fa52",
+	"type": "page/dashboard",
+	"title": "VM Metrics",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-logs-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"timeframe": {
+													"type": "inherit"
+												},
+												"query": "let disk_free_space_percent=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"% Free Space\" \n| summarize (TimeGenerated, Free_Space_Percent)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\nlet disk_free_MB=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"Free Megabytes\" \n| summarize (TimeGenerated, Free_MB)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\ndisk_free_space_percent \n| join (\n   disk_free_MB \n) on Computer, InstanceName\n| project Computer, InstanceName, toint(Free_Space_Percent), toint(Free_MB * 0.001) , format_datetime(TimeGenerated, 'MM-dd-yyyy')\n| order by Free_Space_Percent asc\n",
+												"workspaces": [
+													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+												]
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"InstanceName": {
+														"displayName": "Disk"
+													},
+													"Free_Space_Percent": {
+														"displayName": "% Free Space",
+														"template": "<img alt=\"Embedded Image\"src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAAZCAMAAACihhEbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADMUExURQCPpwCPqACPqQCQqQCQqgCRqgCRqwCSqwCSrACTrACTrQCUrgCVrwCUrwCVsACWsACWsQCXsQCXsgCYsgCYswCZswCZtACZtQCatQCatgCbtgCbtwCctwCcuACduACduQCeugCfuwCeuwCfvACgvACgvQChvQChvgCivgCivwCjvwCjwACkwQCjwQCkwgClwgClwwCmwwCmxACnxACnxQCoxgCoxQCoxwCpxwCpyACqyACqyQCryQCrygCsygCsywCtzACUrQCtywCeuR0ryowAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJCSURBVGhD7ZXbVhpREAUH1BiTeCEqCiK5GIwmgIoiSIiS+P//ZHWfnpmzZsiah8hbV31Cre6dJDWo19Zqa3WEddxYD77ZQNjEt5sIW/hONN6LxgdxG2EHd3cQ9rCxF/zYQNjHg32Ew4NmUDlqHovQwrbYardO2upJB0876mkXP4nGZ9H4In5FOMNvZwg9PO8Fv58jXODlBcIP/CkafXHQV4b9q/7VEOEab67F0Y06usW70d0twjh4P4bJeCpOpvCAs+nsQfw1Q5jj7znCIz6JxkJcJAmFQqW4EUgj6VNqtIXwB5c0Uii0rJEUopEUihtZpUIjqVRo1F7aqLviRgaFyo1AGkmhuNF9KKSNtJAYNwJpNJ9JoUKjR4S/GBoJ4Z6s1H+22g6tDEpZKyllrUKphnYSrZV2OgyltFPz+CiUohWd2pB2ylqBtuqGUs+4pJVS3eryH60GUSu9Jm0lndJWhWuSVopek6GdJtE9yTWlrbRUVaskqYevV8sa2dfTn8fXKzV69Z8X35N1MtJ7CpWsU7inTnRP2kkbPUeNrFLWCKVRD0r3JBqlexqErzeUTqWfZ51AO2X3pBdlnezrKXpP2kl/nnXSRlTKfp5WSn9efk++T75Pvk9m3Mj3yfcpbeT7lN9T2sn3qfj78nvyffJ9MrSR4fvk+1TdyvfJ98n3CX2f8ntabSPD98n3qbqV75Pvk+8T+j7l97TaRobvk+9TdSvfJ98n3yf0fcrvabWNDN8n36fqVr5Pvk++T/gq+7RYvAAy+UTDp8jJTAAAAABJRU5ErkJggg==\"  width={{value*4}} height=15 /> <img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAAAZCAMAAAABp+KxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABFUExURSwxNy0xNywxNi0xNi0yNy4yOC0yOC4zOC4zOS8zOS80OS80OjA0OjA1OjA1OzE1OzE2OzE2PDI2PDI3PDI3PTM3PTM4PmYWE4sAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7dNLcoQwDARQmMGAAWM+Ge5/1LQk2wiSmiTrSF3N/hXuqqofyLN+NHVdNyquaVGV1rWdO9Mjvus7n9P7fqD6gepHysAdJsooCZQpjPOUElJwEVm4y7xSIjeuC5JuQ3d8P3I2dMdX3Qs97qGrKjCfVyZVpXVN55xioh1RC1OohVmoQKKjUAOVmSEzhTrPIRYqMdErk6knc9dUYu5sTHcAq5DEFCpd+ruUG7tFmXtllz98stMf/gsbec+OwpY/TOyY2XTbV/YK6Y19+8PEpr97DdNUNJGZmijM/Ig5ieiZ+ItHrInqEQvx8og3AG/Enx7xC9Vn27Xtcmy7iWnbPdm23cz85hHbdm27hWjbpbPtytl2NRGx7QrbtivMN4/YtjvbdgvRtmvbte3adun+1XaP4xMyMh9m2isL3gAAAABJRU5ErkJggg==\"  width={{(100-value)*4}} height=15 /> {{value}} %"
+													},
+													"Column1": {
+														"displayName": "Free Space GB"
+													},
+													"TimeGenerated": {
+														"displayName": "Time Generated"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Computer",
+													"InstanceName",
+													"Free_Space_Percent",
+													"Column1",
+													"TimeGenerated"
+												],
+												"autohide": true,
+												"rowLink": ""
+											}
+										},
+										"description": "",
+										"title": "Free Space"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-logs-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"timeframe": {
+													"type": "inherit"
+												},
+												"query": "Perf \n| where TimeGenerated > ago(5m) \n| where ObjectName == \"Processor\" and CounterName == \"% Processor Time\" and InstanceName == \"_Total\" \n| summarize AvgCPUPercentage = avg(CounterValue) by Computer\n| project Computer, toint(AvgCPUPercentage)\n| sort by Computer asc",
+												"workspaces": [
+													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+												]
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"AvgCPUPercentage": {
+														"displayName": "Avg CPU %",
+														"template": "<img alt=\"Embedded Image\"src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAAZCAMAAACihhEbAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADMUExURQCPpwCPqACPqQCQqQCQqgCRqgCRqwCSqwCSrACTrACTrQCUrgCVrwCUrwCVsACWsACWsQCXsQCXsgCYsgCYswCZswCZtACZtQCatQCatgCbtgCbtwCctwCcuACduACduQCeugCfuwCeuwCfvACgvACgvQChvQChvgCivgCivwCjvwCjwACkwQCjwQCkwgClwgClwwCmwwCmxACnxACnxQCoxgCoxQCoxwCpxwCpyACqyACqyQCryQCrygCsygCsywCtzACUrQCtywCeuR0ryowAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJCSURBVGhD7ZXbVhpREAUH1BiTeCEqCiK5GIwmgIoiSIiS+P//ZHWfnpmzZsiah8hbV31Cre6dJDWo19Zqa3WEddxYD77ZQNjEt5sIW/hONN6LxgdxG2EHd3cQ9rCxF/zYQNjHg32Ew4NmUDlqHovQwrbYardO2upJB0876mkXP4nGZ9H4In5FOMNvZwg9PO8Fv58jXODlBcIP/CkafXHQV4b9q/7VEOEab67F0Y06usW70d0twjh4P4bJeCpOpvCAs+nsQfw1Q5jj7znCIz6JxkJcJAmFQqW4EUgj6VNqtIXwB5c0Uii0rJEUopEUihtZpUIjqVRo1F7aqLviRgaFyo1AGkmhuNF9KKSNtJAYNwJpNJ9JoUKjR4S/GBoJ4Z6s1H+22g6tDEpZKyllrUKphnYSrZV2OgyltFPz+CiUohWd2pB2ylqBtuqGUs+4pJVS3eryH60GUSu9Jm0lndJWhWuSVopek6GdJtE9yTWlrbRUVaskqYevV8sa2dfTn8fXKzV69Z8X35N1MtJ7CpWsU7inTnRP2kkbPUeNrFLWCKVRD0r3JBqlexqErzeUTqWfZ51AO2X3pBdlnezrKXpP2kl/nnXSRlTKfp5WSn9efk++T75Pvk9m3Mj3yfcpbeT7lN9T2sn3qfj78nvyffJ9MrSR4fvk+1TdyvfJ98n3CX2f8ntabSPD98n3qbqV75Pvk+8T+j7l97TaRobvk+9TdSvfJ98n3yf0fcrvabWNDN8n36fqVr5Pvk++T/gq+7RYvAAy+UTDp8jJTAAAAABJRU5ErkJggg==\"  width={{value*4}} height=15 /> <img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAAAZCAMAAAABp+KxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABFUExURSwxNy0xNywxNi0xNi0yNy4yOC0yOC4zOC4zOS8zOS80OS80OjA0OjA1OjA1OzE1OzE2OzE2PDI2PDI3PDI3PTM3PTM4PmYWE4sAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7dNLcoQwDARQmMGAAWM+Ge5/1LQk2wiSmiTrSF3N/hXuqqofyLN+NHVdNyquaVGV1rWdO9Mjvus7n9P7fqD6gepHysAdJsooCZQpjPOUElJwEVm4y7xSIjeuC5JuQ3d8P3I2dMdX3Qs97qGrKjCfVyZVpXVN55xioh1RC1OohVmoQKKjUAOVmSEzhTrPIRYqMdErk6knc9dUYu5sTHcAq5DEFCpd+ruUG7tFmXtllz98stMf/gsbec+OwpY/TOyY2XTbV/YK6Y19+8PEpr97DdNUNJGZmijM/Ig5ieiZ+ItHrInqEQvx8og3AG/Enx7xC9Vn27Xtcmy7iWnbPdm23cz85hHbdm27hWjbpbPtytl2NRGx7QrbtivMN4/YtjvbdgvRtmvbte3adun+1XaP4xMyMh9m2isL3gAAAABJRU5ErkJggg==\"  width={{(100-value)*4}} height=15 /> {{value}} %"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Computer",
+													"AvgCPUPercentage"
+												],
+												"autohide": true
+											}
+										},
+										"description": "",
+										"title": "Computer AVG CPU"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-logs-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"timeframe": {
+													"type": "inherit"
+												},
+												"query": "Heartbeat\n| where TimeGenerated > ago(30m)\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\n| extend State = iff(LastHeartbeat < ago(1h), 'Unhealthy', 'Healthy')\n| extend TimeFromNow = now() - LastHeartbeat\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | extend Packed = pack_all()\n    )\n    on Computer\n| where TimeGenerated == LastHeartbeat\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | make-series InternalTrend=iff(count() > 0, 1, 0) default = 0 on TimeGenerated from ago(30m) to now() step 1h by Computer\n    | extend Trend=array_slice(InternalTrend, array_length(InternalTrend) - 30, array_length(InternalTrend) - 1)\n    | extend (s_min, s_minId, s_max, s_maxId, s_avg, s_var, s_stdev) = series_stats(Trend)\n    | project Computer, Trend, s_avg\n    )\n    on Computer\n| order by State, s_avg asc, TimeAgo\n| project Computer=strcat('🖥️ ', Computer), State, [\"Environment\"] = iff(ComputerEnvironment == \"Azure\", ComputerEnvironment, Category), [\"OS\"]=iff(isempty(OSName), OSType, OSName), [\"Azure Resource\"]=split(['ResourceId'], \"/\")[-1], [\"Time\"]=strcat('🕒 ', TimeAgo), [\"Heartbeat Trend\"]=Trend, [\"Details\"]=Packed",
+												"workspaces": [
+													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+												]
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"State": {
+														"template": "{{#if (value == 'Healthy')}}<img src='/images/healthy.png'>{{elseif (value == 'Potentially Overallocated')}}<img src='/images/warning.png'>{{else}}<img src='/images/critical.png'>{{/if}}"
+													},
+													"Time": {
+														"displayName": "Last Heartbeat"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Computer",
+													"State",
+													"Environment",
+													"OS",
+													"Azure Resource",
+													"Time"
+												],
+												"autohide": true,
+												"rowLink": ""
+											}
+										},
+										"description": "",
+										"title": "Agent Details"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-logs-linegraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"timeframe": {
+													"type": "inherit"
+												},
+												"query": "Heartbeat\n| summarize Count=count() by  Computer, bin(TimeGenerated, 1s)",
+												"columnOverrides": {
+													"timestamp": null,
+													"value": null,
+													"grouping": null
+												},
+												"split": false,
+												"workspaces": [
+													"/subscriptions/<SUBSCRIPTIONS>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+												]
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 165,
+												"label": "auto",
+												"showKey": true
+											}
+										},
+										"description": "",
+										"title": "Agent Details (trend)"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": false,
+		"contexts": null
+	}
+}
