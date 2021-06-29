@@ -1,0 +1,12 @@
+InsightsMetrics 
+| where Computer startswith "{{scope[0].name}}" 
+| where Namespace == "Processor" 
+| where Name == "UtilizationPercentage" 
+| summarize stdev(Val), avg(Val) by Computer 
+| summarize ExpectedMax = sum(avg_Val + stdev_Val) by Computer 
+| join kind=inner 
+    InsightsMetrics on Computer 
+    | where Computer startswith "{{scope[0].name}}" 
+    | where Namespace == "Processor" 
+    | where Name == "UtilizationPercentage" 
+    | summarize Actual = avg(Val) by bin(TimeGenerated, 5m), ExpectedMax, Namespace 
