@@ -1,5 +1,5 @@
 {
-	"id": "6bfa786d-7c68-44a8-ac1c-8a23a583fa52",
+	"id": "28a723ee-7ced-4dcf-9bf3-60028b38d6d8",
 	"type": "page/dashboard",
 	"title": "VM Metrics",
 	"content": {
@@ -27,9 +27,9 @@
 												"timeframe": {
 													"type": "inherit"
 												},
-												"query": "let disk_free_space_percent=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"% Free Space\" \n| summarize (TimeGenerated, Free_Space_Percent)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\nlet disk_free_MB=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"Free Megabytes\" \n| summarize (TimeGenerated, Free_MB)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\ndisk_free_space_percent \n| join (\n   disk_free_MB \n) on Computer, InstanceName\n| project Computer, InstanceName, toint(Free_Space_Percent), toint(Free_MB * 0.001) , format_datetime(TimeGenerated, 'MM-dd-yyyy')\n| order by Free_Space_Percent asc\n",
+												"query": "let disk_free_space_percent=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"% Free Space\" \n| summarize (TimeGenerated, Free_Space_Percent)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\nlet disk_free_MB=\nPerf \n| where TimeGenerated > ago(30m) \n| where ObjectName == \"LogicalDisk\" and CounterName == \"Free Megabytes\" \n| summarize (TimeGenerated, Free_MB)=arg_max(TimeGenerated, CounterValue) by Computer, InstanceName \n| where strlen(InstanceName) ==2 and InstanceName contains \":\";\ndisk_free_space_percent \n| join (\n   disk_free_MB \n) on Computer, InstanceName\n| project Computer, InstanceName, toint(Free_Space_Percent), toint(Free_MB * 0.001) , format_datetime(TimeGenerated, 'MM-dd-yyyy')\n| order by Free_Space_Percent asc",
 												"workspaces": [
-													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+													"/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace>"
 												]
 											},
 											"display": {
@@ -94,7 +94,7 @@
 												},
 												"query": "Perf \n| where TimeGenerated > ago(5m) \n| where ObjectName == \"Processor\" and CounterName == \"% Processor Time\" and InstanceName == \"_Total\" \n| summarize AvgCPUPercentage = avg(CounterValue) by Computer\n| project Computer, toint(AvgCPUPercentage)\n| sort by Computer asc",
 												"workspaces": [
-													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+													"/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace>"
 												]
 											},
 											"display": {
@@ -137,24 +137,22 @@
 											"context": {
 												"sign": true,
 												"scope": {
-													"type": "specific"
+													"type": "specific",
+													"includeHidden": ""
 												}
 											},
 											"source": {
 												"timeframe": {
 													"type": "inherit"
 												},
-												"query": "Heartbeat\n| where TimeGenerated > ago(30m)\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\n| extend State = iff(LastHeartbeat < ago(1h), 'Unhealthy', 'Healthy')\n| extend TimeFromNow = now() - LastHeartbeat\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | extend Packed = pack_all()\n    )\n    on Computer\n| where TimeGenerated == LastHeartbeat\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | make-series InternalTrend=iff(count() > 0, 1, 0) default = 0 on TimeGenerated from ago(30m) to now() step 1h by Computer\n    | extend Trend=array_slice(InternalTrend, array_length(InternalTrend) - 30, array_length(InternalTrend) - 1)\n    | extend (s_min, s_minId, s_max, s_maxId, s_avg, s_var, s_stdev) = series_stats(Trend)\n    | project Computer, Trend, s_avg\n    )\n    on Computer\n| order by State, s_avg asc, TimeAgo\n| project Computer=strcat('🖥️ ', Computer), State, [\"Environment\"] = iff(ComputerEnvironment == \"Azure\", ComputerEnvironment, Category), [\"OS\"]=iff(isempty(OSName), OSType, OSName), [\"Azure Resource\"]=split(['ResourceId'], \"/\")[-1], [\"Time\"]=strcat('🕒 ', TimeAgo), [\"Heartbeat Trend\"]=Trend, [\"Details\"]=Packed",
+												"query": "Heartbeat\n| where TimeGenerated > ago(30m)\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\n| extend State = iff(LastHeartbeat < ago(1h), '🔴', '🟢')\n| extend TimeFromNow = now() - LastHeartbeat\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | extend Packed = pack_all()\n    )\n    on Computer\n| where TimeGenerated == LastHeartbeat\n| join (\n    Heartbeat\n    | where TimeGenerated > ago(30m)\n    | make-series InternalTrend=iff(count() > 0, 1, 0) default = 0 on TimeGenerated from ago(30m) to now() step 1h by Computer\n    | extend Trend=array_slice(InternalTrend, array_length(InternalTrend) - 30, array_length(InternalTrend) - 1)\n    | extend (s_min, s_minId, s_max, s_maxId, s_avg, s_var, s_stdev) = series_stats(Trend)\n    | project Computer, Trend, s_avg\n    )\n    on Computer\n| order by State, s_avg asc, TimeAgo\n| project Computer=strcat('🖥️ ', Computer), State, [\"Environment\"] = iff(ComputerEnvironment == \"Azure\", ComputerEnvironment, Category), [\"OS\"]=iff(isempty(OSName), OSType, OSName), [\"Azure Resource\"]=split(['ResourceId'], \"/\")[-1], [\"Time\"]=strcat('🕒 ', TimeAgo), [\"Heartbeat Trend\"]=Trend, [\"Details\"]=Packed",
 												"workspaces": [
-													"/subscriptions/<SUBSCRIPTION>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+													"/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace>"
 												]
 											},
 											"display": {
 												"showHeaders": true,
 												"columnOverrides": {
-													"State": {
-														"template": "{{#if (value == 'Healthy')}}<img src='/images/healthy.png'>{{elseif (value == 'Potentially Overallocated')}}<img src='/images/warning.png'>{{else}}<img src='/images/critical.png'>{{/if}}"
-													},
 													"Time": {
 														"displayName": "Last Heartbeat"
 													}
@@ -211,7 +209,7 @@
 												},
 												"split": false,
 												"workspaces": [
-													"/subscriptions/<SUBSCRIPTIONS>/resourceGroups/<RESOURCEGROUP>/providers/Microsoft.OperationalInsights/workspaces/<WORKSPACE>"
+													"/subscriptions/<subscription-id>/resourceGroups/<resource-group>/providers/Microsoft.OperationalInsights/workspaces/<workspace>"
 												]
 											},
 											"display": {
