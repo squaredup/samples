@@ -1,5 +1,5 @@
 # Average VM CPU
-This KQL snippet will retrieve the following table of data for all virtual machines in an Azure Log Analytics Workspace.
+This Kusto query will retrieve the following table of data for all virtual machines in an Azure Log Analytics Workspace.
 
 | Computer 	| Avg CPU % 	|
 |----------	|-----------	|
