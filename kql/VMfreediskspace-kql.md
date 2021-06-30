@@ -4,8 +4,8 @@ This KQL snippet will retrieve the following table of data for all virtual machi
 
 | Computer   	| Disk 	| % Free Space 	| Free Space GB 	| Time Generated 	|
 |------------	|------	|--------------	|---------------	|----------------	|
-| Name 	      | C:   	| 50           	| 20            	| 06-30-2021     	|
-| Name       	| D:   	| 30           	| 10            	| 06-30-2021     	|
+| HostName     | C:   	| 50           	| 20            	| 06-30-2021     	|
+| HostName    	| D:   	| 30           	| 10            	| 06-30-2021     	|
 
 
 ```
