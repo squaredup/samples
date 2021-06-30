@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Version: 0.0.0.1
+    Version: 0.0.0.2
     Convert SquaredUp dashboard JSON from one product to another.
 
 .DESCRIPTION
@@ -23,8 +23,19 @@
 .PARAMETER Path
     The path where all of the files are located.
 
+.PARAMETER Outfile
+    The path where the output files will be written.  Make sure any subdirectories exist.
+    I.e., output\test.json
+
 .EXAMPLE
-    PS> .\Convert-SqupDashboard.ps1 -Source "squaredup-for-scom.json" -TileList "converting-dashboards.csv" -Target Azure -Path "C:\users\user\desktop\"
+    This example passes a local copy of the Tile Conversion list
+    PS> .\Convert-SqupDashboard.ps1 -source "squaredup-for-scom.json" -tileList "converting-dashboards.csv" -target "Azure" -path "C:\Users\user\Desktop\" -OutFile "Output\Azure.json"
+
+    This example uses the GitHub version of the Tile Conversion list
+    PS> .\Convert-SqupDashboard.ps1 -source "squaredup-for-scom.json" -target "Azure" -path "C:\Users\user\Desktop\" -OutFile "Output\Azure.json"
+
+    For both examples, the target dashboard will be written here:
+        C:\Users\user\Desktop\Output\Azure.json
 
 .NOTES  
     Copyright (c) 2018 SquaredUp Ltd, All Rights Reserved.
@@ -36,7 +47,7 @@
 )]
 Param(
     [Parameter(Mandatory = $true)]  [string] $Source, 
-    [Parameter(Mandatory = $false)] [string] $TileList, 
+    [Parameter(Mandatory = $false)] [string] [AllowEmptyString()] $TileList, 
     [Parameter(Mandatory = $true)]  [ValidateSet("SCOM","Azure","DS")][string] $Target,
     [Parameter(Mandatory = $true)]  [string] $Path,
     [Parameter(Mandatory = $true)]  [string] $OutFile
@@ -70,9 +81,27 @@ Function Get-SqupTileNames {
     } 
     else {
         Write-Host "ERR: CSV input file does not exist" -ForegroundColor Red
+        Break
     }
     
     $TileList = Import-Csv -LiteralPath $CSVFile
+    Return $TileList
+}
+
+<#
+.SYNOPSIS
+    Read in a CSV lookup table to convert between products
+#>
+Function Get-SqupTilesFromGithub {
+    param (
+        [Parameter(Mandatory = $false)][string]$url = 'https://raw.githubusercontent.com/squaredup/samples/master/tools/Convert-SqupDashboard/converting-dashboards.csv'
+    )
+
+    #download the CSV table from Github
+    $csv = ((New-Object System.Net.WebClient).DownloadString($url))
+
+    #Convert the file into a proper PowerShell CSV object
+    $TileList = ConvertFrom-Csv $csv
     Return $TileList
 }
 
@@ -91,6 +120,7 @@ Function Get-SqupSourceJSON {
     } 
     else {
         Write-Host "ERR: Dashboard JSON input file does not exist" -ForegroundColor Red
+        break
     }
     
     $JSON = Get-Content -LiteralPath $JSONFile
@@ -146,22 +176,41 @@ Function Test-SqupJSON {
 Function ConvertTo-SqupDashboard {
     param(
         [Parameter(Mandatory = $true)]  $Source, 
-        [Parameter(Mandatory = $false)] $TileList, 
+        [Parameter(Mandatory = $false)] [AllowEmptyString()] $TileList, 
         [Parameter(Mandatory = $true)]  [ValidateSet("SCOM", "Azure", "DS")][string] $Target, 
         [Parameter(Mandatory = $true)]  [string] $Path,
         [Parameter(Mandatory = $true)]  [string] $OutFile
     )
     
     #Check to see if the Tile List is loaded
-    #if (!$TileList){
-    #    Get-SqupTileNames
-    #}
+    if ([string]::IsNullOrEmpty($TileList)) {
+        #Download the TileList conversion table from Github
+        Write-Host "NOTE: Retreiving conversion table from GitHub" -ForegroundColor White
+        $lTileList = Get-SqupTilesFromGithub
+    }
+    else {
+        #Read in the supplied CSV
+        Write-Host "NOTE: Setting up CSV conversion table" -ForegroundColor White
+        $lTileList = Get-SqupTileNames -CSVFile (Join-Path -Path $Path -ChildPath $TileList)
+    }
+
+    #Make sure have something in our Local Table List
+    If ([string]::IsNullOrEmpty($lTileList)) {
+        Write-Host "ERR: Tile conversion lookup table is required." -ForegroundColor Red
+        Return
+    }
 
     #Retreive the dashboard JSON
     $JSON = Get-SqupSourceJSON -JSONFile (Join-Path -Path $Path -ChildPath $Source)
 
+    #Make sure we have something in our JSON file
+    If ([string]::IsNullOrEmpty($JSON)) {
+        Write-Host "ERR: JSON file is required." -ForegroundColor Red
+        Return
+    }
+
     #Identify what the type of Dashboard we were just given
-    $DashType = Test-SqupJSON -JSON $JSON -TileList $TileList
+    $DashType = Test-SqupJSON -JSON $JSON -TileList $lTileList
 
     If ($DashType.Name -eq 'Generic'){
         Write-Host "INFO: Generic Dashboard Detected - Conversion is not required." -ForegroundColor Yellow
@@ -174,8 +223,8 @@ Function ConvertTo-SqupDashboard {
     }
 
     #Loop through each line and convert
-    Write-Host "Converting" $DashType.Name "to $Target" -ForegroundColor Green
-    foreach($line in $TileList){
+    Write-Host "NOTE: Converting" $DashType.Name "to $Target" -ForegroundColor Green
+    foreach($line in $lTileList){
         $JSON = $JSON -replace $line.($DashType.Name), $line.($Target)
     }
     $JSON | Set-Content -Path (Join-Path -Path $Path -ChildPath $OutFile) -Force
@@ -193,8 +242,6 @@ if ([string]::IsNullOrEmpty($Target)) {
     $Target = Read-Host -Prompt 'Please enter the target product type: SCOM, Azure, or DS. Hit enter to continue'
 }
 
-Write-Host "NOTE: Setting up conversion table" -ForegroundColor White
-$TileTable = Get-SqupTileNames -CSVFile (Join-Path -Path $Path -ChildPath $TileList)
-
 Write-Host "NOTE: Converting dashboard" -ForegroundColor White
-ConvertTo-SqupDashboard -Source $Source -TileList $TileTable -Target $Target -Path $Path -OutFile $OutFile
+ConvertTo-SqupDashboard -Source $Source -TileList $TileList -Target $Target -Path $Path -OutFile $OutFile
+Write-Host "NOTE: Finsihed" -ForegroundColor White
