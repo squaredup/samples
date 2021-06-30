@@ -1,4 +1,4 @@
-## Sample SQL Scripts
+# Sample SQL Scripts
 
 This folder contains sample SQL scripts from the community that can be used in the SQL tiles in SquaredUp.
 

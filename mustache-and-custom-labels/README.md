@@ -1,4 +1,4 @@
-## Sample Mustache & Custom Labels
+# Sample Mustache & Custom Labels
 
 This folder contains sample _{{mustache}}_ snippets from the community that can be used in most of the tiles in SquaredUp to manipulate data.
 

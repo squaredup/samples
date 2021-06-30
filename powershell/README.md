@@ -1,4 +1,4 @@
-## Sample PowerShell Scripts
+# Sample PowerShell Scripts
 
 This folder contains sample PowerShell scripts from the community that can be used in the PowerShell tiles in SquaredUp.
 

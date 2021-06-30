@@ -1,4 +1,4 @@
-## Sample EAM PowerShell Monitors
+# Sample EAM PowerShell Monitors
 
 This folder contains sample PowerShell scripts from the community that can be used to add custom monitoring to SquaredUp Enterprise Applications.
 

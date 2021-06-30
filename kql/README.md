@@ -1,4 +1,4 @@
-## Sample KQL (Kusto) Scripts
+# Sample KQL (Kusto) Scripts
 
 This folder contains sample KQL scripts from the community that can be used in the Azure tiles in SquaredUp.
 
