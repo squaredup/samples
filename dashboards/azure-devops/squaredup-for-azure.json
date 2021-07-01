@@ -1,0 +1,881 @@
+{
+	"id": "72f0be0c-0b85-4380-9fd2-4b6e6f1006ed",
+	"type": "page/dashboard",
+	"title": "DevOps",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 50,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-webapi-donut",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"aggregation": "sum",
+													"isCategoryOptional": false,
+													"values": [
+														{
+															"key": "Success",
+															"value": "{{SucceededCount}}"
+														},
+														{
+															"key": "Failed",
+															"value": "{{FailedCount}}"
+														},
+														{
+															"key": "Partial",
+															"value": "{{PartiallySucceededCount}}"
+														}
+													],
+													"category": ""
+												},
+												"provider": "Azure DevOps",
+												"url": "_odata/v4.0-preview/PipelineRuns?$apply=filter(PipelineId eq 64 and CompletedDateSK ge {{new Date(Date.now()-86400*14*1000).toISOString().substring(0,10).replace(/-/g,'')}} and (CanceledCount ne 1))/groupby((CompletedDateSK), aggregate($count as TotalCount, PartiallySucceededCount with sum as PartiallySucceededCount, SucceededCount with sum as SucceededCount, FailedCount with sum as FailedCount))&$orderby= CompletedDateSK asc ",
+												"keypath": "value",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"aggregation": "sum",
+															"isCategoryOptional": false,
+															"values": [
+																{
+																	"key": "Success",
+																	"value": "{{SucceededCount}}"
+																},
+																{
+																	"key": "Failed",
+																	"value": "{{FailedCount}}"
+																},
+																{
+																	"key": "Partial",
+																	"value": "{{PartiallySucceededCount}}"
+																}
+															],
+															"category": ""
+														},
+														"provider": "Azure DevOps",
+														"url": "_odata/v4.0-preview/PipelineRuns?$apply=filter(PipelineId eq 64 and CompletedDateSK ge {{new Date(Date.now()-86400*14*1000).toISOString().substring(0,10).replace(/-/g,'')}} and (CanceledCount ne 1))/groupby((CompletedDateSK), aggregate($count as TotalCount, PartiallySucceededCount with sum as PartiallySucceededCount, SucceededCount with sum as SucceededCount, FailedCount with sum as FailedCount))&$orderby= CompletedDateSK asc ",
+														"keypath": "value"
+													},
+													"signature": "ae08d0af0919ea34bfaa66dee410c1a47d818f4da751b520fe550db8732953000a4c00c5d5f8394e07119455118d7ad1+1625156260381"
+												}
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 81,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 2
+											}
+										},
+										"title": "Build",
+										"description": "Last 14 days"
+									},
+									{
+										"_type": "tile/azure-resources-webapi-linegraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{MaxCount}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{SamplingTime}}"
+												},
+												"topn": 0,
+												"provider": "Azure DevOps",
+												"url": "_odata/v4.0-preview/TaskAgentRequestSnapshots?$apply=filter(SamplingDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} AND Project/ProjectVisibility ne 'Public' AND IsRunning eq false AND IsHosted eq true)/groupby((SamplingDateSK, SamplingHour, SamplingTime), aggregate($count as Count))/groupby((SamplingTime),aggregate(Count with max as MaxCount))&$orderby=SamplingTime asc",
+												"keypath": "value",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{MaxCount}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{SamplingTime}}"
+														},
+														"topn": 0,
+														"provider": "Azure DevOps",
+														"url": "_odata/v4.0-preview/TaskAgentRequestSnapshots?$apply=filter(SamplingDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} AND Project/ProjectVisibility ne 'Public' AND IsRunning eq false AND IsHosted eq true)/groupby((SamplingDateSK, SamplingHour, SamplingTime), aggregate($count as Count))/groupby((SamplingTime),aggregate(Count with max as MaxCount))&$orderby=SamplingTime asc",
+														"keypath": "value"
+													},
+													"signature": "e7c33d3e3f79ebd929ade3483ec35521cc25a2d66fc75d8053f140849c30fcbcde87e1b0a54932fb78c4cd8ea04788ab+1625156260381"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 145,
+												"label": "auto",
+												"showKey": false,
+												"rangemin": "",
+												"rangemax": ""
+											}
+										},
+										"title": "Job Queue",
+										"description": "Last 30 days"
+									},
+									{
+										"_type": "tile/azure-resources-webapi-bargraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"aggregation": "count",
+													"isCategoryOptional": false,
+													"values": [],
+													"category": "{{ActivityCompletedDate.substring(0,10)}}"
+												},
+												"desc": true,
+												"url": "_odata/v4.0-preview/PipelineRunActivityResults?$apply=filter(Pipeline/PipelineId eq 64 and ActivityCompletedDate ge {{new Date(Date.now() - 86400000 * 14).toISOString()}} and (ActivityType eq null or ActivityType eq 'Task') and PipelineRunOutcome eq 'Failed' and TaskOutcome eq 'Failed')&$orderby=PipelineRunCompletedDateSK asc",
+												"keypath": "value",
+												"provider": "Azure DevOps",
+												"topn": 10,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"aggregation": "count",
+															"isCategoryOptional": false,
+															"values": [],
+															"category": "{{ActivityCompletedDate.substring(0,10)}}"
+														},
+														"desc": true,
+														"url": "_odata/v4.0-preview/PipelineRunActivityResults?$apply=filter(Pipeline/PipelineId eq 64 and ActivityCompletedDate ge {{new Date(Date.now() - 86400000 * 14).toISOString()}} and (ActivityType eq null or ActivityType eq 'Task') and PipelineRunOutcome eq 'Failed' and TaskOutcome eq 'Failed')&$orderby=PipelineRunCompletedDateSK asc",
+														"keypath": "value",
+														"provider": "Azure DevOps",
+														"topn": 10
+													},
+													"signature": "b9389267c5edadab8382cdace7599d310c37ebbe0a59ceee4c69b61291d7ea550cdf58861a0a5b72e96b2c243c24c9c4+1625156260381"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"label": "auto",
+												"sort": {
+													"order": "desc",
+													"property": "values",
+													"option": "values"
+												},
+												"multipleColours": true,
+												"customLabel": ""
+											}
+										},
+										"description": "Last 14 Days",
+										"title": "Build Failures"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-webapi-linegraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{Math.round(DurationPercentile)/60}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{CompletedDate}}"
+												},
+												"topn": 0,
+												"provider": "Azure DevOps",
+												"url": "_odata/v4.0-preview/PipelineRuns?$apply=filter(PipelineId eq 64 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and (SucceededCount eq 1 or PartiallySucceededCount eq 1))/compute(percentile_cont(TotalDurationSeconds, 0.8, CompletedDateSK) as DurationPercentile)/groupby((DurationPercentile, CompletedDateSK, CompletedDate),aggregate($count as TotalCount))&$orderby= CompletedDateSK asc ",
+												"keypath": "value",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{Math.round(DurationPercentile)/60}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{CompletedDate}}"
+														},
+														"topn": 0,
+														"provider": "Azure DevOps",
+														"url": "_odata/v4.0-preview/PipelineRuns?$apply=filter(PipelineId eq 64 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and (SucceededCount eq 1 or PartiallySucceededCount eq 1))/compute(percentile_cont(TotalDurationSeconds, 0.8, CompletedDateSK) as DurationPercentile)/groupby((DurationPercentile, CompletedDateSK, CompletedDate),aggregate($count as TotalCount))&$orderby= CompletedDateSK asc ",
+														"keypath": "value"
+													},
+													"signature": "4268a026ac4a36e0b60d8f454ad3bdf03b93c283315c96155533962d9f8c69ac7470bb47cf30a97830c723f582796bce+1625156260381"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 145,
+												"label": "auto",
+												"showKey": false
+											}
+										},
+										"description": "Last 30 days",
+										"title": "Build Duration"
+									},
+									{
+										"_type": "tile/azure-resources-webapi-linegraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{MaxCount}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{SamplingTime}}"
+												},
+												"topn": 0,
+												"provider": "Azure DevOps",
+												"url": "_odata/v4.0-preview/TaskAgentRequestSnapshots?$apply=filter(SamplingDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} AND Project/ProjectVisibility ne 'Public' AND IsRunning eq true AND IsHosted eq true)/groupby((SamplingDateSK, SamplingHour, SamplingTime), aggregate($count as Count))/groupby((SamplingTime),aggregate(Count with max as MaxCount))&$orderby=SamplingTime asc ",
+												"keypath": "value",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{MaxCount}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{SamplingTime}}"
+														},
+														"topn": 0,
+														"provider": "Azure DevOps",
+														"url": "_odata/v4.0-preview/TaskAgentRequestSnapshots?$apply=filter(SamplingDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} AND Project/ProjectVisibility ne 'Public' AND IsRunning eq true AND IsHosted eq true)/groupby((SamplingDateSK, SamplingHour, SamplingTime), aggregate($count as Count))/groupby((SamplingTime),aggregate(Count with max as MaxCount))&$orderby=SamplingTime asc ",
+														"keypath": "value"
+													},
+													"signature": "a90399b5f8081e4663bd5129b1bc56c4d2c53352fe1035c70d88dd0f1f18e5de440c94950d312e225e72d21226ffa4e7+1625156260381"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 145,
+												"label": "auto",
+												"showKey": false
+											}
+										},
+										"title": "MS Agent Usage - Max 12",
+										"description": "Last 30 days"
+									},
+									{
+										"_type": "tile/azure-resources-webapi-bargraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"aggregation": "count",
+													"isCategoryOptional": false,
+													"values": [],
+													"category": "{{TaskDisplayName}}"
+												},
+												"provider": "Azure DevOps",
+												"url": "_odata/v4.0-preview/PipelineRunActivityResults?$apply=filter(Pipeline/PipelineId eq 64 and ActivityCompletedDate ge {{new Date(Date.now() - 86400000 * 14).toISOString()}} and (ActivityType eq null or ActivityType eq 'Task') and PipelineRunOutcome eq 'Failed' and TaskOutcome eq 'Failed')&$orderby= PipelineRunCompletedDateSK asc ",
+												"keypath": "value",
+												"desc": true,
+												"topn": 10,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"aggregation": "count",
+															"isCategoryOptional": false,
+															"values": [],
+															"category": "{{TaskDisplayName}}"
+														},
+														"provider": "Azure DevOps",
+														"url": "_odata/v4.0-preview/PipelineRunActivityResults?$apply=filter(Pipeline/PipelineId eq 64 and ActivityCompletedDate ge {{new Date(Date.now() - 86400000 * 14).toISOString()}} and (ActivityType eq null or ActivityType eq 'Task') and PipelineRunOutcome eq 'Failed' and TaskOutcome eq 'Failed')&$orderby= PipelineRunCompletedDateSK asc ",
+														"keypath": "value",
+														"desc": true,
+														"topn": 10
+													},
+													"signature": "9e652409ca32ea80ae1b6fe8379d79028acd3fdde30309d4e95ef964050dadc2aae37cc9e42d6986a0925cbcf3fde169+1625156260381"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"label": "auto",
+												"sort": {
+													"order": "desc",
+													"property": "values",
+													"option": "values"
+												},
+												"multipleColours": true
+											}
+										},
+										"description": "Last 14 Days",
+										"title": "Build Failures By Stage Name"
+									}
+								]
+							}
+						],
+						"width": 50
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "none",
+																			"isCategoryOptional": false,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{FailedCount}}"
+																				}
+																			],
+																			"category": "{{Test.TestName}}"
+																		},
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 209 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																		"keypath": "value",
+																		"desc": true,
+																		"topn": 10,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "none",
+																					"isCategoryOptional": false,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{FailedCount}}"
+																						}
+																					],
+																					"category": "{{Test.TestName}}"
+																				},
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 209 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																				"keypath": "value",
+																				"desc": true,
+																				"topn": 10
+																			},
+																			"signature": "1e7c2474b965e7023c3f1436522859e71ff446fcb1a475cf7c318074ba555d14795334017733926b24ef12c34e09c87d+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"sort": {
+																			"order": "desc",
+																			"property": "values",
+																			"option": "values"
+																		},
+																		"multipleColours": false
+																	}
+																},
+																"description": "Top 10 in last 30 days",
+																"title": "SCOM E2E Testing Failures"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{Math.round(AvgDuration)/60}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{CompletedDate}}"
+																		},
+																		"topn": 0,
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 209)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																		"keypath": "value",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{Math.round(AvgDuration)/60}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{CompletedDate}}"
+																				},
+																				"topn": 0,
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 209)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																				"keypath": "value"
+																			},
+																			"signature": "8e87617006e63eb5977de941fdbb2aadc1cf2fc56e231393aa4a1a39a1f03c2f340fca6dbbf96c57fed110799a47e66a+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 362,
+																		"label": "auto",
+																		"showKey": false
+																	}
+																},
+																"description": "in Minutes over last 30 days",
+																"title": "Average SCOM E2E Testing Time"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "none",
+																			"isCategoryOptional": false,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{FailedCount}}"
+																				}
+																			],
+																			"category": "{{Test.TestName}}"
+																		},
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 210 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																		"keypath": "value",
+																		"desc": true,
+																		"topn": 10,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "none",
+																					"isCategoryOptional": false,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{FailedCount}}"
+																						}
+																					],
+																					"category": "{{Test.TestName}}"
+																				},
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 210 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																				"keypath": "value",
+																				"desc": true,
+																				"topn": 10
+																			},
+																			"signature": "fb5ae7df54b0c68c5dcd1ab0e9882e75a1e9630923ecf86c297d0fab4a7df3c5d78b742117b8541943e0268b49fa475d+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"sort": {
+																			"order": "desc",
+																			"property": "values",
+																			"option": "values"
+																		},
+																		"multipleColours": false
+																	}
+																},
+																"description": "Top 10 in last 30 days",
+																"title": "Azure E2E Testing Failures"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{Math.round(AvgDuration)/60}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{CompletedDate}}"
+																		},
+																		"topn": 0,
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 210)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																		"keypath": "value",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{Math.round(AvgDuration)/60}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{CompletedDate}}"
+																				},
+																				"topn": 0,
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 210)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																				"keypath": "value"
+																			},
+																			"signature": "e85f5629dde2dac8eeb459317f8f7d9b1ef861601d84720369899eb940b035fceb73559e039fc46364107e8a97097f88+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 362,
+																		"label": "custom",
+																		"showKey": false,
+																		"customLabel": ""
+																	}
+																},
+																"description": "in Minutes over last 30 days",
+																"title": "Average AZURE E2E Testing Time"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "none",
+																			"isCategoryOptional": false,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{FailedCount}}"
+																				}
+																			],
+																			"category": "{{Test.TestName}}"
+																		},
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 211 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																		"keypath": "value",
+																		"desc": true,
+																		"topn": 10,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "none",
+																					"isCategoryOptional": false,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{FailedCount}}"
+																						}
+																					],
+																					"category": "{{Test.TestName}}"
+																				},
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestResultsDaily?$apply=filter(ReleasePipelineId eq 53 and DateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ReleaseStageId eq 211 )/groupby((TestSK, Test/TestName), aggregate(ResultCount with sum as TotalCount, ResultDurationSeconds with sum as TotalDuration, ResultPassCount with sum as PassedCount, ResultFailCount with sum as FailedCount,ResultNotExecutedCount with sum as NotExecutedCount, ResultNotImpactedCount with sum as NotImpactedCount))/filter(FailedCount gt 0)/compute(TotalDuration div cast(TotalCount,Edm.Double) as AvgDuration,iif(TotalCount gt NotExecutedCount, ((PassedCount add NotImpactedCount) div cast(TotalCount sub NotExecutedCount, Edm.Decimal)) mul 100, 0) as PassRate)&$top=10&$orderby=FailedCount desc",
+																				"keypath": "value",
+																				"desc": true,
+																				"topn": 10
+																			},
+																			"signature": "33ba441b17dd80a90c57406912d4e0fcfc734f287f1b28b02d89a5054ac0a2d6a66593c404c2c2c053d8799f31600494+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"sort": {
+																			"order": "desc",
+																			"property": "values",
+																			"option": "values"
+																		},
+																		"multipleColours": false
+																	}
+																},
+																"title": "DS E2E Testing Failures",
+																"description": "Top 10 in last 30 days"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{Math.round(AvgDuration)/60}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{CompletedDate}}"
+																		},
+																		"topn": 0,
+																		"provider": "Azure DevOps",
+																		"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 211)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																		"keypath": "value",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{Math.round(AvgDuration)/60}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{CompletedDate}}"
+																				},
+																				"topn": 0,
+																				"provider": "Azure DevOps",
+																				"url": "_odata/v4.0-preview/TestRuns?$apply=filter(ReleasePipelineId eq 53 and CompletedDateSK ge {{new Date(Date.now()-86400*30*1000).toISOString().substring(0,10).replace(/-/g,'')}} and ((ReleaseStageId eq 211)))/groupby((CompletedDate, ReleaseEnvironmentId) , aggregate(ResultDurationSeconds with sum as ResultDurationSeconds))/groupby((CompletedDate), aggregate(ResultDurationSeconds with average as AvgDuration))&$orderby= CompletedDate asc ",
+																				"keypath": "value"
+																			},
+																			"signature": "9f852add6bc7dfd804b97438eeb16c94ccc89d412775ed09fd531ebe15405b1a1b36a4586b64456cef87b141f9942371+1625156260381"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 362,
+																		"label": "custom",
+																		"showKey": false,
+																		"customLabel": ""
+																	}
+																},
+																"description": "in Minutes over last 30 days",
+																"title": "Average DS E2E Testing Time"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": false,
+		"contexts": []
+	}
+}
