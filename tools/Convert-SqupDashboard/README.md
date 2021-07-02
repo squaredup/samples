@@ -16,7 +16,7 @@ For example, given a dashboard for "SquaredUp for SCOM", there are tiles that ar
 2. Download your dashboard JSON as `squaredup-for-scom.json`.
 3. Make note of the Tile List conversion table file name, for example `converting-dashboards.csv`.
 4. Choose a target type of `SCOM`, `Azure`, or `DS`.
-5. Choose a target file name (and path), for example `Output\Generic2.json`. 
+5. Choose a target file name (and optional path), for example `Output\Generic2.json`. 
 
 **PowerShell:**
 
@@ -28,11 +28,37 @@ For example, given a dashboard for "SquaredUp for SCOM", there are tiles that ar
     Convert-SqupDashboard.ps1
 	Copyright 2018 Squared Up Limited, All Rights Reserved.
 	
-	NOTE: Setting up conversion table
-	INFO: CSV input file exists
 	NOTE: Converting dashboard
+	NOTE: Setting up CSV conversion table
+	INFO: CSV input file exists
 	INFO: Dashboard JSON input file exists
-	Converting  SCOM  to Azure
+	NOTE: Converting SCOM to Azure
+	NOTE: Finsihed
+
+### Example 2: Call `Convert-SqupDashboard` cmdlet, but use the GitHub conversion list ###
+
+1. Make note of your working directory path, for example `C:\Users\TempUser\Desktop\Convert Dashboards`.
+2. Download your dashboard JSON as `squaredup-for-scom.json`.
+4. Choose a target type of `SCOM`, `Azure`, or `DS`.
+5. Choose a target file name (and optional path), for example `Output\Generic2.json`. 
+
+
+**PowerShell:**
+
+    PS C:\>.\Convert-SqupDashboard.ps1 -source "squaredup-for-scom.json" -target "Azure" -path "C:\Users\TempUser\Desktop\" -OutFile "Output\Generic2.json"
+
+
+**Output:**
+
+    Convert-SqupDashboard.ps1
+	Copyright 2018 Squared Up Limited, All Rights Reserved.
+	
+	NOTE: Converting dashboard
+	NOTE: Retreiving conversion table from GitHub
+	INFO: Dashboard JSON input file exists
+	NOTE: Converting SCOM to Azure
+	NOTE: Finsihed
+
 
 
 ## Parameters ##
@@ -43,7 +69,7 @@ For example, given a dashboard for "SquaredUp for SCOM", there are tiles that ar
 
 ### -TileList ###
 
-(Required) The name of the file that contains the cross-walk for conversion.
+(Optional) The name of the CSV file that contains the cross-walk for conversion.  If not supplied, the script will download a copy from GitHub to perform the conversion.
 
 ### -Target ###
 
