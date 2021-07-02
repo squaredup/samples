@@ -9,7 +9,7 @@ This SquaredUp for Azure dashboard gives an overview of Virtual Machine Health f
 
 ## How to use this dashboard in SquaredUp for Azure
 - Ensure your virtual machines are collecting metrics in an Azure Log Analytics Workspace.
-- Create a new dashboard, select the </> on the top right and copy the content of the .json file above and click **Apply Changes**.
+- Create a new dashboard, select the </> on the top right and paste the content of the .json file and click **Apply Changes**.
 - Set the Workspace for each tile, select the cog icon and expand **workspace**, select the name of the workspace with the virtual machine metrics and click **done**
 - Click publish to save the working dashboard.
 
