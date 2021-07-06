@@ -1,0 +1,471 @@
+{
+	"id": "e455e25f-c12f-4e66-9a2f-1770b9ba06dd",
+	"type": "page/dashboard",
+	"title": "Current Semester",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 50,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-scalar",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "scalar",
+												"profile": "Current Semester",
+												"runAsIdentity": "Default",
+												"script": "$Query = \"SELECT COUNT (DISTINCT TeamGroupID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n(Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $query).tables[0].rows[0].column1",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "scalar",
+														"profile": "Current Semester",
+														"runAsIdentity": "Default",
+														"script": "$Query = \"SELECT COUNT (DISTINCT TeamGroupID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n(Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $query).tables[0].rows[0].column1"
+													},
+													"signature": "3f9801b7f0c9177052cae9e550306296e279b916dd24ec6f42035811e28abbdb84cefd9d2d43b63a6c64b66b4dc15666+1625582812380"
+												}
+											},
+											"display": {
+												"fontsize": 90,
+												"coerceObject": true,
+												"unit": "Teams",
+												"customTemplate": ""
+											}
+										},
+										"description": "",
+										"title": "Managed Teams"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-scalar",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "scalar",
+												"profile": "Current Semester",
+												"runAsIdentity": "Default",
+												"script": "$Query = \"SELECT COUNT (DISTINCT ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n(Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $query).tables[0].rows[0].column1",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "scalar",
+														"profile": "Current Semester",
+														"runAsIdentity": "Default",
+														"script": "$Query = \"SELECT COUNT (DISTINCT ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n(Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $query).tables[0].rows[0].column1"
+													},
+													"signature": "1f0eebaec6f827acfc6e8b5f48b555c36a40ccff38f8b595cb55874781c90ddc124d175173777c5a1066a0e69b0a3d9f+1625582812380"
+												}
+											},
+											"display": {
+												"fontsize": 90,
+												"coerceObject": true,
+												"unit": "Sections",
+												"customTemplate": ""
+											}
+										},
+										"title": "Managed Sections",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 50
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "Current Semester",
+												"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#get a list of the teams to check from the database.\n$QueryToGetTeams = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryToGetTeams).tables[0]\n\n#Connect to Microsoft.\nConnect-MicrosoftTeams -Credential $credential |out-null\n\n#try to retrieve each team in the list. if it fails, add it to the list of \"Deleted teams\".  Teams in \"Soft Delete\" fail with the get-team cmdlet.\n\n$DeletedTeams = @()\nforeach ($Team in $teams)\n{\n    try\n    {\n        get-team -GroupId $team.teamgroupid | out-null\n    }\n    catch\n    {\n       $DeletedTeams += new-object -TypeName psobject -Property @{name=$($Team.TeamDisplayName);value=$($team.teamDisplayName);state=\"critical\"}\n    }\n}\n\n#By default there's a limited number of active connections - so here I clean up the connection and the return the data.\nDisconnect-MicrosoftTeams\n$DeletedTeams",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 536,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "Current Semester",
+														"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#get a list of the teams to check from the database.\n$QueryToGetTeams = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryToGetTeams).tables[0]\n\n#Connect to Microsoft.\nConnect-MicrosoftTeams -Credential $credential |out-null\n\n#try to retrieve each team in the list. if it fails, add it to the list of \"Deleted teams\".  Teams in \"Soft Delete\" fail with the get-team cmdlet.\n\n$DeletedTeams = @()\nforeach ($Team in $teams)\n{\n    try\n    {\n        get-team -GroupId $team.teamgroupid | out-null\n    }\n    catch\n    {\n       $DeletedTeams += new-object -TypeName psobject -Property @{name=$($Team.TeamDisplayName);value=$($team.teamDisplayName);state=\"critical\"}\n    }\n}\n\n#By default there's a limited number of active connections - so here I clean up the connection and the return the data.\nDisconnect-MicrosoftTeams\n$DeletedTeams",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 536
+													},
+													"signature": "7122d59fdee201958fcc3d517560a871d0358c32d1dca099221148d15ac8c0ede530f18c41173616fb91bf296a5878b6+1625582812380"
+												}
+											},
+											"display": {
+												"label": "name",
+												"sublabel": "none",
+												"drilldownTemplate": "",
+												"zoom": "list",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												}
+											}
+										},
+										"description": "",
+										"title": "Deleted Teams"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "Current Semester",
+												"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#Connect to ExchangeOnlineManagement to access the data needed.\nimport-module ExchangeOnlineManagement\nConnect-ExchangeOnline -Credential $credential\n\n#Get a list of the Lecture Sections from the database.\n$QueryCurrentLectureSections = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode' AND Type = 'lecture'\"\n$CurrentLectureSections = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryCurrentLectureSections).tables\n\n#The database holds sections, some of which are combined into a single team. This reduces down to a teams not sections\n$TeamIDs = @()\nForeach ($LectureSection in $CurrentLectureSections)\n{\n    if ($lectureSection.TeamGroupID -notin $TeamIDs.teamgroupid)\n    {\n            $teamIDs += $lectureSection\n    }\n}\n\n#I'm checking to ensure that the lecture teams are setup correctly. Currently we just want to ensure that emails to everyone in the team cannot be sent by everyone. default the list is empty, allowing anyone, so by testing to ensure that there is at least one user in the list, we know that there is a limit.\n$sBlock =@()\nForeach ($teamID in $TeamIDs)\n{\n    $Group = Get-UnifiedGroup $($TeamID.TeamGroupID) \n    if ($group.AcceptMessagesOnlyFromSendersOrMembers.count -eq 0 -or $group.AcceptMessagesOnlyFrom.count -eq 0)\n    {\n        $sblock += New-Object -TypeName psobject -property @{name=\"$($teamID.TeamDisplayName)\";state=\"critical\"}\n    }\n    else\n    {\n        $sblock += New-Object -TypeName psobject -property @{name=\"$($teamID.TeamDisplayName)\";state=\"healthy\"}\n    }\n}\n\n#cleanup and return\nDisconnect-ExchangeOnline -Confirm:$false\n$sBlock",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "Current Semester",
+														"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#Connect to ExchangeOnlineManagement to access the data needed.\nimport-module ExchangeOnlineManagement\nConnect-ExchangeOnline -Credential $credential\n\n#Get a list of the Lecture Sections from the database.\n$QueryCurrentLectureSections = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode' AND Type = 'lecture'\"\n$CurrentLectureSections = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryCurrentLectureSections).tables\n\n#The database holds sections, some of which are combined into a single team. This reduces down to a teams not sections\n$TeamIDs = @()\nForeach ($LectureSection in $CurrentLectureSections)\n{\n    if ($lectureSection.TeamGroupID -notin $TeamIDs.teamgroupid)\n    {\n            $teamIDs += $lectureSection\n    }\n}\n\n#I'm checking to ensure that the lecture teams are setup correctly. Currently we just want to ensure that emails to everyone in the team cannot be sent by everyone. default the list is empty, allowing anyone, so by testing to ensure that there is at least one user in the list, we know that there is a limit.\n$sBlock =@()\nForeach ($teamID in $TeamIDs)\n{\n    $Group = Get-UnifiedGroup $($TeamID.TeamGroupID) \n    if ($group.AcceptMessagesOnlyFromSendersOrMembers.count -eq 0 -or $group.AcceptMessagesOnlyFrom.count -eq 0)\n    {\n        $sblock += New-Object -TypeName psobject -property @{name=\"$($teamID.TeamDisplayName)\";state=\"critical\"}\n    }\n    else\n    {\n        $sblock += New-Object -TypeName psobject -property @{name=\"$($teamID.TeamDisplayName)\";state=\"healthy\"}\n    }\n}\n\n#cleanup and return\nDisconnect-ExchangeOnline -Confirm:$false\n$sBlock",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "6b413c9a0caf59c2971dbecf965ba9915ef7aa8d06d22f6e77f657a0e2fc5748d439bd0670f07c5617a61df5af69b2a3+1625582812380"
+												}
+											},
+											"display": {
+												"label": "name",
+												"sublabel": "none",
+												"drilldownTemplate": "",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												}
+											}
+										},
+										"description": "",
+										"title": "Lecture Team Configuration"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-donut",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "value",
+													"grouping": "name"
+												},
+												"profile": "Current Semester",
+												"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Empty Teams.  Empty Teams have no members (all teams have at least one owner).\n$emptySection = @()\nForeach ($Team in $Teams.rows)\n{\n    Try \n    {\n        if ((get-TeamUser -GroupId $Team.TeamgroupID -role member).count -eq 0)\n        {\n            $EmptyTeamCount++\n            $EmptySection += $Team.TeamgroupID\n        }\n        else\n        {\n            $NotEmptyTeamCount++\n        }\n    }\n    catch\n    {<#this is here because deleted teams cause errors. We don't really care but need no errors to show the data#>}\n}\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Not Empty\";value=$notEmptyTeamCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Empty\";value=$EmptyTeamCount}\n\n$donut",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "value",
+															"grouping": "name"
+														},
+														"profile": "Current Semester",
+														"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Empty Teams.  Empty Teams have no members (all teams have at least one owner).\n$emptySection = @()\nForeach ($Team in $Teams.rows)\n{\n    Try \n    {\n        if ((get-TeamUser -GroupId $Team.TeamgroupID -role member).count -eq 0)\n        {\n            $EmptyTeamCount++\n            $EmptySection += $Team.TeamgroupID\n        }\n        else\n        {\n            $NotEmptyTeamCount++\n        }\n    }\n    catch\n    {<#this is here because deleted teams cause errors. We don't really care but need no errors to show the data#>}\n}\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Not Empty\";value=$notEmptyTeamCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Empty\";value=$EmptyTeamCount}\n\n$donut",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "9a4718fbccef397690dcf25b7d9d883de4578ad99f1bae6b8b8fa58884f8e0d65fd78f258ad8e21f50b24ac22bbc898c+1625582812380"
+												}
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 1,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 2
+											}
+										},
+										"title": "Empty Team Status",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-donut",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "value",
+													"grouping": "name"
+												},
+												"profile": "Current Semester",
+												"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Empty Teams.  Empty Teams have no members (all teams have at least one owner).\n$emptySection = @()\nForeach ($Team in $Teams.rows)\n{\n    Try \n    {\n        if ((get-TeamUser -GroupId $Team.TeamGroupID -role Owner).count -lt 2)\n    \t{\n        \t$unownedTeamCount++\n        \t$teamsUnowned += $Team.TeamGroupID\n    \t}\n    \telse \n    \t{\n        \t$TeamsOwned++    \n    \t}\n    }\n    catch\n    {<#this is here because deleted teams cause errors. We don't really care but need no errors to show the data#>}\n}\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Owned\";value=$TeamsOwned}\n$donut += New-Object -TypeName psobject -Property @{name=\"Unowned\";value=$($unownedTeamCount)}\n\n$donut",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "value",
+															"grouping": "name"
+														},
+														"profile": "Current Semester",
+														"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Empty Teams.  Empty Teams have no members (all teams have at least one owner).\n$emptySection = @()\nForeach ($Team in $Teams.rows)\n{\n    Try \n    {\n        if ((get-TeamUser -GroupId $Team.TeamGroupID -role Owner).count -lt 2)\n    \t{\n        \t$unownedTeamCount++\n        \t$teamsUnowned += $Team.TeamGroupID\n    \t}\n    \telse \n    \t{\n        \t$TeamsOwned++    \n    \t}\n    }\n    catch\n    {<#this is here because deleted teams cause errors. We don't really care but need no errors to show the data#>}\n}\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Owned\";value=$TeamsOwned}\n$donut += New-Object -TypeName psobject -Property @{name=\"Unowned\";value=$($unownedTeamCount)}\n\n$donut",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "9ab94c782250f668101c1197e8037b0e0788a39445e40c68c143e1840efa23b7381a3b101418b23e6750879f5736d64c+1625582812380"
+												}
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 1,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 2
+											}
+										},
+										"title": "Unowned Team Status",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 45.497
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-donut",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "value",
+													"grouping": "name"
+												},
+												"profile": "Current Semester",
+												"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n#Setup Variables Needed\n$emptySection = @()\n\nForeach ($Team in $Teams.rows)\n{\n    try\n    {\n        if ((get-TeamUser -GroupId $Team.TeamgroupID -role member).count -eq 0)\n        {\n            $EmptyTeamCount++\n            $EmptySection += $Team.TeamgroupID\n        }\n        else\n        {\n            $NotEmptyTeamCount++\n        }\n    }\n    catch \n    {<# Prevent errors from showing up in output from deleted teams #>}\n}\n\n#Convert Empty Teams to Empty Sections\nforeach ($team in $EmptySection)\n{\n    $queryEmptySections = \"SELECT ID FROM TeamsTable WHERE TeamGroupID = '$Team'\"\n    $EmptySectionCount += (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryEmptySections).tables[0].rows.count\n}\n\n$queryFullSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n[int]$NonEmptySectionCount = [int]$((Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryFullSections).tables[0].rows[0]).column1 - $emptySectionCount\n\n\n$donut = @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Not Empty\";value=$nonEmptySectionCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Empty\";value=$($EmptySection.count)}\n$donut",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "value",
+															"grouping": "name"
+														},
+														"profile": "Current Semester",
+														"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n#Setup Variables Needed\n$emptySection = @()\n\nForeach ($Team in $Teams.rows)\n{\n    try\n    {\n        if ((get-TeamUser -GroupId $Team.TeamgroupID -role member).count -eq 0)\n        {\n            $EmptyTeamCount++\n            $EmptySection += $Team.TeamgroupID\n        }\n        else\n        {\n            $NotEmptyTeamCount++\n        }\n    }\n    catch \n    {<# Prevent errors from showing up in output from deleted teams #>}\n}\n\n#Convert Empty Teams to Empty Sections\nforeach ($team in $EmptySection)\n{\n    $queryEmptySections = \"SELECT ID FROM TeamsTable WHERE TeamGroupID = '$Team'\"\n    $EmptySectionCount += (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryEmptySections).tables[0].rows.count\n}\n\n$queryFullSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n[int]$NonEmptySectionCount = [int]$((Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryFullSections).tables[0].rows[0]).column1 - $emptySectionCount\n\n\n$donut = @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Not Empty\";value=$nonEmptySectionCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Empty\";value=$($EmptySection.count)}\n$donut",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "ba36575d54ca9200623280938efe974151a6b8465a81c5f921d519b7804da5e8a4afb1f968dd2bf8d59d53066d7a5f5a+1625582812380"
+												}
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 1,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 2
+											}
+										},
+										"title": "Empty Sections",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-donut",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "value",
+													"grouping": "name"
+												},
+												"profile": "Current Semester",
+												"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Unowned Teams.   Unowned Teams are defined as having less than 2 owners. Every team has the \"service account\" as an owner, but needs at least one more person.\n$teamsUnowned = @()\n$queryFullSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\nforeach ($team in $teams.rows)\n{\n    try\n    {\n    \tif ((get-TeamUser -GroupId $Team.TeamGroupID -role Owner).count -lt 2)\n    \t{\n        \t$unownedTeamCount++\n        \t$teamsUnowned += $Team.TeamGroupID\n    \t}\n    \telse \n    \t{\n        \t$TeamsOwned++    \n    \t}\n    }\n    catch\n    { <# Prevent errors from showing up in the output for deleted teams #>}\n}\n#endregion\n\n#region unowned sections\nif ($unownedTeamCount -eq 0)\n{\n    $UnownedSectionCount = 0\n    \n}\nforeach ($team in $teamsUnowned)\n{\n    $querySections = \"SELECT ID FROM TeamsTable WHERE TeamGroupID = '$Team'\"\n    $UnownedSectionCount += (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $querySections).tables[0].rows.count\n}\n$queryOnwedSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n[int]$OwnedSectionCount = [int]$((Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryFullSections).tables[0].rows[0]).column1 - $UnownedSectionCount\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Owned\";value=$ownedSectionCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Unowned\";value=$($UnownedSectionCount)}\n\n$donut",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "value",
+															"grouping": "name"
+														},
+														"profile": "Current Semester",
+														"script": "#$Credential, $ConnectionString, and $SemesterCode are from the profile.\n\n#Setup the connection to Microsoft.\nConnect-MicrosoftTeams -Credential $credential | out-null\n\n#get teams from Database for the selected Semester.\n$QueryTeams = \"SELECT DISTINCT TeamgroupID FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryTeams).tables[0]\n\n\n#Find Unowned Teams.   Unowned Teams are defined as having less than 2 owners. Every team has the \"service account\" as an owner, but needs at least one more person.\n$teamsUnowned = @()\n$queryFullSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\nforeach ($team in $teams.rows)\n{\n    try\n    {\n    \tif ((get-TeamUser -GroupId $Team.TeamGroupID -role Owner).count -lt 2)\n    \t{\n        \t$unownedTeamCount++\n        \t$teamsUnowned += $Team.TeamGroupID\n    \t}\n    \telse \n    \t{\n        \t$TeamsOwned++    \n    \t}\n    }\n    catch\n    { <# Prevent errors from showing up in the output for deleted teams #>}\n}\n#endregion\n\n#region unowned sections\nif ($unownedTeamCount -eq 0)\n{\n    $UnownedSectionCount = 0\n    \n}\nforeach ($team in $teamsUnowned)\n{\n    $querySections = \"SELECT ID FROM TeamsTable WHERE TeamGroupID = '$Team'\"\n    $UnownedSectionCount += (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $querySections).tables[0].rows.count\n}\n$queryOnwedSections = \"SELECT COUNT (ID) FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n[int]$OwnedSectionCount = [int]$((Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $queryFullSections).tables[0].rows[0]).column1 - $UnownedSectionCount\n\n#format and return the object, plus cleanup connection\nDisconnect-MicrosoftTeams -Confirm:$false\n$Donut= @()\n$donut += New-Object -TypeName psobject -Property @{name=\"Owned\";value=$ownedSectionCount}\n$donut += New-Object -TypeName psobject -Property @{name=\"Unowned\";value=$($UnownedSectionCount)}\n\n$donut",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "8ac33a8e6846e4c63433e48703e2bca436f1c89e63fe65d6bb379c26a94af899f2b52642d32aee36112bf9b69941fc70+1625582812380"
+												}
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 1,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 2
+											}
+										},
+										"title": "Unowned Sections",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 54.503
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "Current Semester",
+												"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#Connect to ExchangeOnlineManagement to access the data needed.\nimport-module ExchangeOnlineManagement\nConnect-ExchangeOnline -Credential $credential\n\n#determine the teams for the current semester, along with the current day, and instantiate the return object\n$QueryToGetTeams = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryToGetTeams).tables[0]\n$sblock = @()\n$today = get-date\n\n#step through the teams, and determine how close the expiration time is, and add the team with the correct status to the return object\nForeach ($Team in $teams)\n{\n    try\n    {\n        $date = (Get-UnifiedGroup $($Team.TeamgroupID) -ErrorAction silentlycontinue).ExpirationTime\n        \n        if ($today.adddays(30) -le $Date)\n        {\n            $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"healthy\"}\n        } \n        elseif ($Today.adddays(30) -gt $date -and $today.adddays(15) -le $date)\n        {\n            $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"warning\"}\n        }\n        else\n        {\n        $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"critical\"}\n        }\n    }\n    catch\n    { <# Prevent errors from showing up from deleted teams #> }\n\n}\n\n#cleanup and return object.\nDisconnect-ExchangeOnline -confirm:$false\n$sblock",
+												"runAsIdentity": "Default",
+												"scriptIntervalSecs": 596,
+												"scriptTimeoutSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "Current Semester",
+														"script": "#$SemsterCode and $Credential are from the Powershell Profile.\n\n#Connect to ExchangeOnlineManagement to access the data needed.\nimport-module ExchangeOnlineManagement\nConnect-ExchangeOnline -Credential $credential\n\n#determine the teams for the current semester, along with the current day, and instantiate the return object\n$QueryToGetTeams = \"SELECT * FROM TeamsTable WHERE Semester = '$SemesterCode'\"\n$Teams = (Invoke-CoSDBMSSQLSelectQuery -ConnectionString $connectionString -Query $QueryToGetTeams).tables[0]\n$sblock = @()\n$today = get-date\n\n#step through the teams, and determine how close the expiration time is, and add the team with the correct status to the return object\nForeach ($Team in $teams)\n{\n    try\n    {\n        $date = (Get-UnifiedGroup $($Team.TeamgroupID) -ErrorAction silentlycontinue).ExpirationTime\n        \n        if ($today.adddays(30) -le $Date)\n        {\n            $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"healthy\"}\n        } \n        elseif ($Today.adddays(30) -gt $date -and $today.adddays(15) -le $date)\n        {\n            $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"warning\"}\n        }\n        else\n        {\n        $sBlock += New-Object -TypeName psobject -Property @{name=$Team.teamDisplayName;value=$($Date.ToShortDateString()\n);state=\"critical\"}\n        }\n    }\n    catch\n    { <# Prevent errors from showing up from deleted teams #> }\n\n}\n\n#cleanup and return object.\nDisconnect-ExchangeOnline -confirm:$false\n$sblock",
+														"runAsIdentity": "Default",
+														"scriptIntervalSecs": 596,
+														"scriptTimeoutSecs": 296
+													},
+													"signature": "31702587fabe8df0d5425ed9dc08cd63575773bf8509a42d040bf1a7816bc226cc717cfc3313d0514bc0b5e37cfbab59+1625582812380"
+												}
+											},
+											"display": {
+												"label": "name",
+												"sublabel": "custom",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												},
+												"sublabelCustomLabel": "Expires on: {{properties.value}}",
+												"zoom": "column"
+											}
+										},
+										"description": "",
+										"title": "Team Expiration Status"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": true,
+		"contexts": []
+	}
+}
