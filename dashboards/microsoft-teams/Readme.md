@@ -8,6 +8,7 @@ Required Other PowerShell Modules:
 	Database interaction with your DBMS of choice.  I use CosDatabase, a legacy private module for database access in the College of Science.  You will need to update the database calls to use your module.
 
 Definitions:
+
 	Section - This is the "class" that a student signs up for - it meets at a specific time and place.
 	
 	Class - This is the Subject, such as Chem 101.  A student taking Chem 101 will have a lecture section and a lab section, and there will normally be more than one instance of each.
@@ -19,7 +20,9 @@ Definitions:
 	Lecture Teams Properly Configured - Due to the maturity level of some students, we must lock down who can send emails to lecture teams.  This test looks to ensure that those properties are not empty (empty means anyone can send for those properties)
 	
 Profile Specifics:
+
 	Variables used in the PowerShell Tiles from the profile:
+	
 		$ConnectionString - This is the connection string formatted for the DBMS and Module you use to connect to your DBMS
 	
 		$Credential - This is the System.Management.Automation.PSCredential object that contains the username and password used in Connect-MicrosoftTeams and Connect-ExchangeOnline (assuming they are the same. If not, you will need to provide both and update the PowerShell Tiles as needed).
