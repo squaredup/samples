@@ -31,3 +31,7 @@ Splunk - Grid,scom-splunk-table,generic-splunk-table,azure-resources-splunk-tabl
 Splunk - Line Graph,scom-splunk-linegraph,generic-splunk-linegraph,azure-resources-splunk-linegraph
 Splunk - Status Icons,scom-splunk-status,generic-splunk-status,azure-resources-splunk-status
 Splunk - Status Blocks,scom-splunk-status-block,generic-splunk-status-block,azure-resources-splunk-status-block
+Splunk - Donut,scom-splunk-donut,generic-splunk-donut,azure-resources-splunk-donut
+Splunk - Bargraph,scom-splunk-bargraph,generic-splunk-bargraph,azure-resources-splunk-bargraph
+Splunk - Scalar,scom-splunk-scalar,generic-splunk-scalar,azure-resources-splunk-scalar
+Splunk - Sparklines,scom-splunk-sparklines,generic-splunk-sparklines,azure-resources-splunk-sparklines
