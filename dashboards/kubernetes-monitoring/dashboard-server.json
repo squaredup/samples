@@ -51,8 +51,7 @@
 												"showHeaders": true,
 												"columnOverrides": {
 													"alpha_eksctl_io_cluster_name": {
-														"displayName": "Cluster",
-														"template": "EKS-app-cluster"
+														"displayName": "Cluster"
 													},
 													"alpha_eksctl_io_nodegroup_name": {
 														"displayName": "Node Group"
