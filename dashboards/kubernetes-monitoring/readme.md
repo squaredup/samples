@@ -1,6 +1,6 @@
 # Kubernetes Monitoring Dashboard (with Prometheus)
 
-This dashboard visualizes the performance of a Kubernetes cluster by getting metrics from Prometheus using PromQL in the WebAPI and PowerShell tiles. 
+This dashboard visualizes the performance of a Kubernetes cluster by getting metrics from [Prometheus](https://prometheus.io/) using PromQL in the SquaredUp WebAPI and PowerShell tiles. 
 
 - Cluster information displayed in a table
 - Network traffic sent and received for the cluster
@@ -12,7 +12,7 @@ The tiles on this dashboard automatically adjust the queries to Prometheus based
 ## How to use this dashboard
 
 ### Prerequisities
-* A running Kubernetes cluster (this dashboard was tested with an AWS EKS deployment)
+* A running Kubernetes cluster (this dashboard was tested with an [AWS EKS](https://aws.amazon.com/eks) deployment)
 * Prometheus is deployed and collecting metrics for the cluster
 * Prometheus API end point is externally accessible
 * **SquaredUp minimum version 5.2** --> [Download](https://download.squaredup.com/)
@@ -20,7 +20,7 @@ The tiles on this dashboard automatically adjust the queries to Prometheus based
 ### Setup the Web API integration
 - Navigate to System > Integrations
 - Create new Web API integration called "Prometheus"
-- Enter base url for your Prometheus instance API endpoint: i.e. https://<your-prometheus-url/api/v1/
+- Enter base url for your Prometheus instance API endpoint: i.e. `https://<your-prometheus-url/api/v1/`
 - Save with appropriate authentication details
 
 ### Setup the PowerShell Profile
