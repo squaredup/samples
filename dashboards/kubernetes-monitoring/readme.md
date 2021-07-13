@@ -7,7 +7,7 @@ This dashboard visualizes the performance of a Kubernetes cluster by getting met
 - CPU, memory and disk utilization for the cluster
 - CPU, memory and disk used by each node in the cluster
 
-The tiles on this dashboard automatically adjust the queries to Prometheus based of the page time frame being selected. The Rate and Step variables are handled in the [PowerShell Profile script](https://github.com/squaredup/samples/blob/Kubernetes-Dashboard/dashboards/kubernetes-monitoring/prometheus-profile.ps1) and can be amended to suit your use case.
+The tiles on this dashboard automatically adjust the queries to Prometheus based of the page time frame being selected. The Rate and Step variables are handled in the [PowerShell Profile script](https://github.com/squaredup/samples/blob/master/dashboards/kubernetes-monitoring/prometheus-profile.ps1) and can be amended to suit your use case.
 
 ## How to use this dashboard
 
@@ -26,7 +26,7 @@ The tiles on this dashboard automatically adjust the queries to Prometheus based
 ### Setup the PowerShell Profile
 - Navigate to System > PowerShell
 - Create new Profile called "Prometheus"
-- Copy and paste the sample profile script: [prometheus-profile.ps1](https://github.com/squaredup/samples/blob/Kubernetes-Dashboard/dashboards/kubernetes-monitoring/prometheus-profile.ps1) 
+- Copy and paste the sample profile script: [prometheus-profile.ps1](https://github.com/squaredup/samples/blob/master/dashboards/kubernetes-monitoring/prometheus-profile.ps1) 
 
 ```
 # Set the end point of the Prometheus API endpoint
@@ -59,4 +59,4 @@ $start = Get-Date -Date ((Get-Date).AddHours($timeago)) -UFormat %s
 - Click **Publish** and you're done!
 
 ## Screenshot
-![Kubernetes Monitoring](https://github.com/squaredup/samples/blob/Kubernetes-Dashboard/dashboards/kubernetes-monitoring/images/Kubernetes%20Monitoring.png)
+![Kubernetes Monitoring](https://github.com/squaredup/samples/blob/master/dashboards/kubernetes-monitoring/images/Kubernetes%20Monitoring.png)
