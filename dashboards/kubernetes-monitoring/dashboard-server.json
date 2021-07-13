@@ -1,0 +1,990 @@
+{
+	"id": "7bead766-d96d-4557-9057-c6a3ca1058c1",
+	"type": "page/dashboard",
+	"title": "Kubernetes Monitoring",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/generic-webapi-table",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "Prometheus",
+												"url": "query",
+												"data": [
+													{
+														"key": "query",
+														"value": "up"
+													}
+												],
+												"keypath": "data.result.0.metric",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "Prometheus",
+														"url": "query",
+														"data": [
+															{
+																"key": "query",
+																"value": "up"
+															}
+														],
+														"keypath": "data.result.0.metric"
+													},
+													"signature": "2ebfcf6843e6da3581b7306595f53d5f23d7e6021346d4d04d8fec4df0a9e2b55fb7ba7798eadffc03d9e6f64737a3a1+1626170332245"
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"alpha_eksctl_io_cluster_name": {
+														"displayName": "Cluster"
+													},
+													"alpha_eksctl_io_nodegroup_name": {
+														"displayName": "Node Group"
+													},
+													"beta_kubernetes_io_arch": {
+														"displayName": "Arch"
+													},
+													"beta_kubernetes_io_instance_type": {
+														"displayName": "Type"
+													},
+													"beta_kubernetes_io_os": {
+														"displayName": "OS"
+													},
+													"eks_amazonaws_com_nodegroup_image": {
+														"displayName": "Image"
+													},
+													"failure_domain_beta_kubernetes_io_region": {
+														"displayName": "Region"
+													},
+													"failure_domain_beta_kubernetes_io_zone": {
+														"displayName": "Zone"
+													},
+													"instance": {
+														"displayName": "Instance"
+													},
+													"kubernetes_io_hostname": {
+														"displayName": "Host Name"
+													},
+													"eks_amazonaws_com_capacityType": {
+														"displayName": "Type"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"alpha_eksctl_io_cluster_name",
+													"alpha_eksctl_io_nodegroup_name",
+													"beta_kubernetes_io_arch",
+													"beta_kubernetes_io_instance_type",
+													"beta_kubernetes_io_os",
+													"eks_amazonaws_com_nodegroup_image",
+													"failure_domain_beta_kubernetes_io_region",
+													"failure_domain_beta_kubernetes_io_zone",
+													"kubernetes_io_hostname"
+												],
+												"autohide": false,
+												"rowLink": ""
+											}
+										},
+										"description": "",
+										"title": ""
+									},
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "label"
+												},
+												"split": false,
+												"dataType": "object",
+												"profile": "Prometheus",
+												"script": "# Prometheus query to retrieve network traffic received for the cluster\n$rxquery = 'sum (rate (container_network_receive_bytes_total{image!=\"\",name=~\"^k8s_.*\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) by (pod_name)'\n# Prometheus query to retrieve network traffic transmitted for the cluster\n$sndquery = '- sum (rate (container_network_transmit_bytes_total{image!=\"\",name=~\"^k8s_.*\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) by (pod_name)'\n\n$rxBody = @{\n    query = $rxquery\n    start = $start\n    end = $end\n    step = $step\n}\n$sndBody = @{\n    query = $sndquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$rxresponse = Invoke-RestMethod -Uri $uri -Body $rxBody\n$sndresponse = Invoke-RestMethod -Uri $uri -Body $sndBody\n\n$rxresponse = $rxresponse.data.result[0].values\n$rxresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = {(Get-Date 01.01.1970).AddSeconds($_[0]) }\n    \t},\n        @{\n            Name = \"label\";\n            Expression = { 'Received' }\n    \t}\n\n$sndresponse = $sndresponse.data.result[0].values\n#Must contain columns named value and timestamp in the right format.\n\n$sndresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n    \t},\n     @{\n            Name = \"label\";\n            Expression = { 'Transmited' }\n    \t}",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": "label"
+														},
+														"split": false,
+														"dataType": "object",
+														"profile": "Prometheus",
+														"script": "# Prometheus query to retrieve network traffic received for the cluster\n$rxquery = 'sum (rate (container_network_receive_bytes_total{image!=\"\",name=~\"^k8s_.*\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) by (pod_name)'\n# Prometheus query to retrieve network traffic transmitted for the cluster\n$sndquery = '- sum (rate (container_network_transmit_bytes_total{image!=\"\",name=~\"^k8s_.*\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) by (pod_name)'\n\n$rxBody = @{\n    query = $rxquery\n    start = $start\n    end = $end\n    step = $step\n}\n$sndBody = @{\n    query = $sndquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$rxresponse = Invoke-RestMethod -Uri $uri -Body $rxBody\n$sndresponse = Invoke-RestMethod -Uri $uri -Body $sndBody\n\n$rxresponse = $rxresponse.data.result[0].values\n$rxresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = {(Get-Date 01.01.1970).AddSeconds($_[0]) }\n    \t},\n        @{\n            Name = \"label\";\n            Expression = { 'Received' }\n    \t}\n\n$sndresponse = $sndresponse.data.result[0].values\n#Must contain columns named value and timestamp in the right format.\n\n$sndresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n    \t},\n     @{\n            Name = \"label\";\n            Expression = { 'Transmited' }\n    \t}",
+														"runAsIdentity": "Default"
+													},
+													"signature": "a3e385b96829181063cfecfc2f569d627810632cfdb7dcc6df7caedc594784f58d55ac40123c44a3d038f030b9b882d9+1626170332245"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 150,
+												"label": "auto",
+												"showKey": true,
+												"rangemin": -3500000,
+												"rangemax": 3500000
+											}
+										},
+										"description": "",
+										"title": "Network Traffic"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 32.857,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-status-block",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve memory used percent for the cluster\n\n$usedquery = 'sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}) / sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"}) * 100'\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve memory used percent for the cluster\n\n$usedquery = 'sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}) / sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"}) * 100'\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "f808d6050ac48b5c6d82a5bcc48850b124363d83d843a24449c94b407fae2f9d0ed1f53899d1e62c9dc0273fe37687f9+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"columns": 1,
+																		"height": 10,
+																		"fontsize": 30,
+																		"sublabel": "custom",
+																		"drilldownTemplate": "",
+																		"customLabel": "<center>{{properties.value}}%</center>",
+																		"sublabelCustomLabel": "<center>memory  used</center>"
+																	}
+																},
+																"title": "",
+																"description": ""
+															}
+														]
+													}
+												],
+												"width": 49.435
+											},
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-donut",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve memory available for the cluster\n$totalquery = 'sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"})'\n# Prometheus query to retrieve memory used for the cluster\n$usedquery = 'sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"})'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { [math]::Round((($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1])/1024/1024/1024),2) }\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'unused GiB' }\n    \t}\n        \n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { [math]::Round(($usedresponse.data.result.values[0][1]/1024/1024/1024),2) }\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'used GiB' }\n    \t}",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve memory available for the cluster\n$totalquery = 'sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"})'\n# Prometheus query to retrieve memory used for the cluster\n$usedquery = 'sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"})'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { [math]::Round((($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1])/1024/1024/1024),2) }\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'unused GiB' }\n    \t}\n        \n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { [math]::Round(($usedresponse.data.result.values[0][1]/1024/1024/1024),2) }\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'used GiB' }\n    \t}",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "47d83b379442729a344563a6897b1835e91a780de751539be60ea699c7d7a3edffb487ec6e7bc441722913ce92d7479e+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "fill",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 2
+																	}
+																},
+																"title": "Memory",
+																"description": ""
+															}
+														]
+													}
+												],
+												"width": 50.565
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-status-block",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve CPU used as a percentage for the cluster\n\n$usedquery = 'sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) / sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"}) * 100'\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve CPU used as a percentage for the cluster\n\n$usedquery = 'sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}['+$rate+'])) / sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"}) * 100'\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "65d10e4cada2336d63be82f722637e38b03047fa60385b1f734b622186bc120171550f72f1f82042d89fc7e19112622d+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"columns": 1,
+																		"height": 10,
+																		"fontsize": 30,
+																		"sublabel": "custom",
+																		"customLabel": "<center>{{properties.name}}</center>",
+																		"sublabelCustomLabel": "<center>CPU used</center>"
+																	}
+																},
+																"title": "",
+																"description": ""
+															}
+														]
+													}
+												],
+												"width": 49.436
+											},
+											{
+												"width": 50.564,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-donut",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve CPU cores available for the cluster\n\n$totalquery = 'sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"})'\n\n# Prometheus query to retrieve CPU cores used for the cluster\n$usedquery = 'sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}[2m]))'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round(($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1]),2)}\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'cores unused' }\n    \t}\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round($usedresponse.data.result.values[0][1],2)}\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'cores used' }\n    \t}\n",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve CPU cores available for the cluster\n\n$totalquery = 'sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"})'\n\n# Prometheus query to retrieve CPU cores used for the cluster\n$usedquery = 'sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}[2m]))'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round(($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1]),2)}\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'cores unused' }\n    \t}\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round($usedresponse.data.result.values[0][1],2)}\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'cores used' }\n    \t}\n",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "05f95670ab40894ba9e0827c7de408a514408d19be8cacbc0d4a3954715e59dc75cfdaa99ad87137ca0fe57773cf801b+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "fill",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 2
+																	}
+																},
+																"description": "",
+																"title": "CPU"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						],
+						"width": 32.963
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-status-block",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve CPU used as a percentage for a cluster\n\n$usedquery = 'sum (container_fs_usage_bytes{id=\"/\"}) / sum (container_fs_limit_bytes{id=\"/\"}) * 100'\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve CPU used as a percentage for a cluster\n\n$usedquery = 'sum (container_fs_usage_bytes{id=\"/\"}) / sum (container_fs_limit_bytes{id=\"/\"}) * 100'\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n\n$Usedvalue = [math]::Round(([Decimal]::Parse($usedresponse.data.result.values[0][1])),2)\n\nif($Usedvalue -le '75'){\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Healthy' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    elseif (($Usedvalue -gt '75') -and ($Usedvalue -le '90') ) {\n    \n    $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Warning' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n    }\n    else {\n\n        $usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = { $Usedvalue }\n        },\n     @{\n            Name = \"state\";\n            Expression = { 'Critical' }\n    \t},\n      @{\n            Name = \"name\";\n            Expression = { \"$Usedvalue\" + \"%\" }\n    \t}\n\n    }",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "e90ff895f8b47480222cea3aa71940d4cf2af4836c5f8e34438b4272ce53d3327b361ff128376f91315913bd47e55ad9+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"columns": 1,
+																		"height": 10,
+																		"fontsize": 30,
+																		"sublabel": "custom",
+																		"customLabel": "<center>{{properties.name}}</center>",
+																		"sublabelCustomLabel": "<center>disk used</center>"
+																	}
+																},
+																"title": "",
+																"description": ""
+															}
+														]
+													}
+												],
+												"width": 49.534
+											},
+											{
+												"width": 50.466,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-donut",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"profile": "Prometheus",
+																		"script": "# Prometheus query to retrieve total disk size for the cluster\n$totalquery = 'sum (container_fs_limit_bytes{id=\"/\"})'\n\n# Prometheus query to retrieve used disk for the cluster\n$usedquery = 'sum (container_fs_usage_bytes{id=\"/\"})'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round((($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1])/1024/1024/1024),2)}\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'unused GiB' }\n    \t}\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round(($usedresponse.data.result.values[0][1]/1024/1024/1024),2)}\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'used GiB' }\n    \t}\n",
+																		"runAsIdentity": "Default",
+																		"scriptIntervalSecs": 176,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"profile": "Prometheus",
+																				"script": "# Prometheus query to retrieve total disk size for the cluster\n$totalquery = 'sum (container_fs_limit_bytes{id=\"/\"})'\n\n# Prometheus query to retrieve used disk for the cluster\n$usedquery = 'sum (container_fs_usage_bytes{id=\"/\"})'\n\n\n$totalBody = @{\n    query = $totalquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n\n$usedBody = @{\n    query = $usedquery\n    start = $start\n    end = $end\n    step = $step\n}\n\n$usedresponse = Invoke-RestMethod -Uri $uri -Body $usedBody\n$totalresponse = Invoke-RestMethod -Uri $uri -Body $totalBody\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round((($totalresponse.data.result.values[0][1]-$usedresponse.data.result.values[0][1])/1024/1024/1024),2)}\n        },\n     @{\n            Name = \"label\";\n            Expression = { 'unused GiB' }\n    \t}\n\n$usedresponse  | Select-Object @{\n            Name = \"value\";\n            Expression = {[math]::Round(($usedresponse.data.result.values[0][1]/1024/1024/1024),2)}\n        },\n        @{\n            Name = \"label\";\n            Expression = { 'used GiB' }\n    \t}\n",
+																				"runAsIdentity": "Default",
+																				"scriptIntervalSecs": 176
+																			},
+																			"signature": "18ef0d272c34f9626b2ed416c7f28a6acf60e7a465759781362ddef2745ac31a5963394d3aee5c1baff675dcf8fc9f6f+1626170332245"
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "fill",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 2
+																	}
+																},
+																"description": "",
+																"title": "Disk"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						],
+						"width": 34.18
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 32.857,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/generic-webapi-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{.[1]}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{.[0]*1000}}"
+												},
+												"topn": 0,
+												"provider": "Prometheus",
+												"url": "query_range",
+												"data": [
+													{
+														"key": "query",
+														"value": "sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}) / sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"}) * 100"
+													},
+													{
+														"key": "start",
+														"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+													},
+													{
+														"key": "end",
+														"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+													},
+													{
+														"key": "step",
+														"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+													}
+												],
+												"keypath": "data.result[0].values",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{.[1]}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{.[0]*1000}}"
+														},
+														"topn": 0,
+														"provider": "Prometheus",
+														"url": "query_range",
+														"data": [
+															{
+																"key": "query",
+																"value": "sum (container_memory_working_set_bytes{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}) / sum (machine_memory_bytes{kubernetes_io_hostname=~\"^.*$\"}) * 100"
+															},
+															{
+																"key": "start",
+																"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+															},
+															{
+																"key": "end",
+																"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+															},
+															{
+																"key": "step",
+																"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+															}
+														],
+														"keypath": "data.result[0].values"
+													},
+													"signature": "22f7dac2fc0103cc13495c3dd704b2b098955ae84d4150e0f016720b77f752bfbad085a7a3d11c4cf179cc126721981b+1626170332245"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "custom",
+												"showKey": false,
+												"customLabel": "%"
+											}
+										},
+										"description": "% utilized",
+										"title": "Cluster Memory"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/generic-webapi-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{.[1]}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{.[0]*1000}}"
+												},
+												"topn": 0,
+												"provider": "Prometheus",
+												"url": "query_range",
+												"data": [
+													{
+														"key": "query",
+														"value": "sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}[{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? '2m' : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? '30m' : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? '1h' : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? '6h' : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? '1d' : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? '1d' : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? '7d' : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? '7d' : '7d' }}])) / sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"}) * 100"
+													},
+													{
+														"key": "start",
+														"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+													},
+													{
+														"key": "end",
+														"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+													},
+													{
+														"key": "step",
+														"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+													}
+												],
+												"keypath": "data.result[0].values",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{.[1]}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{.[0]*1000}}"
+														},
+														"topn": 0,
+														"provider": "Prometheus",
+														"url": "query_range",
+														"data": [
+															{
+																"key": "query",
+																"value": "sum (rate (container_cpu_usage_seconds_total{id=\"/\",kubernetes_io_hostname=~\"^.*$\"}[{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? '2m' : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? '30m' : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? '1h' : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? '6h' : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? '1d' : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? '1d' : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? '7d' : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? '7d' : '7d' }}])) / sum (machine_cpu_cores{kubernetes_io_hostname=~\"^.*$\"}) * 100"
+															},
+															{
+																"key": "start",
+																"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+															},
+															{
+																"key": "end",
+																"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+															},
+															{
+																"key": "step",
+																"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+															}
+														],
+														"keypath": "data.result[0].values"
+													},
+													"signature": "515cb20f409a356b4937d0f9a511235ea902dbd6013746496a51ca1774873df8779743bd353118dc2eed65fdd9efdd69+1626170332250"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "custom",
+												"showKey": false,
+												"customLabel": "%"
+											}
+										},
+										"title": "Cluster CPU",
+										"description": "% utilized"
+									}
+								]
+							}
+						],
+						"width": 32.963
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/generic-webapi-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"columns": {
+													"isCategoryOptional": true,
+													"values": [
+														{
+															"key": "",
+															"value": "{{.[1]}}"
+														}
+													],
+													"category": "",
+													"timestamp": "{{.[0]*1000}}"
+												},
+												"topn": 0,
+												"provider": "Prometheus",
+												"url": "query_range",
+												"data": [
+													{
+														"key": "query",
+														"value": "sum (container_fs_usage_bytes{id=\"/\"}) / sum (container_fs_limit_bytes{id=\"/\"}) * 100"
+													},
+													{
+														"key": "start",
+														"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+													},
+													{
+														"key": "end",
+														"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+													},
+													{
+														"key": "step",
+														"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+													}
+												],
+												"keypath": "data.result[0].values",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "",
+																	"value": "{{.[1]}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{.[0]*1000}}"
+														},
+														"topn": 0,
+														"provider": "Prometheus",
+														"url": "query_range",
+														"data": [
+															{
+																"key": "query",
+																"value": "sum (container_fs_usage_bytes{id=\"/\"}) / sum (container_fs_limit_bytes{id=\"/\"}) * 100"
+															},
+															{
+																"key": "start",
+																"value": "{{Math.floor(timeframe.unixStart / 1000)}}"
+															},
+															{
+																"key": "end",
+																"value": "{{Math.floor(timeframe.unixEnd / 1000)}}"
+															},
+															{
+																"key": "step",
+																"value": "{{ (timeframe.unixEnd - timeframe.unixStart) <= 3600000 ? 15 : (timeframe.unixEnd - timeframe.unixStart) <= 43200000 ? 60 : (timeframe.unixEnd - timeframe.unixStart) <= 86400000 ? 120 : (timeframe.unixEnd - timeframe.unixStart) <= 604800000 ? 600 : (timeframe.unixEnd - timeframe.unixStart) <= 2592000000 ? 3600 : (timeframe.unixEnd - timeframe.unixStart) <= 7768800000 ? 7200 : (timeframe.unixEnd - timeframe.unixStart) <= 15703200000? 21600 : (timeframe.unixEnd - timeframe.unixStart) <= 31536000000 ? 43200 : 43200 }}"
+															}
+														],
+														"keypath": "data.result[0].values"
+													},
+													"signature": "7573b52082c1b7686430e1f22dad5a2365a4d19868792c5169517e0562349828554db9bca9c201a0b6904abb4b4dd11a+1626170332250"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "custom",
+												"showKey": false,
+												"customLabel": "%"
+											}
+										},
+										"title": "Cluster Disk",
+										"description": "% utilized"
+									}
+								]
+							}
+						],
+						"width": 34.18
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 32.857,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "label"
+												},
+												"split": false,
+												"dataType": "object",
+												"profile": "Prometheus",
+												"script": "# Prometheus query to retrive memory consumption for nodes in the cluster\n\n$query = '(node_memory_MemTotal_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"} - node_memory_MemAvailable_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) / node_memory_MemTotal_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"} * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": "label"
+														},
+														"split": false,
+														"dataType": "object",
+														"profile": "Prometheus",
+														"script": "# Prometheus query to retrive memory consumption for nodes in the cluster\n\n$query = '(node_memory_MemTotal_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"} - node_memory_MemAvailable_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) / node_memory_MemTotal_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"} * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+														"runAsIdentity": "Default"
+													},
+													"signature": "ad3ed81b3accf70dc4dde1eef23c1c04a6005c361d78e0ece2e7cd4183f6450e94f19121ca6330480976be0266eba091+1626170332250"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true
+											}
+										},
+										"title": "Node Memory",
+										"description": "% utilized"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "label"
+												},
+												"split": false,
+												"dataType": "object",
+												"profile": "Prometheus",
+												"script": "# Prometheus query to retrieve CPU metric for nodes in the cluster\n\n$query = '(1 - (sum(rate(node_cpu_seconds_total{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\", mode=\"idle\"}['+$rate+'])) by (instance) / sum(rate(node_cpu_seconds_total{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}['+$rate+'])) by (instance))) * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": "label"
+														},
+														"split": false,
+														"dataType": "object",
+														"profile": "Prometheus",
+														"script": "# Prometheus query to retrieve CPU metric for nodes in the cluster\n\n$query = '(1 - (sum(rate(node_cpu_seconds_total{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\", mode=\"idle\"}['+$rate+'])) by (instance) / sum(rate(node_cpu_seconds_total{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}['+$rate+'])) by (instance))) * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+														"runAsIdentity": "Default"
+													},
+													"signature": "f376e849879fe8214c0366971f69e726a1a10de4fb19dec31b20c0b0883375375d55b3c8eaedc7f367bf6ba9901d6402+1626170332250"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true
+											}
+										},
+										"title": "Node CPU",
+										"description": "% utilized"
+									}
+								]
+							}
+						],
+						"width": 32.963
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "label"
+												},
+												"split": false,
+												"dataType": "object",
+												"profile": "Prometheus",
+												"script": "# Prometheus query to retrieve disk usage for nodes in the cluster\n\n$query = '(sum (node_filesystem_size_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance) - sum (node_filesystem_free_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance)) / sum (node_filesystem_size_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance) * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": "label"
+														},
+														"split": false,
+														"dataType": "object",
+														"profile": "Prometheus",
+														"script": "# Prometheus query to retrieve disk usage for nodes in the cluster\n\n$query = '(sum (node_filesystem_size_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance) - sum (node_filesystem_free_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance)) / sum (node_filesystem_size_bytes{instance=~\"(192\\\\.168\\\\.13\\\\.119|192\\\\.168\\\\.35\\\\.94):9100\"}) by (instance) * 100'\n\n$Body = @{\n    query = $query\n    start = $start\n    end = $end\n    step = $step\n}\n\n$memresponse = Invoke-RestMethod -Uri $uri -Body $Body\n\nfor($i=0; $i -lt ($memresponse.data.result.values).count; $i++){\n$response = $memresponse.data.result[$i].values\n\n#Must contain columns named value and timestamp in the right format.\n$response  | Select-Object @{\n            Name = \"value\";\n            Expression = {[decimal]::Parse($_[1])}\n        },\n        @{\n            Name = \"timestamp\";\n            Expression = { (Get-Date 01.01.1970).AddSeconds($_[0]) }\n        },\n        @{\n            Name = \"label\";\n            Expression = {$memresponse.data.result[$i].metric.instance }\n    \t}\n\n}",
+														"runAsIdentity": "Default"
+													},
+													"signature": "fb7f45500ca1e91b470571661c8912ef7b36e7d8966c9f66aa07d1452d5aacacec591a47be60b0590d4439a4e1ae20d5+1626170332250"
+												}
+											},
+											"display": {
+												"range": "fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true
+											}
+										},
+										"title": "Node Disk",
+										"description": "% utilized"
+									}
+								]
+							}
+						],
+						"width": 34.18
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": false
+	}
+}
