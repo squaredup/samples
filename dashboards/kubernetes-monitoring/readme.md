@@ -1,4 +1,4 @@
-# Kubernetes Monitoring (with Prometheus) Dashboard
+# Kubernetes Monitoring Dashboard (with Prometheus)
 
 This dashboard visualizes the performance of a Kubernetes cluster by getting metrics from Prometheus using PromQL in the WebAPI and PowerShell tiles. 
 
