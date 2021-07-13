@@ -58,5 +58,5 @@ $start = Get-Date -Date ((Get-Date).AddHours($timeago)) -UFormat %s
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
 - Click **Publish** and you're done!
 
-## Images
+## Screenshot
 ![Kubernetes Monitoring](https://github.com/squaredup/samples/blob/Kubernetes-Dashboard/dashboards/kubernetes-monitoring/images/Kubernetes%20Monitoring.png)
