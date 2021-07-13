@@ -2,12 +2,12 @@
 
 This dashboard visualizes the performance of a Kubernetes cluster by getting metrics from [Prometheus](https://prometheus.io/) using PromQL in the SquaredUp WebAPI and PowerShell tiles. 
 
-- Cluster information displayed in a table
+- Basic cluster information displayed in a grid
 - Network traffic sent and received for the cluster
 - CPU, memory and disk utilization for the cluster
 - CPU, memory and disk used by each node in the cluster
 
-The tiles on this dashboard automatically adjust the queries to Prometheus based of the page time frame being selected.
+The tiles on this dashboard automatically adjust the queries to Prometheus based of the page time frame being selected. The Rate and Step variables are handled in the [PowerShell Profile script](https://github.com/squaredup/samples/blob/Kubernetes-Dashboard/dashboards/kubernetes-monitoring/prometheus-profile.ps1) and can be amended to suit your use case.
 
 ## How to use this dashboard
 
