@@ -7,7 +7,7 @@ to configure the client you need to change the following variables
 
 | variable | Description |
 | ----------- | ----------- |
-| $myguid | Enter a random guid |
+| myguid | Enter a random guid |
 | HomeIP | enter your home ip |
 | WorkIP | enter your office ip |
 | Name | Name to show on the dashboard |
