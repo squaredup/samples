@@ -1,0 +1,102 @@
+{
+	"id": "35afca61-c4c4-401c-9749-aaf8d96108fd",
+	"type": "page/dashboard",
+	"title": "Team Status",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "",
+												"script": "$filelist = Get-Item C:\\data\\teamsdata\\Presence\\cs\\*.json\nforeach ($file in $filelist) {\nGet-Content $file|ConvertFrom-Json\n} ",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "",
+														"script": "$filelist = Get-Item C:\\data\\teamsdata\\Presence\\cs\\*.json\nforeach ($file in $filelist) {\nGet-Content $file|ConvertFrom-Json\n} ",
+														"runAsIdentity": "Default"
+													},
+													"signature": "3ec62fc4ac6a81e2d55243d992fb105ecfafff00100a7e1d6e26847cbda28248a47fecb5b2394fe4ac7c50abbbd0c248+1626259742627"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 5,
+												"height": 35,
+												"fontsize": 5,
+												"sublabel": "custom",
+												"drilldownTemplate": "",
+												"customLabel": "{{properties.name}} ({{properties.Teamsstatus}})",
+												"sublabelCustomLabel": "<img src=\"{{properties.ProfilePicture}}\" height=\"150\"/><br>location: {{properties.Clientlocation}}  "
+											}
+										},
+										"description": "",
+										"title": "Cloud services"
+									},
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "",
+												"script": "$filelist = Get-Item C:\\data\\teamsdata\\Presence\\dev\\*.json\nforeach ($file in $filelist) {\nGet-Content $file|ConvertFrom-Json\n}",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "",
+														"script": "$filelist = Get-Item C:\\data\\teamsdata\\Presence\\dev\\*.json\nforeach ($file in $filelist) {\nGet-Content $file|ConvertFrom-Json\n}",
+														"runAsIdentity": "Default"
+													},
+													"signature": "f9d4c27924eda68502919a36d3d87d577725a1b01b5093e26a8204749bc885a8d59a78e2e19ab253cfefc18b91b86775+1626259742627"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 5,
+												"height": 35,
+												"fontsize": 5,
+												"sublabel": "custom",
+												"drilldownTemplate": "",
+												"customLabel": "{{properties.name}} ({{properties.Teamsstatus}})",
+												"sublabelCustomLabel": "<img src=\"{{properties.ProfilePicture}}\" height=\"150\"/><br>location: {{properties.Clientlocation}}  "
+											}
+										},
+										"description": "",
+										"title": "Development services"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"actions": []
+}

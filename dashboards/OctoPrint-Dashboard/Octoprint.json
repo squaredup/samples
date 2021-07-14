@@ -1,0 +1,445 @@
+{
+	"id": "afb7a135-9977-4bd8-85fe-2f3de050f33f",
+	"type": "page/dashboard",
+	"title": "Prusa PS",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-scalar",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "scalar",
+												"profile": "PrusaPrinter",
+												"runAsIdentity": "Default",
+												"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n\n$request.state ",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "scalar",
+														"profile": "PrusaPrinter",
+														"runAsIdentity": "Default",
+														"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n\n$request.state "
+													},
+													"signature": "15d6a6a2b0a39d88d6a8ed1fd3de7f43a3b9c692b342a151ff21e830d349795575ea44107bd9ee7818c654cd15c22614+1626255705856"
+												}
+											},
+											"display": {
+												"fontsize": 90,
+												"coerceObject": true,
+												"unit": "",
+												"customTemplate": ""
+											}
+										},
+										"description": "",
+										"title": "Printer Status"
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 54.605,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n$filename = $request.job.file.name\nif(!$filename)\n{\n    \"No file loaded\"\n}\nif($filename)\n{\n    $filename\n} \n ",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n$filename = $request.job.file.name\nif(!$filename)\n{\n    \"No file loaded\"\n}\nif($filename)\n{\n    $filename\n} \n "
+																			},
+																			"signature": "2be2462cdbfb36a4e8974cdf6ca04de2f99f3711a4a2b2b5534da5e95b1dfaca4d8c4bdc17d2aed10a6de7cae619dc39+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "",
+																"title": "Printer Status"
+															},
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n\t\t$myObject = [PSCustomObject]@{\n  \t\tlabel = \"Print Completion\"\n\t\tvalue = $request.progress.completion*1000\n\t\t}\n\t $myobject        \n \n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n\t\t$myObject = [PSCustomObject]@{\n  \t\tlabel = \"Print Completion\"\n\t\tvalue = $request.progress.completion*1000\n\t\t}\n\t $myobject        \n \n"
+																			},
+																			"signature": "33627e4f954716f32eabfce3bb4ac8138de2ea9a731bc018dd212f8bc838b39aa96fa47d1a73ea95b9d8f1539bb92bbd+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"range": "custom",
+																		"label": "custom",
+																		"sort": null,
+																		"rangemin": 0,
+																		"rangemax": 100,
+																		"customLabel": "%",
+																		"multipleColours": false
+																	}
+																},
+																"description": "",
+																"title": "Completion"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 45.395,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n$ts = New-TimeSpan -Seconds ($request.job.estimatedPrintTime)\n('{0:00}:{1:00}:{2:00}' -f $ts.Hours,$ts.Minutes,$ts.Seconds).ToString() \n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n$ts = New-TimeSpan -Seconds ($request.job.estimatedPrintTime)\n('{0:00}:{1:00}:{2:00}' -f $ts.Hours,$ts.Minutes,$ts.Seconds).ToString() \n"
+																			},
+																			"signature": "8d5fec2948a2f0da71a482503dc79cb122f53d02535ac128560942752ba1f3ca7bfd9092e83272e350c40c2edb9b9d38+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "",
+																"title": "Estimated Total Print time"
+															},
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/job\"\n$ts = New-TimeSpan -Seconds $request.progress.printtimeleft \n('{0:00}:{1:00}:{2:00}' -f $ts.Hours,$ts.Minutes,$ts.Seconds).ToString() "
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true
+																	}
+																},
+																"description": "",
+																"title": "Estimated Print time left"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-linegraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"timestamp": null,
+																			"value": null,
+																			"grouping": null
+																		},
+																		"split": false,
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$tempHistory = $request.temperature.history|select-object -property @{ Name = 'bed';  Expression = {$_.bed.actual}}, @{ Name = 'time';  Expression = {(Get-Date 01.01.1970)+([System.TimeSpan]::fromseconds($_.time))}}\n$temphistory",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"timestamp": null,
+																					"value": null,
+																					"grouping": null
+																				},
+																				"split": false,
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$tempHistory = $request.temperature.history|select-object -property @{ Name = 'bed';  Expression = {$_.bed.actual}}, @{ Name = 'time';  Expression = {(Get-Date 01.01.1970)+([System.TimeSpan]::fromseconds($_.time))}}\n$temphistory"
+																			},
+																			"signature": "55cc120774caba94c04fe69b2c65dd7cdd71cfd5aecb40b26780f5377f03ad04d6f45896f82682db7a5d42ee3e62434d+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": true
+																	}
+																},
+																"description": "",
+																"title": "Bed Temperature"
+															},
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$request.temperature.bed.actual",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$request.temperature.bed.actual"
+																			},
+																			"signature": "e956de1e6c92f9ffb1cfe3ea1ab51c1d859665f951bad960441454c6065f2457925a40e48a94fa7acccc881bf8df0044+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "C",
+																		"customTemplate": ""
+																	}
+																},
+																"title": "Bed Temp",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-linegraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"timestamp": null,
+																			"value": null,
+																			"grouping": null
+																		},
+																		"split": false,
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$tempHistory = $request.temperature.history|select-object -property @{ Name = 'bed';  Expression = {$_.tool0.actual}}, @{ Name = 'time';  Expression = {(Get-Date 01.01.1970)+([System.TimeSpan]::fromseconds($_.time))}}\n$temphistory",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"timestamp": null,
+																					"value": null,
+																					"grouping": null
+																				},
+																				"split": false,
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer?history=true\"\n$tempHistory = $request.temperature.history|select-object -property @{ Name = 'bed';  Expression = {$_.tool0.actual}}, @{ Name = 'time';  Expression = {(Get-Date 01.01.1970)+([System.TimeSpan]::fromseconds($_.time))}}\n$temphistory"
+																			},
+																			"signature": "939bcb1e2d366765b9d6b03331688a63aae41ea92591a3f5997fc4cf80d57a46e66e586eeef3a6ec54ac71bf2ed764ef+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": true
+																	}
+																},
+																"description": "",
+																"title": "Tool Temperature"
+															},
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "PrusaPrinter",
+																		"runAsIdentity": "Default",
+																		"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer/tool\"\n$request.tool0.actual",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "PrusaPrinter",
+																				"runAsIdentity": "Default",
+																				"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/api/printer/tool\"\n$request.tool0.actual"
+																			},
+																			"signature": "4509a97738a0e18e382b95fa22c43040c1ed6aadf9bf39ffb9aaf0bc4593c3b8c3df0dd1964fcbde87d687d18bd7db0f+1626255705856"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "C",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "",
+																"title": "Tool Temp"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "PrusaPrinter",
+												"runAsIdentity": "Default",
+												"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/plugin/logging/logs\"\n$logfile = invoke-restmethod ($request.files[0].refs.download) -Headers $header\n$logfile.Split(\"`n\")|select -Last 25",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "PrusaPrinter",
+														"runAsIdentity": "Default",
+														"script": "$request = Invoke-RestMethod -Headers $header -Uri \"$baseurl/plugin/logging/logs\"\n$logfile = invoke-restmethod ($request.files[0].refs.download) -Headers $header\n$logfile.Split(\"`n\")|select -Last 25"
+													},
+													"signature": "97b9f5477804edaa7771bea61f21f5429e41113716e1c0d8211fc4b8a983f922cd418ee8c16c16e964dd2115abaaef94+1626255705856"
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {},
+												"customColumns": {},
+												"columns": [
+													""
+												],
+												"autohide": true,
+												"rowLink": "",
+												"openLinkInNewTab": true
+											}
+										},
+										"description": "",
+										"title": "Logfile Last 25 lines"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
