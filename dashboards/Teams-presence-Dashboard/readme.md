@@ -1,9 +1,10 @@
-# Introduction
-This dashboard is a proof of concept on how to create an overview over the office/home office location of your team, as well as give an overview on the teams status(available, offline, busy, presenting and so on).
+# Teams Presence Dashboard
+This dashboard is a proof of concept on how to create an overview over the office/home office location of your team, as well as give an overview on the teams status (available, offline, busy, presenting and so on).
 
-The dashboard reads from a json file for each person.
+The dashboard reads from a JSON file for each person.
+
 # Configure client
-to configure the client you need to change the following variables
+To configure the client you need to change the following variables:
 
 | variable | Description |
 | ----------- | ----------- |
@@ -16,7 +17,9 @@ to configure the client you need to change the following variables
 
 # Run client
 To update the json file, simply leave the client running, it will update teams status when the logfile changes
+
 # Steps to import dashboard
+
 ## Create dashboard
-To create the dashboard you need to create a new dashboard and copy the json code from the repo into the dashboard.
+To create the dashboard you need to create a new dashboard and copy the JSON code from [teams-dashboard.json](teams-dashboard.json) into the dashboard.
 ![editjson](editjson.png)
