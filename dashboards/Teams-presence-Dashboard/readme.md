@@ -3,7 +3,12 @@ This dashboard is a proof of concept on how to create an overview over the offic
 
 The dashboard reads from a JSON file for each person.
 
-# Configure client
+## How to use this dashboard
+
+### Client script
+The [GetTeamsStatus.ps1](GetTeamsStatus.ps1) PowerShell script will generate the JSON for the dashboard to run on the machine where Teams is running.
+
+#### Configure the script
 To configure the client you need to change the following variables:
 
 | variable | Description |
@@ -15,11 +20,12 @@ To configure the client you need to change the following variables:
 | ProfilePicture | web path to a profile picture(150x150) |
 | JsonPath | central path to store the json file in |
 
-# Run client
+#### Run client script
 To update the JSON file, simply leave the client running, it will update teams status when the logfile changes
 
-# Steps to import dashboard
+### Setup the dashboard
+- Copy JSON from [teams-dashboard.json](teams-dashboard.json) 
+- Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
+- Click **Publish** and you're done!
 
-## Create dashboard
-To create the dashboard you need to create a new dashboard and copy the JSON code from [teams-dashboard.json](teams-dashboard.json) into the dashboard.
 ![editjson](editjson.png)
