@@ -16,7 +16,7 @@ To configure the client you need to change the following variables:
 | JsonPath | central path to store the json file in |
 
 # Run client
-To update the json file, simply leave the client running, it will update teams status when the logfile changes
+To update the JSON file, simply leave the client running, it will update teams status when the logfile changes
 
 # Steps to import dashboard
 
