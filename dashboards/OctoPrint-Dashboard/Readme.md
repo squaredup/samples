@@ -1,19 +1,19 @@
-# Introduction
-This dashboard can pull information from the REST api in octoprint to show you printerstatus, progress and temperatureinformation on your printer.
-The dashboard utilizes powershell scripts to connect to the restapi and to do dataconversion on the temperaturedata.
+# OctoPrint Dashboard
+This dashboard pulls information from the REST API in OctoPrint to show you printer status, progress and temperature information on your printer.
+The dashboard utilizes PowerShell scripts to connect to the REST API and to do data conversion on the temperature data.
 
 ![dashboard](dashboard.png)
-# powershell Profile
-This dashboard uses the powershell profile to set up the url and apikey for your octoprint instance
+# PowerShell Profile
+This dashboard uses the PowerShell profile to set up the url and API Key for your OctoPrint instance.
 
 # Steps to import dashboard
 
-## Powershell profile
-Create a new profile with the following information
+## PowerShell profile
+Create a new profile with the following information:
 
 `$baseurl = "https://youroctorprinturl"`
 
-`$APIKEY = "youapikey"`
+`$APIKEY = "your-api-key"`
 
 `$header = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"`
 
@@ -23,20 +23,20 @@ Create a new profile with the following information
 
 
 ## Create dashboard
-To create the dashboard you need to create a new dashboard and copy the json code from the repo into the dashboard.
+To create the dashboard you need to create a new dashboard and copy the JSON code from [Octoprint.json](Octoprint.json) into the dashboard.
 ![editjson](editjson.png)
 
 ## Edit interval and timeout
-Remember to edit the interval to make sure you dont hammer the webservice on octoprint and ruin your print
+Remember to edit the interval to make sure you dont hammer the webservice on octoprint and ruin your print.
 
 
 ## Further documentation
 
-Follow this guide to find your API key for octoprint:
+Follow this guide to find your API key for OctoPrint:
 
-[How to find my octoprint api key](https://docs.octoprint.org/en/master/api/general.html#authorization)
+[How to find my OctoPrint api key](https://docs.octoprint.org/en/master/api/general.html#authorization)
 
-[Octoprint API Documentation](https://docs.octoprint.org/en/master/api/index.html)
+[OctoPrint API Documentation](https://docs.octoprint.org/en/master/api/index.html)
 
 
 
