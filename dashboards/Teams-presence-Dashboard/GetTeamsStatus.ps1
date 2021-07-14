@@ -1,4 +1,4 @@
-
+# Schedule this script to run on the Teams server machine
 $myguid = "Randomguid"
 $HomeIP = "myhomeip"
 $WorkIP = "myworkip" 
