@@ -24,6 +24,6 @@ This dashboard gives an overview of incidents and alerting from PagerDuty
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
 - Dashboard should display as shown below, with high level insight into the Incidents and Alerting from your PagerDuty instance
   
-![screenshot](dashboards/Pagerduty/Images/Pagerduty-Dark.png)
+![screenshot](https://github.com/squaredup/samples/blob/0c3976838e097a6c9adabbfa17b43f13b21434eb/dashboards/Pagerduty/Images/Pagerduty-Dark.png)
 
-![screenshot](dashboards/Pagerduty/Images/Pagerduty-Light.png)
+![screenshot](https://github.com/squaredup/samples/blob/0c3976838e097a6c9adabbfa17b43f13b21434eb/dashboards/Pagerduty/Images/Pagerduty-Light.png)
