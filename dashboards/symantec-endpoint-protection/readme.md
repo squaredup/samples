@@ -3,7 +3,7 @@
 Provides an overview about your Symantec Endpoint Protection client status.
 
 
-![Overview](https://raw.githubusercontent.com/Juanito99/AdminInfo_OpsMgr/master/PicturesForGitWebSite/Endpoint-Protection.png)
+![Overview](https://github.com/squaredup/samples/blob/master/dashboards/symantec-endpoint-protection/Endpoint-Protection.png?raw=true)
 
 
 All information is been queried directly from SEP' MSSQL database. The free PowerShell module DBATools sends the queries to the database and returns powershell objects. For better security a SQL user account was created which just has permissions to read the data in the database.
