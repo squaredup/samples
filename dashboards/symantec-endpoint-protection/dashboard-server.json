@@ -1,0 +1,492 @@
+{
+	"id": "998d7d92-30ea-4ab0-b536-3b8156c687d3",
+	"type": "page/dashboard",
+	"title": "Endpoint Protection",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 49.905,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 49.747,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-status",
+																						"config": {
+																							"context": {
+																								"sign": true
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"profile": "Run as SquaredUp app pool identity",
+																								"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-AvDevintions.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"profile": "Run as SquaredUp app pool identity",
+																										"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-AvDevintions.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot"
+																									},
+																									"signature": "0a48fd153fd04d842d17b2ffdcad95f547e83ab7142f41f3874271d407963169b9ab123257fcf8b988931e2ab02a2293+1625864355342"
+																								}
+																							},
+																							"display": {
+																								"label": "custom",
+																								"sublabel": "none",
+																								"customLabel": "{{properties.name}} : <b> {{properties.metric}}</b>",
+																								"sort": {
+																									"property": "healthState",
+																									"order": "asc"
+																								}
+																							}
+																						},
+																						"title": "AV Definitions",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 50.253,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-donut",
+																						"config": {
+																							"context": {
+																								"sign": true
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"columnOverrides": {
+																									"value": "Count",
+																									"grouping": "Name"
+																								},
+																								"profile": "Run as SquaredUp app pool identity",
+																								"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-Csv -Path \"C:\\temp\\SEP-SquaredUp-LastServerCheckin.csv\"\n$file  | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [String]\n                    Computer = \"Dummy\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"columnOverrides": {
+																											"value": "Count",
+																											"grouping": "Name"
+																										},
+																										"profile": "Run as SquaredUp app pool identity",
+																										"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-Csv -Path \"C:\\temp\\SEP-SquaredUp-LastServerCheckin.csv\"\n$file  | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [String]\n                    Computer = \"Dummy\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr"
+																									},
+																									"signature": "4afe83a07b91d138b3aa0503ac01cea15e0482e11754d80ca9606a3f30c5df62fd2d7a527c708c7cd552513698aeb4fb+1625864355389"
+																								}
+																							},
+																							"display": {
+																								"sizeMode": "default",
+																								"legendScale": 1,
+																								"showLegend": true,
+																								"legendPosition": "right",
+																								"palette": 4
+																							}
+																						},
+																						"description": "Top",
+																						"title": "Last  Server Checkin"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50.095,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-donut",
+																						"config": {
+																							"context": {
+																								"sign": true
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"columnOverrides": {
+																									"value": "Count",
+																									"grouping": "Name"
+																								},
+																								"profile": "Run as SquaredUp app pool identity",
+																								"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-LastFullScan.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"columnOverrides": {
+																											"value": "Count",
+																											"grouping": "Name"
+																										},
+																										"profile": "Run as SquaredUp app pool identity",
+																										"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-LastFullScan.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot"
+																									},
+																									"signature": "ed3a9b83e7246b07bdfb1ba552da60c3a484ec976380c2e74a214c6a33cb65a94c9e5f8bd3e9abfa5a203810361a67d1+1625864355389"
+																								}
+																							},
+																							"display": {
+																								"sizeMode": "default",
+																								"legendScale": 1,
+																								"showLegend": true,
+																								"legendPosition": "right",
+																								"palette": 1
+																							}
+																						},
+																						"description": "Top 3",
+																						"title": "Last Full Scan"
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-grid",
+																						"config": {
+																							"context": {
+																								"sign": true
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"profile": "Run as SquaredUp app pool identity",
+																								"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-AppVersions.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"profile": "Run as SquaredUp app pool identity",
+																										"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-AppVersions.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot"
+																									},
+																									"signature": "2c80c6cb16cfa8c47bf53c9bfcef8a68a1cdce73700eb371f1ee86c5e52f2459525b3c710dfeddc5087d3dab6759f796+1625864355389"
+																								}
+																							},
+																							"display": {
+																								"showHeaders": true,
+																								"columnOverrides": {
+																									"Count": {
+																										"displayName": "Number"
+																									},
+																									"Name": {
+																										"displayName": "Version"
+																									}
+																								},
+																								"customColumns": {},
+																								"columns": [
+																									"Count",
+																									"Name"
+																								],
+																								"autohide": true,
+																								"rowLink": ""
+																							}
+																						},
+																						"description": "",
+																						"title": "App Version"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 49.905,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"timestamp": "Name",
+																			"value": "Count",
+																			"grouping": "Computer"
+																		},
+																		"split": false,
+																		"dataType": "object",
+																		"profile": "Run as SquaredUp app pool identity",
+																		"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-CSV -LiteralPath \"C:\\temp\\SEP-SquaredUp-AlertHistory.csv\"\n$file | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [DateTime]\n                    Computer = \"Infections\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"timestamp": "Name",
+																					"value": "Count",
+																					"grouping": "Computer"
+																				},
+																				"split": false,
+																				"dataType": "object",
+																				"profile": "Run as SquaredUp app pool identity",
+																				"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-CSV -LiteralPath \"C:\\temp\\SEP-SquaredUp-AlertHistory.csv\"\n$file | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [DateTime]\n                    Computer = \"Infections\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr"
+																			},
+																			"signature": "bcb75098047b8ec6db9843c4938c3a2aaac3b18c3fda9195b244a92180334f703f1e0815df6ebfb73aae15f4ef911013+1625864355389"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": true,
+																		"customLabel": "{{#each values}}\n\t{{\n{{/each}}"
+																	}
+																},
+																"description": "",
+																"title": "Infections - Last 30 days"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50.095,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "Count",
+																			"grouping": "Name"
+																		},
+																		"resultsLimit": 100,
+																		"profile": "Run as SquaredUp app pool identity",
+																		"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-CSV -LiteralPath \"C:\\temp\\SEP-SquaredUp-AlertBySiteCode.csv\"\n$file | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [String]\n                    Computer = \"Dummy\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr | Sort-Object -Property Count -Descending | Select-Object -First 6",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "Count",
+																					"grouping": "Name"
+																				},
+																				"resultsLimit": 100,
+																				"profile": "Run as SquaredUp app pool identity",
+																				"script": "$rslArr = New-Object -TypeName System.Collections.ArrayList\n$file = Import-CSV -LiteralPath \"C:\\temp\\SEP-SquaredUp-AlertBySiteCode.csv\"\n$file | Where-Object {$_.Name } | ForEach-Object {              \n                $obj = [pscustomobject]@{\n                    Count = $_.Count -as [Int]\n                    Name = $_.Name -as [String]\n                    Computer = \"Dummy\" -as [String]\n                }\n                $null = $rslArr.Add($obj)\n            }\t\t\n $rslArr | Sort-Object -Property Count -Descending | Select-Object -First 6"
+																			},
+																			"signature": "2c78aacadd3bc4b730e9ea10c90a5373f045b32ebb19ae5d774cfd9464f36228db8d9335697b07bdb62db9cd183a4e99+1625864355389"
+																		}
+																	},
+																	"display": {
+																		"range": "percentage",
+																		"label": "auto",
+																		"multipleColours": true
+																	}
+																},
+																"description": "Top 6",
+																"title": "Infections by Site - Last 30 days"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "Count",
+																			"grouping": "Name"
+																		},
+																		"resultsLimit": 100,
+																		"profile": "Run as SquaredUp app pool identity",
+																		"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-MalWare-Top5.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "Count",
+																					"grouping": "Name"
+																				},
+																				"resultsLimit": 100,
+																				"profile": "Run as SquaredUp app pool identity",
+																				"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-MalWare-Top5.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot"
+																			},
+																			"signature": "6f4682519f07affa71eef8cdeb85e91253759dbe3938baa4ab18124bb3e0447a88153fbebc19d5888c4dccb1e15e8147+1625864355389"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"multipleColours": true
+																	}
+																},
+																"description": "Top 5",
+																"title": "Malware - Last 7 days"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "Count",
+																			"grouping": "Name"
+																		},
+																		"resultsLimit": 100,
+																		"profile": "Run as SquaredUp app pool identity",
+																		"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-MalWareComputer-Top5.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "Count",
+																					"grouping": "Name"
+																				},
+																				"resultsLimit": 100,
+																				"profile": "Run as SquaredUp app pool identity",
+																				"script": "$file = Get-Content -Path \"C:\\temp\\SEP-SquaredUp-MalWareComputer-Top5.json\"\n$file | ConvertFrom-Json | Select-Object -ExpandProperty SyncRoot"
+																			},
+																			"signature": "7975081346710724d1b60f320c973e9fcd661da6d236ad74d31ad518f4cbb53d12d9fd79398dc3c7165c5b1da88964f5+1625864355389"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"multipleColours": true
+																	}
+																},
+																"description": "Top 5",
+																"title": "Computer Infections - Last 7 days"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": true,
+		"contexts": []
+	}
+}
