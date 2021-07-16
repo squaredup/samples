@@ -64,5 +64,5 @@ switch ($timeFrame) {
 ###############################################################################
 # Some variables to resuse
 ###############################################################################
-$vm = "SYS-SCOM-MS02"
-$vmHost = Get-VMHost -Name "int-vhost-esx01.int.squaredup.com"
+$vm = "Insert the Name of a VM here"
+$vmHost = Get-VMHost -Name "FQDN of your vCenter Host"
