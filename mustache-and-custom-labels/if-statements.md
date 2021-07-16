@@ -1,7 +1,7 @@
 # If Statements
 ## Uses
 
-If statements can be used on returned values to adjust the way the data is displayed. For example, replacing the value ```healthy``` with a healthy status image (check mark), or changing the displayed values color to display a threshold that has been breached/
+If statements can be used on returned values to adjust the way the data is displayed. For example, replacing the value ```healthy``` with a healthy status image (check mark), or changing the displayed values color to display a threshold that has been breached.
 
 
 # Examples
