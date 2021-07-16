@@ -59,9 +59,9 @@ If you need more assistance, please check out this SquaredUp KB article:  [Manag
 
 ### Create the VMware Status Dashboard ###
 
-1. Copy the contents of the JSON *vmware-status.json* file from GitHub
+1. Copy the contents of the JSON *[vmware-status.json](vmware-status.json)* file from GitHub
 1. In SquaredUp, create a new dashboard.
-1. Open the JSON editor.
+1. Select the </> on the top right to open the JSON editor.
 1. Paste the contents of the copied file from GitHub into SquaredUp.
 1. Click *Apply* Changes
 2. Lastly, click the 'Publish' button.
