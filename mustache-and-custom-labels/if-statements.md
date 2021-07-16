@@ -12,7 +12,9 @@ Simple replacement based on the value uses HTML tags. For example, Low (Yellow),
 
 ### Custom Label
 
-```{{#if value == "low" }} <p style="color:Yellow;">{{value}} </p> {{elseif value == "critical" }} <p style="color:Red;">{{value}} </p>{{elseif value == "warning" }}  <p style="color:Orange;">{{value}} </p> {{/if}}```
+```
+{{#if value == "low" }} <p style="color:Yellow;">{{value}} </p> {{elseif value == "critical" }} <p style="color:Red;">{{value}} </p>{{elseif value == "warning" }}  <p style="color:Orange;">{{value}} </p> {{/if}}
+```
 
 ## Image replacement
 In the image below, you can see the grid tile (SQL, PowerShell, Web API) is used with replacements of different values for the severity and integration logo:
@@ -27,7 +29,9 @@ The if statement is added in the grid columns configuration for Severity:
 
 ### Custom Label
 
-```{{#if value == "low" }}<img src="/images/healthy.png" width="16" />{{elseif value == "critical" }}<img src="/images/critical.png" width="16" />{{elseif value == "warning" }}<img src="/images/warning.png" width="16" />{{/if}}```
+```
+{{#if value == "low" }}<img src="/images/healthy.png" width="16" />{{elseif value == "critical" }}<img src="/images/critical.png" width="16" />{{elseif value == "warning" }}<img src="/images/warning.png" width="16" />{{/if}}
+```
 
 And the Integrations column:
 
@@ -35,6 +39,8 @@ And the Integrations column:
 
 ### Custom Label
 
-```{{#if value.integration.summary == "Pingdom" }}<img src="/images/pingdom-dark.png" width="60" />{{/if}}```
+```
+{{#if value.integration.summary == "Pingdom" }}<img src="/images/pingdom-dark.png" width="60" />{{/if}}
+```
 
 You'll note the above has a different key path to where the data is located - This can be found in the response data of your tile, or by using the mustache picker ```{{}}```
