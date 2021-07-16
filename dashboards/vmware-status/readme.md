@@ -14,7 +14,7 @@ In order to use this dashboard, you are required to take several steps:
 
 When finished, your dashboard should look similar to this:
 
-![VMware Status scree capture](https://github.com/squaredup/samples/blob/master/dashboards/vmware-status/images/vmware-status.png?raw=true)
+![VMware Status scree capture](images/vmware-status.png)
 
 ## Dashboard Breakdown ##
 
@@ -35,7 +35,7 @@ Create a SquaredUp profile with the following script called `VMwarePowerCLI`.
 
 Your finished profile should look like this:
 
-![Profile screen capture](https://github.com/squaredup/samples/blob/master/dashboards/vmware-status/images/profile.png?raw=true)
+![Profile screen capture](images/profile.png?raw=true)
 	
 If you need more assistance, please check out this SquaredUp KB article:  [How to configure a PowerShell profile](https://support.squaredup.com/hc/en-us/articles/4402410306065-How-to-use-the-PowerShell-tile#:~:text=to%20your%20script.-,How%20to%20configure%20a%20PowerShell%20profile,-Click%20the%20hamburger)
 
@@ -53,7 +53,7 @@ Create a SquaredUp Run As account called *VMware_PowerCLI*.
 
 Your finished Run As should look like this:
 
-![Run As screen capture](https://github.com/squaredup/samples/blob/master/dashboards/vmware-status/images/runas.png?raw=true)
+![Run As screen capture](images/runas.png)
 
 If you need more assistance, please check out this SquaredUp KB article:  [Managing PowerShell Run As accounts](https://support.squaredup.com/hc/en-us/articles/4402410306065-How-to-use-the-PowerShell-tile#:~:text=a%20safe%20place.-,Managing%20PowerShell%20Run%20As%20accounts,-PowerShell%20scripts%20are)
 
