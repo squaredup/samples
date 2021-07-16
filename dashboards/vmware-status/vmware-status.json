@@ -1,0 +1,574 @@
+{
+	"id": "58c41772-0693-4dc9-a0da-c70c4136ed5d",
+	"type": "page/dashboard",
+	"title": "VMware Status",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 40.987,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-status-block",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"script": "$vmHost = Get-VMHost | Select-Object Name, ConnectionState, PowerState, NumCpu, CpuUsageMhz, CpuTotalMhz, MemoryUsageGB, MemoryTotalGB, Version\n\n#Create a new column called State for the SquaredUp Status tile\n$vmHost | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($host2 in $vmHost){\n    $host2.state = if ($host2.PowerState -eq 'PoweredOn'){'healthy'}\n                elseif ($host2.PowerState -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n\n$vmHost",
+																		"profile": "VMwarePowerCLI",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"script": "$vmHost = Get-VMHost | Select-Object Name, ConnectionState, PowerState, NumCpu, CpuUsageMhz, CpuTotalMhz, MemoryUsageGB, MemoryTotalGB, Version\n\n#Create a new column called State for the SquaredUp Status tile\n$vmHost | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($host2 in $vmHost){\n    $host2.state = if ($host2.PowerState -eq 'PoweredOn'){'healthy'}\n                elseif ($host2.PowerState -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n\n$vmHost",
+																				"profile": "VMwarePowerCLI",
+																				"runAsIdentity": "VMware_PowerCLI"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"columns": 1,
+																		"height": 1,
+																		"fontsize": 5,
+																		"sublabel": "custom",
+																		"drilldownTemplate": "",
+																		"customLabel": "{{properties.Name}}",
+																		"sublabelCustomLabel": "{{properties.PowerState}}"
+																	}
+																},
+																"description": "",
+																"title": "vCenter Status"
+															},
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-donut",
+																						"config": {
+																							"context": {},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"columnOverrides": {
+																									"value": "Count",
+																									"grouping": "Name"
+																								},
+																								"profile": "VMwarePowerCLI",
+																								"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Get a count of our power states\n$count = $vms | Group-Object -Property \"PowerState\" \n\n#Hint: A column named state must exist and contain the following values: Healthy, Critical, and/or Warning. \n#      Any other values in the state column will be displayed as Unknown (gray tile).\n#Create a new column called State for the SquaredUp Status tile\n$count | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($item in $count){\n  $item.state = if ($item.name -eq 'PoweredOn'){'healthy'}\n                elseif ($item.name -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n\n#Display Status tiles AND sort by name!\n$count | Sort-object name -desc",
+																								"runAsIdentity": "VMware_PowerCLI",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"columnOverrides": {
+																											"value": "Count",
+																											"grouping": "Name"
+																										},
+																										"profile": "VMwarePowerCLI",
+																										"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Get a count of our power states\n$count = $vms | Group-Object -Property \"PowerState\" \n\n#Hint: A column named state must exist and contain the following values: Healthy, Critical, and/or Warning. \n#      Any other values in the state column will be displayed as Unknown (gray tile).\n#Create a new column called State for the SquaredUp Status tile\n$count | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($item in $count){\n  $item.state = if ($item.name -eq 'PoweredOn'){'healthy'}\n                elseif ($item.name -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n\n#Display Status tiles AND sort by name!\n$count | Sort-object name -desc",
+																										"runAsIdentity": "VMware_PowerCLI"
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"sizeMode": "default",
+																								"legendScale": 1,
+																								"showLegend": true,
+																								"legendPosition": "right",
+																								"palette": 2
+																							}
+																						},
+																						"description": "",
+																						"title": "VM Power Status"
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/powershell-as-donut",
+																						"config": {
+																							"context": {},
+																							"source": {
+																								"_security": "signing",
+																								"dataType": "object",
+																								"columnOverrides": {
+																									"value": "NumCpu",
+																									"grouping": "Build"
+																								},
+																								"profile": "VMwarePowerCLI",
+																								"script": "$vmHost = Get-VMHost\n$vmhost | Group-Object -Property Version,Build",
+																								"runAsIdentity": "VMware_PowerCLI",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"dataType": "object",
+																										"columnOverrides": {
+																											"value": "NumCpu",
+																											"grouping": "Build"
+																										},
+																										"profile": "VMwarePowerCLI",
+																										"script": "$vmHost = Get-VMHost\n$vmhost | Group-Object -Property Version,Build",
+																										"runAsIdentity": "VMware_PowerCLI"
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"sizeMode": "default",
+																								"legendScale": 1,
+																								"showLegend": true,
+																								"legendPosition": "right",
+																								"palette": 0
+																							}
+																						},
+																						"description": "",
+																						"title": "Hosts by Version & Build"
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 25.694,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "Count",
+																			"grouping": "Name"
+																		},
+																		"resultLimit": 100,
+																		"profile": "VMwarePowerCLI",
+																		"script": "$vm = Get-VM\n$vm | Group-Object MemoryGB",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"scriptIntervalSecs": 116,
+																		"scriptTimeoutSecs": 116,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "Count",
+																					"grouping": "Name"
+																				},
+																				"resultLimit": 100,
+																				"profile": "VMwarePowerCLI",
+																				"script": "$vm = Get-VM\n$vm | Group-Object MemoryGB",
+																				"runAsIdentity": "VMware_PowerCLI",
+																				"scriptIntervalSecs": 116,
+																				"scriptTimeoutSecs": 116
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "custom",
+																		"customLabel": "{{properties.Name}} GB",
+																		"multipleColours": true
+																	}
+																},
+																"title": "Count of VMs by Assigned Memory",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-bargraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "Count",
+																			"grouping": "Name"
+																		},
+																		"resultLimit": 100,
+																		"profile": "VMwarePowerCLI",
+																		"script": "$vm = Get-VM\n$vm | Group-Object NumCpu",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"scriptIntervalSecs": 116,
+																		"scriptTimeoutSecs": 116,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "Count",
+																					"grouping": "Name"
+																				},
+																				"resultLimit": 100,
+																				"profile": "VMwarePowerCLI",
+																				"script": "$vm = Get-VM\n$vm | Group-Object NumCpu",
+																				"runAsIdentity": "VMware_PowerCLI",
+																				"scriptIntervalSecs": 116,
+																				"scriptTimeoutSecs": 116
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "custom",
+																		"customLabel": "{{properties.Name}} vCPU",
+																		"multipleColours": true
+																	}
+																},
+																"title": "Count of VMs by Assigned vCPUs",
+																"description": ""
+															},
+															{
+																"_type": "tile/powershell-as-grid",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"profile": "VMwarePowerCLI",
+																		"script": "Get-VM | Get-Snapshot | Select-Object vm, name, created",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"scriptTimeoutSecs": 116,
+																		"scriptIntervalSecs": 116,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"profile": "VMwarePowerCLI",
+																				"script": "Get-VM | Get-Snapshot | Select-Object vm, name, created",
+																				"runAsIdentity": "VMware_PowerCLI",
+																				"scriptTimeoutSecs": 116,
+																				"scriptIntervalSecs": 116
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"showHeaders": true,
+																		"columnOverrides": {
+																			"Created": {
+																				"template": "{{timeago(value, false)}}"
+																			}
+																		},
+																		"customColumns": {},
+																		"columns": [
+																			"VM",
+																			"Name",
+																			"Created"
+																		],
+																		"autohide": true,
+																		"rowLink": ""
+																	}
+																},
+																"description": "",
+																"title": "Snapshots"
+															}
+														]
+													}
+												],
+												"width": 33.3334
+											}
+										]
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-status",
+																"config": {
+																	"context": {
+																		"sign": true
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"dataType": "object",
+																		"profile": "VMwarePowerCLI",
+																		"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Create a new column called State for the SquaredUp Status tile\n$vms | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($vm in $vms){\n    $vm.state = if ($vm.PowerState -eq 'PoweredOn'){'healthy'}\n                elseif ($vm.PowerState -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n$vms | Select-Object name,state",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"dataType": "object",
+																				"profile": "VMwarePowerCLI",
+																				"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Create a new column called State for the SquaredUp Status tile\n$vms | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($vm in $vms){\n    $vm.state = if ($vm.PowerState -eq 'PoweredOn'){'healthy'}\n                elseif ($vm.PowerState -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n$vms | Select-Object name,state",
+																				"runAsIdentity": "VMware_PowerCLI"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"sublabel": "none",
+																		"drilldownTemplate": "",
+																		"zoom": "column",
+																		"group": {
+																			"property": "healthState",
+																			"order": "desc"
+																		},
+																		"customLabel": "{{properties.Name}}"
+																	}
+																},
+																"title": "VM Power Status",
+																"description": "PowerCLI"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-linegraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"timestamp": "timestamp",
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"split": false,
+																		"dataType": "object",
+																		"profile": "VMwarePowerCLI",
+																		"script": "$statcpu = Get-Stat -Entity ($vmHost) -start $start -Finish $finish -MaxSamples $MaxSamples -stat cpu.usage.average\n$statmem = Get-Stat -Entity ($vmHost) -start $start -Finish $finish -MaxSamples $MaxSamples -stat mem.usage.average\n\n#Combine both objects into one object\n$response = @($statcpu; $statmem)\n\n#Remap the values into our Resposne object for the graph\n$response | Select-Object @{ Name = \"value\"; Expression = { $_.value} },\n                          @{ Name = \"label\"; Expression = { $_.MetricId} },\n                          @{ Name = \"timestamp\"; Expression = { [DateTime]::Parse($_.timestamp) } }\n",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"scriptIntervalSecs": 116,
+																		"scriptTimeoutSecs": 116,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"timestamp": "timestamp",
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"split": false,
+																				"dataType": "object",
+																				"profile": "VMwarePowerCLI",
+																				"script": "$statcpu = Get-Stat -Entity ($vmHost) -start $start -Finish $finish -MaxSamples $MaxSamples -stat cpu.usage.average\n$statmem = Get-Stat -Entity ($vmHost) -start $start -Finish $finish -MaxSamples $MaxSamples -stat mem.usage.average\n\n#Combine both objects into one object\n$response = @($statcpu; $statmem)\n\n#Remap the values into our Resposne object for the graph\n$response | Select-Object @{ Name = \"value\"; Expression = { $_.value} },\n                          @{ Name = \"label\"; Expression = { $_.MetricId} },\n                          @{ Name = \"timestamp\"; Expression = { [DateTime]::Parse($_.timestamp) } }\n",
+																				"runAsIdentity": "VMware_PowerCLI",
+																				"scriptIntervalSecs": 116,
+																				"scriptTimeoutSecs": 116
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"range": "fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": true
+																	}
+																},
+																"description": "24 Hours",
+																"title": "Host Stats"
+															},
+															{
+																"_type": "tile/powershell-as-linegraph",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"timestamp": "timestamp",
+																			"value": "value",
+																			"grouping": "label"
+																		},
+																		"split": false,
+																		"dataType": "object",
+																		"profile": "VMwarePowerCLI",
+																		"script": "$statcpu = Get-Stat -Entity ($vm) -start $start -Finish $finish -MaxSamples $MaxSamples -stat cpu.usage.average\n$statmem = Get-Stat -Entity ($vm) -start $start -Finish $finish -MaxSamples $MaxSamples -stat mem.usage.average\n\n$response = @($statcpu; $statmem)\n\n$response | Select-Object @{\n    Name = \"value\";\n    Expression = { $_.value}\n},\n@{\n    Name = \"label\";\n    Expression = { $_.MetricId}\n},\n@{\n    Name = \"timestamp\";\n    Expression = { [DateTime]::Parse($_.timestamp) }\n}",
+																		"runAsIdentity": "VMware_PowerCLI",
+																		"scriptIntervalSecs": 116,
+																		"scriptTimeoutSecs": 116,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"timestamp": "timestamp",
+																					"value": "value",
+																					"grouping": "label"
+																				},
+																				"split": false,
+																				"dataType": "object",
+																				"profile": "VMwarePowerCLI",
+																				"script": "$statcpu = Get-Stat -Entity ($vm) -start $start -Finish $finish -MaxSamples $MaxSamples -stat cpu.usage.average\n$statmem = Get-Stat -Entity ($vm) -start $start -Finish $finish -MaxSamples $MaxSamples -stat mem.usage.average\n\n$response = @($statcpu; $statmem)\n\n$response | Select-Object @{\n    Name = \"value\";\n    Expression = { $_.value}\n},\n@{\n    Name = \"label\";\n    Expression = { $_.MetricId}\n},\n@{\n    Name = \"timestamp\";\n    Expression = { [DateTime]::Parse($_.timestamp) }\n}",
+																				"runAsIdentity": "VMware_PowerCLI",
+																				"scriptIntervalSecs": 116,
+																				"scriptTimeoutSecs": 116
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"range": "fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": true
+																	}
+																},
+																"title": "SYS-SCOM-MS02",
+																"description": ""
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "VMwarePowerCLI",
+												"script": "$vm = Get-VM\n$vm",
+												"runAsIdentity": "VMware_PowerCLI",
+												"scriptTimeoutSecs": 116,
+												"scriptIntervalSecs": 296,
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "VMwarePowerCLI",
+														"script": "$vm = Get-VM\n$vm",
+														"runAsIdentity": "VMware_PowerCLI",
+														"scriptTimeoutSecs": 116,
+														"scriptIntervalSecs": 296
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"Guest": {
+														"template": "{{value.split(':')[1]}}"
+													},
+													"VMHost": {
+														"template": "{{value.split('.')[0]}}"
+													},
+													"UsedSpaceGB": {
+														"template": "{{value.toFixed(\"2\")}}"
+													},
+													"ProvisionedSpaceGB": {
+														"template": "{{value.toFixed(\"2\")}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Name",
+													"PowerState",
+													"Guest",
+													"NumCpu",
+													"CoresPerSocket",
+													"MemoryMB",
+													"MemoryGB",
+													"VMHost",
+													"ResourcePool",
+													"HardwareVersion",
+													"UsedSpaceGB",
+													"ProvisionedSpaceGB",
+													"CreateDate"
+												],
+												"autohide": true
+											}
+										},
+										"title": "",
+										"description": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
