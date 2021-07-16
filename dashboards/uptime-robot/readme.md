@@ -22,5 +22,5 @@ This dashboard gives an overview of monitoring configured using Uptime Robot’s
 - Dashboard should display as shown below, with high level insight into the web monitoring from your UptimeRobot instance
   
   
-![image](https://user-images.githubusercontent.com/45064152/125944272-91cf9680-25e0-4bd1-846c-f128ce7fa987.png)
+![image](https://github.com/squaredup/samples/blob/36998533c55160b7d2741856c116c77c4dfb2e50/dashboards/uptime-robot/Images/Uptime%20Robot.png)
  
