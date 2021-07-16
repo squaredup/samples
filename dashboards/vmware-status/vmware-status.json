@@ -43,7 +43,7 @@
 																				"profile": "VMwarePowerCLI",
 																				"runAsIdentity": "VMware_PowerCLI"
 																			},
-																			"signature": "2e221b74951482ab2e7fc2e9896324b99e9039f5bff644e3725d2152136c03c7e9bcb16dedf7a976e85a1d159b823ea4+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -95,7 +95,7 @@
 																										"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Get a count of our power states\n$count = $vms | Group-Object -Property \"PowerState\" \n\n#Hint: A column named state must exist and contain the following values: Healthy, Critical, and/or Warning. \n#      Any other values in the state column will be displayed as Unknown (gray tile).\n#Create a new column called State for the SquaredUp Status tile\n$count | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($item in $count){\n  $item.state = if ($item.name -eq 'PoweredOn'){'healthy'}\n                elseif ($item.name -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n\n#Display Status tiles AND sort by name!\n$count | Sort-object name -desc",
 																										"runAsIdentity": "VMware_PowerCLI"
 																									},
-																									"signature": "2f17668303e2b1db440587fa1c8967e6118b79669b9cfb9f48e50c4ee2dc15a00de1dc02035d1f944b30fd32d31454dd+1626379221082"
+																									"signature": ""
 																								}
 																							},
 																							"display": {
@@ -145,7 +145,7 @@
 																										"script": "$vmHost = Get-VMHost\n$vmhost | Group-Object -Property Version,Build",
 																										"runAsIdentity": "VMware_PowerCLI"
 																									},
-																									"signature": "0ae104e6fdd46eb15d2160afd64b97304a9c95b7dc6f605f4dd738ffeb83fa0b50300350d78f6ea0612652a050e0d690+1626379221082"
+																									"signature": ""
 																								}
 																							},
 																							"display": {
@@ -207,7 +207,7 @@
 																				"scriptIntervalSecs": 116,
 																				"scriptTimeoutSecs": 116
 																			},
-																			"signature": "98a7c8da26df58ddbb4cadeeacb6f3926ab7ad1b507839b8402fcdbd77dee7826041b059cdf35896cd35296ad977edd8+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -261,7 +261,7 @@
 																				"scriptIntervalSecs": 116,
 																				"scriptTimeoutSecs": 116
 																			},
-																			"signature": "c9890c8eae7c55eb418f6680e1cad9e886f2155b3719f2f54de920793f370b2c529ba0671f1609788406e5a985a5499e+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -296,7 +296,7 @@
 																				"scriptTimeoutSecs": 116,
 																				"scriptIntervalSecs": 116
 																			},
-																			"signature": "3a172e4de1b633a6ade4a94e4e99b39f01bc3b8aac29946a10d52dd5e806d78ebce1c8a1220cba8420d31a76a166aa00+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -355,7 +355,7 @@
 																				"script": "$vmHost = Get-VMHost\n$vms = Get-VMHost -Name $vmHost.Name | Get-VM\n\n#Create a new column called State for the SquaredUp Status tile\n$vms | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n#Loop through each object to set state\nforeach($vm in $vms){\n    $vm.state = if ($vm.PowerState -eq 'PoweredOn'){'healthy'}\n                elseif ($vm.PowerState -eq 'PoweredOff'){'critical'}\n                else {'warning'}\n}\n$vms | Select-Object name,state",
 																				"runAsIdentity": "VMware_PowerCLI"
 																			},
-																			"signature": "3f17354fa0b02f92949521260d40077353e0057b026b51d16f0cd9f436b3eef9a66a169764bcc23b4eac7990b04b863d+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -417,7 +417,7 @@
 																				"scriptIntervalSecs": 116,
 																				"scriptTimeoutSecs": 116
 																			},
-																			"signature": "d90e68a9237ab6b0cfe27d588c30904a2a969c2e2e3228c1d9de1188a15d56dc6fd4e0ccc02dd925f9b7abbefd3735b8+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -464,7 +464,7 @@
 																				"scriptIntervalSecs": 116,
 																				"scriptTimeoutSecs": 116
 																			},
-																			"signature": "ff159835ca7f232c20ff1a0b285bbc0968b97716651b673ba6eb5040f8c79c3e62b7b2653a0e7a0cf7658f3bca37d0dd+1626379221082"
+																			"signature": ""
 																		}
 																	},
 																	"display": {
@@ -520,7 +520,7 @@
 														"scriptTimeoutSecs": 116,
 														"scriptIntervalSecs": 296
 													},
-													"signature": "c90145d67d9d924ff456d6da7d5cb774b7bf7c7a947bc81e4c440f5742dc93f52f36efcbab87844295da36d45a8d3219+1626379221082"
+													"signature": ""
 												}
 											},
 											"display": {
