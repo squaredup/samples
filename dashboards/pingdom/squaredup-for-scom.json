@@ -1,0 +1,1364 @@
+{
+	"id": "50d61fec-f8c7-4c17-b9d4-07ca7cb991ea",
+	"type": "page/dashboard",
+	"title": "Pingdom",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/web-content",
+										"config": {
+											"context": {},
+											"source": {},
+											"display": {
+												"height": 70,
+												"zoom": 1,
+												"border": false,
+												"scrolling": false,
+												"refresh": false,
+												"src": "",
+												"content": "<img src=\"https://preview.squaredup.com/images/logos/pingdom.png\" height=\"70\"/>"
+											}
+										},
+										"description": "",
+										"title": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 28.135,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-donut",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "count",
+																			"isCategoryOptional": false,
+																			"values": [],
+																			"category": "{{#if status == \"up\" }} ✅ {{elseif status == \"down\" }} 🆘 {{else}} ❔ {{/if}}"
+																		},
+																		"provider": "Pingdom",
+																		"url": "checks/",
+																		"keypath": "checks",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "count",
+																					"isCategoryOptional": false,
+																					"values": [],
+																					"category": "{{#if status == \"up\" }} ✅ {{elseif status == \"down\" }} 🆘 {{else}} ❔ {{/if}}"
+																				},
+																				"provider": "Pingdom",
+																				"url": "checks/",
+																				"keypath": "checks"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "fill",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 0
+																	}
+																},
+																"title": "Test Summary",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 39.083,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/text",
+																"config": {
+																	"display": {
+																		"contentTemplate": "<h1 style='font-size:30px;font-weight:300;'>Critical Services</h1>"
+																	}
+																},
+																"description": "",
+																"title": ""
+															},
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/webapi-as-scalar",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "Pingdom",
+																								"url": "checks/4543734",
+																								"keypath": "check.lastresponsetime",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "Pingdom",
+																										"url": "checks/4543734",
+																										"keypath": "check.lastresponsetime"
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"fontsize": 70,
+																								"coerceObject": false,
+																								"unit": "ms",
+																								"customTemplate": ""
+																							}
+																						},
+																						"title": "Maidenhead ExpressRoute",
+																						"description": ""
+																					},
+																					{
+																						"_type": "tile/webapi-as-scalar",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "Pingdom",
+																								"url": "checks/4543752",
+																								"keypath": "check.lastresponsetime",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "Pingdom",
+																										"url": "checks/4543752",
+																										"keypath": "check.lastresponsetime"
+																									},
+																									"signature": "5148c0fe4c30a27a4febba0437ef6e4084cecedc6c8f2ece9c1813da26cdca1ee0058526cdb697e0e28f3cfd0896c8cd+1626786961153"
+																								}
+																							},
+																							"display": {
+																								"fontsize": 70,
+																								"coerceObject": false,
+																								"unit": "ms",
+																								"customTemplate": ""
+																							}
+																						},
+																						"title": "O365",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 50,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/webapi-as-scalar",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "Pingdom",
+																								"url": "checks/4543752",
+																								"keypath": "check.lastresponsetime",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "Pingdom",
+																										"url": "checks/4543752",
+																										"keypath": "check.lastresponsetime"
+																									},
+																									"signature": "5148c0fe4c30a27a4febba0437ef6e4084cecedc6c8f2ece9c1813da26cdca1ee0058526cdb697e0e28f3cfd0896c8cd+1626786961153"
+																								}
+																							},
+																							"display": {
+																								"fontsize": 70,
+																								"coerceObject": false,
+																								"unit": "ms"
+																							}
+																						},
+																						"title": "Exchange Online",
+																						"description": ""
+																					},
+																					{
+																						"_type": "tile/webapi-as-scalar",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "Pingdom",
+																								"url": "checks/6574018",
+																								"keypath": "check.lastresponsetime",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "Pingdom",
+																										"url": "checks/6574018",
+																										"keypath": "check.lastresponsetime"
+																									},
+																									"signature": "f79550099478b0eef593ba41911c54f90acaea5448844aebf25930f67b0f8e91af844fa1acb72a8109489b7d1215c2c7+1626786961153"
+																								}
+																							},
+																							"display": {
+																								"fontsize": 70,
+																								"coerceObject": false,
+																								"unit": "ms"
+																							}
+																						},
+																						"title": "Salesforce",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											},
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-bargraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "none",
+																			"isCategoryOptional": false,
+																			"values": [
+																				{
+																					"value": "{{lastresponsetime}}"
+																				}
+																			],
+																			"category": "{{name}}"
+																		},
+																		"provider": "Pingdom",
+																		"url": "checks/",
+																		"keypath": "checks",
+																		"desc": true,
+																		"topn": 10,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "none",
+																					"isCategoryOptional": false,
+																					"values": [
+																						{
+																							"value": "{{lastresponsetime}}"
+																						}
+																					],
+																					"category": "{{name}}"
+																				},
+																				"provider": "Pingdom",
+																				"url": "checks/",
+																				"keypath": "checks",
+																				"desc": true,
+																				"topn": 10
+																			},
+																			"signature": "37d7927a52cebf4c5d8a4bea6402e6407898d8c621d52f6a75aaab00b06db8316de8d0a46727a684e964a9b491201092+1626786961153"
+																		}
+																	},
+																	"display": {
+																		"range": "percentage",
+																		"label": "auto",
+																		"sort": {
+																			"order": "desc",
+																			"property": "values",
+																			"option": "values"
+																		},
+																		"customLabel": "",
+																		"multipleColours": true,
+																		"rangemin": "",
+																		"rangemax": ""
+																	}
+																},
+																"title": "Response Times",
+																"description": ""
+															}
+														]
+													}
+												],
+												"width": 32.782
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/text",
+										"config": {
+											"display": {
+												"contentTemplate": "<h1 style='font-size:30px;font-weight:300;'>PaaS-Hosted Sites</h1>"
+											}
+										},
+										"title": "",
+										"description": ""
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 24.832,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/webapi-as-scalar",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"provider": "Pingdom",
+																		"url": "checks/5439404",
+																		"keypath": "check.lastresponsetime",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"provider": "Pingdom",
+																				"url": "checks/5439404",
+																				"keypath": "check.lastresponsetime"
+																			},
+																			"signature": "7215db719e3ff73d8db29bc1cfedbf130460c2fa0163fe0d5a4f670b1942da0e3964d85fb3c60588bddc8a0e11e983d1+1626786961153"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 70,
+																		"coerceObject": false,
+																		"unit": "ms"
+																	}
+																},
+																"title": "SmartHotel360",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 75.168,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 65.824,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "layout/column",
+																						"columns": [
+																							{
+																								"width": 50,
+																								"contents": [
+																									{
+																										"_type": "layout/list",
+																										"contents": [
+																											{
+																												"_type": "tile/webapi-as-scalar",
+																												"config": {
+																													"context": {
+																														"sign": true,
+																														"scope": {
+																															"type": "specific"
+																														}
+																													},
+																													"source": {
+																														"_security": "signing",
+																														"method": "GET",
+																														"provider": "Pingdom",
+																														"url": "checks/5439406",
+																														"keypath": "check.lastresponsetime",
+																														"__signed": {
+																															"payload": {
+																																"_security": "signing",
+																																"method": "GET",
+																																"provider": "Pingdom",
+																																"url": "checks/5439406",
+																																"keypath": "check.lastresponsetime"
+																															},
+																															"signature": "3084d45a8e466584f260adaecc8979075b2697c03ee7f8620e250b6748674c7e156051c3a6966eff1e02cb3a0a89adfe+1626786961153"
+																														}
+																													},
+																													"display": {
+																														"fontsize": 70,
+																														"coerceObject": false,
+																														"unit": "ms"
+																													}
+																												},
+																												"title": "MyHealthClinic",
+																												"description": ""
+																											}
+																										]
+																									}
+																								]
+																							},
+																							{
+																								"width": 50,
+																								"contents": [
+																									{
+																										"_type": "layout/list",
+																										"contents": [
+																											{
+																												"_type": "tile/webapi-as-scalar",
+																												"config": {
+																													"context": {
+																														"sign": true,
+																														"scope": {
+																															"type": "specific"
+																														}
+																													},
+																													"source": {
+																														"_security": "signing",
+																														"method": "GET",
+																														"provider": "Pingdom",
+																														"url": "checks/7621227",
+																														"keypath": "check.lastresponsetime",
+																														"__signed": {
+																															"payload": {
+																																"_security": "signing",
+																																"method": "GET",
+																																"provider": "Pingdom",
+																																"url": "checks/7621227",
+																																"keypath": "check.lastresponsetime"
+																															},
+																															"signature": "a6f9040a2e7262974e412769ff49975c31b31b67bf8d3239276ade3c0bfe26a377803487e607f610cd9d96499c8438db+1626786961153"
+																														}
+																													},
+																													"display": {
+																														"fontsize": 70,
+																														"coerceObject": false,
+																														"unit": "ms"
+																													}
+																												},
+																												"title": "Community Answers",
+																												"description": ""
+																											}
+																										]
+																									}
+																								]
+																							}
+																						]
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 34.176,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/webapi-as-scalar",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "Pingdom",
+																								"url": "checks/5439403",
+																								"keypath": "check.lastresponsetime",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "Pingdom",
+																										"url": "checks/5439403",
+																										"keypath": "check.lastresponsetime"
+																									},
+																									"signature": "d4698ad3ee926bec5d9e016e55f181e2ad20a98ad720bb54985ab73f79df5a48968851313755dedc3125f3f099944e1d+1626786961153"
+																								}
+																							},
+																							"display": {
+																								"fontsize": 70,
+																								"coerceObject": false,
+																								"unit": "ms"
+																							}
+																						},
+																						"title": "Parts Unlimited",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/text",
+										"config": {
+											"display": {
+												"contentTemplate": "<h1 style='font-size:30px;font-weight:300;'>Cloud Hosted</h1>"
+											}
+										},
+										"description": "",
+										"title": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{avgresponse}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{starttime*1000}}"
+																		},
+																		"topn": 0,
+																		"provider": "Pingdom",
+																		"url": "summary.performance/4543668",
+																		"keypath": "summary.hours",
+																		"data": [
+																			{
+																				"key": "to",
+																				"value": "{{Math.floor(Date.now() / 1000)}}"
+																			},
+																			{
+																				"key": "from",
+																				"value": "{{(Math.floor(Date.now() / 1000))-500000}}"
+																			}
+																		],
+																		"headers": [],
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{avgresponse}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{starttime*1000}}"
+																				},
+																				"topn": 0,
+																				"provider": "Pingdom",
+																				"url": "summary.performance/4543668",
+																				"keypath": "summary.hours",
+																				"data": [
+																					{
+																						"key": "to",
+																						"value": "{{Math.floor(Date.now() / 1000)}}"
+																					},
+																					{
+																						"key": "from",
+																						"value": "{{(Math.floor(Date.now() / 1000))-500000}}"
+																					}
+																				],
+																				"headers": []
+																			},
+																			"signature": "bea6d9b3e4f7166ff102557cb1e7f34377fef58e4a1aaababcde0dc25c56b99af477aaa999e2dc17c2ae64f7cca5403c+1626786961158"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": false
+																	}
+																},
+																"title": "Order Processing (North America)",
+																"description": "Avg Response Time"
+															}
+														]
+													}
+												],
+												"width": 32.783
+											},
+											{
+												"width": 33.028,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{avgresponse}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{starttime*1000}}"
+																		},
+																		"topn": 0,
+																		"provider": "Pingdom",
+																		"url": "summary.performance/4543671",
+																		"keypath": "summary.hours",
+																		"data": [
+																			{
+																				"key": "to",
+																				"value": "{{Math.floor(Date.now() / 1000)}}"
+																			},
+																			{
+																				"key": "from",
+																				"value": "{{(Math.floor(Date.now() / 1000))-604800}}"
+																			}
+																		],
+																		"headers": [],
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{avgresponse}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{starttime*1000}}"
+																				},
+																				"topn": 0,
+																				"provider": "Pingdom",
+																				"url": "summary.performance/4543671",
+																				"keypath": "summary.hours",
+																				"data": [
+																					{
+																						"key": "to",
+																						"value": "{{Math.floor(Date.now() / 1000)}}"
+																					},
+																					{
+																						"key": "from",
+																						"value": "{{(Math.floor(Date.now() / 1000))-604800}}"
+																					}
+																				],
+																				"headers": []
+																			},
+																			"signature": "cf04820874b5df7f24c23c406bda32f09550f36a729313a661f57b28bbba6502f61871ffff95499d56569fb52e76c2ed+1626786961158"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": false
+																	}
+																},
+																"title": "Order Processing (South America)",
+																"description": "Avg Response Time "
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 34.19,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{avgresponse}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{starttime*1000}}"
+																		},
+																		"topn": 0,
+																		"provider": "Pingdom",
+																		"url": "summary.performance/4543659",
+																		"keypath": "summary.hours",
+																		"data": [
+																			{
+																				"key": "to",
+																				"value": "{{Math.floor(Date.now() / 1000)}}"
+																			},
+																			{
+																				"key": "from",
+																				"value": "{{(Math.floor(Date.now() / 1000))-402200}}"
+																			}
+																		],
+																		"headers": [],
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{avgresponse}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{starttime*1000}}"
+																				},
+																				"topn": 0,
+																				"provider": "Pingdom",
+																				"url": "summary.performance/4543659",
+																				"keypath": "summary.hours",
+																				"data": [
+																					{
+																						"key": "to",
+																						"value": "{{Math.floor(Date.now() / 1000)}}"
+																					},
+																					{
+																						"key": "from",
+																						"value": "{{(Math.floor(Date.now() / 1000))-402200}}"
+																					}
+																				],
+																				"headers": []
+																			},
+																			"signature": "4e4f2fe665d5a284e1e76afa28d51980112ffaa2a608eb9f92966fc4a438eb7af40017cf5bb705585a185d0aa484aeab+1626786961158"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": false
+																	}
+																},
+																"title": "Order Processing (Europe)",
+																"description": "Avg Response Time"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/text",
+										"config": {
+											"display": {
+												"contentTemplate": "<h1 style='font-size:30px;font-weight:300;'>SquaredUp.com</h1>"
+											}
+										},
+										"description": "",
+										"title": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 32.783,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/scom-webapi-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": true,
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"isCategoryOptional": true,
+																			"values": [
+																				{
+																					"key": "",
+																					"value": "{{responsetime}}"
+																				}
+																			],
+																			"category": "",
+																			"timestamp": "{{time}}000"
+																		},
+																		"topn": 0,
+																		"url": "results/6810996",
+																		"provider": "Pingdom",
+																		"keypath": "results",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"isCategoryOptional": true,
+																					"values": [
+																						{
+																							"key": "",
+																							"value": "{{responsetime}}"
+																						}
+																					],
+																					"category": "",
+																					"timestamp": "{{time}}000"
+																				},
+																				"topn": 0,
+																				"url": "results/6810996",
+																				"provider": "Pingdom",
+																				"keypath": "results"
+																			},
+																			"signature": "f3a14feb1c9c1664e0a664b3ac8b8fa6bce47f9fe6fa1282b2b6ff1d5c656083c80c538b3eff0f8df666380ea7f96e9e+1626786961158"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "auto",
+																		"showKey": false
+																	}
+																},
+																"title": "squaredup.com - Home Page",
+																"description": "Avg Response Time "
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 67.217,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 49.681,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/scom-webapi-as-linegraph",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"columns": {
+																									"isCategoryOptional": true,
+																									"values": [
+																										{
+																											"key": "",
+																											"value": "{{responsetime}}"
+																										}
+																									],
+																									"category": "",
+																									"timestamp": "{{time}}100"
+																								},
+																								"topn": 0,
+																								"url": "results/6810924",
+																								"provider": "Pingdom",
+																								"keypath": "results",
+																								"data": [
+																									{
+																										"key": "to",
+																										"value": "{{Math.floor(Date.now() / 1000)}}"
+																									},
+																									{
+																										"key": "from",
+																										"value": "{{(Math.floor(Date.now() / 1000))-102200}}"
+																									}
+																								],
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"columns": {
+																											"isCategoryOptional": true,
+																											"values": [
+																												{
+																													"key": "",
+																													"value": "{{responsetime}}"
+																												}
+																											],
+																											"category": "",
+																											"timestamp": "{{time}}100"
+																										},
+																										"topn": 0,
+																										"url": "results/6810924",
+																										"provider": "Pingdom",
+																										"keypath": "results",
+																										"data": [
+																											{
+																												"key": "to",
+																												"value": "{{Math.floor(Date.now() / 1000)}}"
+																											},
+																											{
+																												"key": "from",
+																												"value": "{{(Math.floor(Date.now() / 1000))-102200}}"
+																											}
+																										]
+																									},
+																									"signature": "982b4ce3da4c47b69791cc0201bb3bbd23796e75cf79124c7bfb28bcabc9bc0b0f417613526a7ff938dbb92a6062dae5+1626786961158"
+																								}
+																							},
+																							"display": {
+																								"range": "zero-fit",
+																								"height": 200,
+																								"label": "auto",
+																								"showKey": false
+																							}
+																						},
+																						"title": "squaredup.com - Pricing page",
+																						"description": "Avg Response Time "
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 50.319,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/scom-webapi-as-linegraph",
+																						"config": {
+																							"context": {
+																								"sign": true,
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"columns": {
+																									"isCategoryOptional": true,
+																									"values": [
+																										{
+																											"key": "",
+																											"value": "{{responsetime}}"
+																										}
+																									],
+																									"category": "",
+																									"timestamp": "{{time}}000"
+																								},
+																								"topn": 0,
+																								"url": "results/6810993",
+																								"provider": "Pingdom",
+																								"keypath": "results",
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"columns": {
+																											"isCategoryOptional": true,
+																											"values": [
+																												{
+																													"key": "",
+																													"value": "{{responsetime}}"
+																												}
+																											],
+																											"category": "",
+																											"timestamp": "{{time}}000"
+																										},
+																										"topn": 0,
+																										"url": "results/6810993",
+																										"provider": "Pingdom",
+																										"keypath": "results"
+																									},
+																									"signature": "3142e400bb994ed7d0eb946d093ce3863d8addcc2d48ae04448f20645277f60f4698741f045bab42c6ee6c12f73e8702+1626786961158"
+																								}
+																							},
+																							"display": {
+																								"range": "zero-fit",
+																								"height": 200,
+																								"label": "auto",
+																								"showKey": false
+																							}
+																						},
+																						"title": "squaredup.com - Blog",
+																						"description": "Avg Response Time "
+																					}
+																				]
+																			}
+																		]
+																	}
+																]
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/webapi-as-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "Pingdom",
+												"url": "checks",
+												"keypath": "checks",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "Pingdom",
+														"url": "checks",
+														"keypath": "checks"
+													},
+													"signature": "f03010b048f51b4687a83c5f40af971d9ad27d58410aeb760facaef8556f64b450f4dc86cdfbb703e95565486437b530+1626786961158"
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"name": {
+														"displayName": "Check Name"
+													},
+													"lasttesttime": {
+														"displayName": "Last Test",
+														"template": "{{timeago(value*1000)}}"
+													},
+													"lastresponsetime": {
+														"displayName": "Response (ms)"
+													},
+													"status": {
+														"displayName": "Status",
+														"template": "{{#if value == \"up\" }}<img src=\"/images/health-icons/healthy.png\" height=\"16\" />{{elseif value == \"down\" }}<img src=\"/images/health-icons/critical.png\" height=\"16\" />{{else}}<img src=\"/images/health-icons/warning.png\" height=\"16\" />{{/if}}"
+													},
+													"hostname": {
+														"displayName": "URL"
+													},
+													"type": {
+														"displayName": "Type"
+													},
+													"lasterrortime": {
+														"displayName": "Last Error",
+														"template": "{{timeago(value*1000)}}"
+													},
+													"id": {
+														"displayName": "ID"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"name",
+													"lasttesttime",
+													"lastresponsetime",
+													"status",
+													"hostname",
+													"type",
+													"lasterrortime"
+												],
+												"autohide": false,
+												"rowLink": ""
+											}
+										},
+										"title": "Checks in Detail",
+										"description": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": []
+							}
+						],
+						"width": 50.039
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": []
+							}
+						],
+						"width": 49.961
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": true,
+	"actions": [
+		{
+			"global": false,
+			"name": "web",
+			"parameters": {
+				"taskId": "",
+				"url": "https://my.pingdom.com"
+			},
+			"display": {
+				"text": "Pingdom"
+			}
+		}
+	]
+}
