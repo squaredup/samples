@@ -1,0 +1,221 @@
+{
+	"id": "608d846a-23b1-44dd-b7d5-5bf3ffe60136",
+	"type": "page/dashboard",
+	"title": "Octopus Deploy",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/web-content",
+										"config": {
+											"context": {},
+											"source": {},
+											"display": {
+												"height": 70,
+												"zoom": 1,
+												"border": false,
+												"scrolling": false,
+												"refresh": false,
+												"src": "",
+												"content": "<img src=\"/images/logos/octopus.png\" height=70>"
+											}
+										},
+										"description": "",
+										"title": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 25.001,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-webapi-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "OctopusDeploy",
+												"url": "/deployments",
+												"keypath": "Items",
+												"data": [
+													{
+														"key": "take",
+														"value": "20"
+													}
+												],
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "OctopusDeploy",
+														"url": "/deployments",
+														"keypath": "Items",
+														"data": [
+															{
+																"key": "take",
+																"value": "20"
+															}
+														]
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"Name": {
+														"displayName": "Name"
+													},
+													"Created": {
+														"displayName": "Created",
+														"template": "{{timeago(value)}}"
+													},
+													"Id": {
+														"displayName": "Deployment"
+													},
+													"ReleaseId": {
+														"displayName": "Release"
+													},
+													"EnvironmentId": {
+														"displayName": "Environment"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Name",
+													"Created"
+												],
+												"autohide": false
+											}
+										},
+										"title": "Deployments",
+										"description": ""
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/azure-resources-webapi-table",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "OctopusDeploy",
+												"url": "/tasks",
+												"keypath": "Items",
+												"data": [
+													{
+														"key": "take",
+														"value": "20"
+													}
+												],
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "OctopusDeploy",
+														"url": "/tasks",
+														"keypath": "Items",
+														"data": [
+															{
+																"key": "take",
+																"value": "20"
+															}
+														]
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"Description": {
+														"displayName": "Description",
+														"template": "{{value.substr(0,80)}}"
+													},
+													"State": {
+														"displayName": "Current State"
+													},
+													"StartTime": {
+														"displayName": "Started",
+														"template": "{{timeago(value)}}"
+													},
+													"Duration": {
+														"displayName": "Duration"
+													},
+													"FinishedSuccessfully": {
+														"displayName": "Result",
+														"template": "{{#if value == true }}<img src=\"/images/healthy.png\" height=\"15\" />{{elseif value == false }}<img src=\"/images/critical.png\" height=\"15\" />{{/if}}"
+													},
+													"ErrorMessage": {
+														"displayName": "Message"
+													},
+													"CompletedTime": {
+														"displayName": "Finished",
+														"template": "{{timeago(value)}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"Description",
+													"State",
+													"StartTime",
+													"Duration",
+													"FinishedSuccessfully",
+													"ErrorMessage"
+												],
+												"autohide": true
+											}
+										},
+										"title": "Tasks",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 74.999
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
