@@ -1,0 +1,256 @@
+{
+	"id": "20ea08a1-3d3b-4bd1-832e-b86359e36453",
+	"type": "page/dashboard",
+	"title": "SQL Page TimeFrame",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-scalar",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "SELECT FORMAT (CURRENT_TIMESTAMP, 'yyyy-MM-dd hh:mm:ss')",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "SELECT FORMAT (CURRENT_TIMESTAMP, 'yyyy-MM-dd hh:mm:ss')"
+																			},
+																			"signature": "4ef0331876bb17db6005816053bf71052988352d9c0c6d123864d4a15cefe1c44fdeb14ae6414cda003828f873023aaf+1628272801530"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 48,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "Current_TimeStamp",
+																"title": "SQL Native"
+															},
+															{
+																"_type": "tile/sql-as-scalar",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "SELECT CONVERT(VARCHAR, SYSDATETIMEOFFSET(), 120) ",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "SELECT CONVERT(VARCHAR, SYSDATETIMEOFFSET(), 120) "
+																			},
+																			"signature": "76e05bb78989e1162b20cfbef28e172e9fd9abe68cb8f91aa4b65cb4710a4d132bce2ebd3f8446f524f44612ebc2e753+1628272801530"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 48,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"title": "Current Time with Time Zone",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-scalar",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "SELECT CASE {{timeframe.isoDuration}}\n         WHEN '' THEN 'ALL'\n         ELSE {{timeframe.isoDuration}} \n       END as [isoDuration]",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "SELECT CASE {{timeframe.isoDuration}}\n         WHEN '' THEN 'ALL'\n         ELSE {{timeframe.isoDuration}} \n       END as [isoDuration]"
+																			},
+																			"signature": "331680c767ed422301858e7d043b9902cbdcfa1a2d40681a7bdf701f380e945057f685728f96391515de3000207c62ff+1628272801530"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 48,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "isoDuration",
+																"title": "Page Time Frame"
+															},
+															{
+																"_type": "tile/sql-as-scalar",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "--For server prior to 2019\nDECLARE @TimeZone VARCHAR(50)\nEXEC MASTER.dbo.xp_regread 'HKEY_LOCAL_MACHINE','SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation','TimeZoneKeyName',@TimeZone OUT\nSELECT @TimeZone\n\n--For 2019 servers and beyond\n--SELECT CURRENT_TIMEZONE();\n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "--For server prior to 2019\nDECLARE @TimeZone VARCHAR(50)\nEXEC MASTER.dbo.xp_regread 'HKEY_LOCAL_MACHINE','SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation','TimeZoneKeyName',@TimeZone OUT\nSELECT @TimeZone\n\n--For 2019 servers and beyond\n--SELECT CURRENT_TIMEZONE();\n"
+																			},
+																			"signature": "d5397eff9ab577a94261f3bad413bbd5514320451ccd30b435311eb2059965c3180c715d4900fc40e15afd717e4ee88c+1628272801530"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 48,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"title": "Timezone of the Server",
+																"description": ""
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "tile/sql-as-table",
+										"config": {
+											"context": {
+												"sign": "true"
+											},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "IF OBJECT_ID(N'tempdb..#Native') IS NOT NULL DROP TABLE #Native;\n\n--Create a temporary table to hold our display values\nCREATE TABLE #Native ([Description]  nvarchar(255)\n \t\t\t\t\t\t\t\t\t\t, [strFormatted]  nvarchar(255)\n                    , [asDateTime] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgo] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgoDt] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgoHowLong] datetime )\n\n--Insert some differnt types of date conversions using native SQL\n--Current Date and Time\nINSERT INTO #Native SELECT 'Current Date and Time', FORMAT (GETDATE(), 'yyyy-MM-dd hh:mm:ss tt'), GETDATE(), GETDATE(),GETDATE(), GETDATE()\n\n--1 hour\nINSERT INTO #Native SELECT 'StartDate  -1 hour', FORMAT (DATEADD(HOUR, -1, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE())\n\n--12 hours\nINSERT INTO #Native SELECT 'StartDate -12 hour', FORMAT (DATEADD(HOUR, -12, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE())\n\n--1 day\nINSERT INTO #Native SELECT 'StartDate -24 hour', FORMAT (DATEADD(HOUR, -24, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE())\n\n--7 days\nINSERT INTO #Native SELECT 'StartDate  -7 days', FORMAT (DATEADD(d, -7, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE())\n\n--30 days\nINSERT INTO #Native SELECT 'StartDate -30 days', FORMAT (DATEADD(d, -30, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE())\nINSERT INTO #Native SELECT 'StartDate  -1 months', FORMAT (DATEADD(MM, -1, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE())\n\n--3 months (90 days)\nINSERT INTO #Native SELECT 'StartDate -90 days', FORMAT (DATEADD(d, -90, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE())\nINSERT INTO #Native SELECT 'StartDate  -3 months', FORMAT (DATEADD(MM, -3, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE())\n\n--6 months (180 days)\nINSERT INTO #Native SELECT 'StartDate  -6 months', FORMAT (DATEADD(MM, -6, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE())\n\n--12 months (240 days)\nINSERT INTO #Native SELECT 'StartDate -12 months', FORMAT (DATEADD(MM, -12, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE())\n\n--all data\nINSERT INTO #Native SELECT 'StartDate All Days', FORMAT (convert(datetime,0), 'yyyy-MM-dd hh:mm:ss tt'), convert(datetime,0), convert(datetime,0),convert(datetime,0), convert(datetime,0)\n\n--End Date\nINSERT INTO #Native SELECT 'End Date', FORMAT (GETDATE(), 'yyyy-MM-dd hh:mm:ss tt'), GETDATE(), GETDATE(),GETDATE(), GETDATE()\n\n--Midnight\nINSERT INTO #Native SELECT 'Midnight', FORMAT (DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate()))\n\n--Dump out the table for SquaredUp to display on the dashboard\nSELECT * FROM #Native\n",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"connectionstring": "global:dw",
+														"querystring": "IF OBJECT_ID(N'tempdb..#Native') IS NOT NULL DROP TABLE #Native;\n\n--Create a temporary table to hold our display values\nCREATE TABLE #Native ([Description]  nvarchar(255)\n \t\t\t\t\t\t\t\t\t\t, [strFormatted]  nvarchar(255)\n                    , [asDateTime] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgo] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgoDt] datetime\n\t\t\t\t\t\t\t\t\t\t, [timeAgoHowLong] datetime )\n\n--Insert some differnt types of date conversions using native SQL\n--Current Date and Time\nINSERT INTO #Native SELECT 'Current Date and Time', FORMAT (GETDATE(), 'yyyy-MM-dd hh:mm:ss tt'), GETDATE(), GETDATE(),GETDATE(), GETDATE()\n\n--1 hour\nINSERT INTO #Native SELECT 'StartDate  -1 hour', FORMAT (DATEADD(HOUR, -1, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE()), DATEADD(HOUR, -1, GETDATE())\n\n--12 hours\nINSERT INTO #Native SELECT 'StartDate -12 hour', FORMAT (DATEADD(HOUR, -12, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE()), DATEADD(HOUR, -12, GETDATE())\n\n--1 day\nINSERT INTO #Native SELECT 'StartDate -24 hour', FORMAT (DATEADD(HOUR, -24, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE()), DATEADD(HOUR, -24, GETDATE())\n\n--7 days\nINSERT INTO #Native SELECT 'StartDate  -7 days', FORMAT (DATEADD(d, -7, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE()), DATEADD(d, -7, GETDATE())\n\n--30 days\nINSERT INTO #Native SELECT 'StartDate -30 days', FORMAT (DATEADD(d, -30, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE()), DATEADD(d, -30, GETDATE())\nINSERT INTO #Native SELECT 'StartDate  -1 months', FORMAT (DATEADD(MM, -1, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE()), DATEADD(MM, -1, GETDATE())\n\n--3 months (90 days)\nINSERT INTO #Native SELECT 'StartDate -90 days', FORMAT (DATEADD(d, -90, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE()), DATEADD(d, -90, GETDATE())\nINSERT INTO #Native SELECT 'StartDate  -3 months', FORMAT (DATEADD(MM, -3, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE()), DATEADD(MM, -3, GETDATE())\n\n--6 months (180 days)\nINSERT INTO #Native SELECT 'StartDate  -6 months', FORMAT (DATEADD(MM, -6, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE()), DATEADD(MM, -6, GETDATE())\n\n--12 months (240 days)\nINSERT INTO #Native SELECT 'StartDate -12 months', FORMAT (DATEADD(MM, -12, GETDATE()), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE()), DATEADD(MM, -12, GETDATE())\n\n--all data\nINSERT INTO #Native SELECT 'StartDate All Days', FORMAT (convert(datetime,0), 'yyyy-MM-dd hh:mm:ss tt'), convert(datetime,0), convert(datetime,0),convert(datetime,0), convert(datetime,0)\n\n--End Date\nINSERT INTO #Native SELECT 'End Date', FORMAT (GETDATE(), 'yyyy-MM-dd hh:mm:ss tt'), GETDATE(), GETDATE(),GETDATE(), GETDATE()\n\n--Midnight\nINSERT INTO #Native SELECT 'Midnight', FORMAT (DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate())),DATEADD(Day, 0, DATEDIFF(Day, 0, GetDate()))\n\n--Dump out the table for SquaredUp to display on the dashboard\nSELECT * FROM #Native\n"
+													},
+													"signature": "b073bf14532277f0dc848350a0cf105989dd53680b1c9b4cb468740fe9dc7c60f9b0db6d09f8da69bf26a1450be08402+1628272801530"
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"timeAgo": {
+														"template": "{{timeago(value,true,false)}}"
+													},
+													"timeAgoDt": {
+														"template": "{{timeago(value,true,true)}}"
+													},
+													"timeAgoHowLong": {
+														"template": "{{timeago(value)}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"description",
+													"strFormatted",
+													"asDateTime",
+													"timeAgo",
+													"timeAgoDt",
+													"timeAgoHowLong"
+												],
+												"autohide": false,
+												"rowLink": "",
+												"openLinkInNewTab": true
+											}
+										},
+										"title": "SQL GetDate Function",
+										"description": ""
+									},
+									{
+										"_type": "tile/sql-as-table",
+										"config": {
+											"context": {
+												"sign": "true"
+											},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "IF OBJECT_ID(N'tempdb..#SqupPTF') IS NOT NULL DROP TABLE #SqupPTF;\nDECLARE @StartDate AS Datetime\nDECLARE @DateText  as nvarchar(255)\n\n--Create a temporary table to hold our display values\nCREATE TABLE #SqupPTF ([Description]  nvarchar(255)\n \t\t\t\t\t , [strFormatted]  nvarchar(255)\n                     , [asDateTime] datetime\n\t\t\t\t\t , [timeAgo] datetime\n\t\t\t\t\t , [timeAgoDt] datetime\n\t\t\t\t\t , [timeAgoHowLong] datetime )\n\n\n--Using the SquaredUp Page TimeFrame value, set our StartDate parameter\nSET @StartDate = CASE {{timeframe.isoDuration}}\n         WHEN 'PT1H'  THEN DATEADD(HOUR, -1, GETDATE())\n         WHEN 'PT12H' THEN DATEADD(HOUR, -12, GETDATE())\n         WHEN 'PT24H' THEN DATEADD(HOUR, -24, GETDATE())\n         WHEN 'P7D'   THEN DATEADD(d, -7, GETDATE())\n\t\t WHEN 'P30D'  THEN DATEADD(d, -30, GETDATE())\n\t\t WHEN 'P3M'   THEN DATEADD(MM, -3, GETDATE())\n\t\t WHEN 'P6M'   THEN DATEADD(MM, -6, GETDATE())\n\t\t WHEN 'P12M'  THEN DATEADD(MM, -12, GETDATE())\n         ELSE convert(datetime,0)\n      END\nSET\t@DateText = CASE  {{timeframe.isoDuration}}\n         WHEN 'PT1H'  THEN 'StartDate  -1 hour'\n         WHEN 'PT12H' THEN 'StartDate -12 hours'\n         WHEN 'PT24H' THEN 'StartDate -24 hours'\n         WHEN 'P7D'   THEN 'StartDate  -7 days'\n\t\t WHEN 'P30D'  THEN 'StartDate -30 days'\n\t\t WHEN 'P3M'   THEN 'StartDate  -3 months'\n\t\t WHEN 'P6M'   THEN 'StartDate  -6 months'\n\t\t WHEN 'P12M'  THEN 'StartDate -12 months'\n         ELSE 'All Dates'\n      END\n\n--Insert our custom Page TimeFrame into the table\nINSERT INTO #SqupPTF \nSELECT @DateText as [Description]\n     , FORMAT (@StartDate, 'yyyy-MM-dd hh:mm:ss tt') as [strFormatted]\n\t , @StartDate as [asDateTime]\n\t\t , @StartDate as [timeAgo]\n\t\t , @StartDate as [timeAgoDT]\n\t\t , @StartDate as [timeAgoHowLong]\n\n--End Date\nINSERT INTO #SqupPTF SELECT 'End Date', FORMAT (GETDATE(), 'yyyy-MM-dd hh:mm:ss tt'), GETDATE(), GETDATE(),GETDATE(), GETDATE()\n\n--Midnight\nINSERT INTO #SqupPTF SELECT 'Midnight', FORMAT (DATEADD(Day, 0, DATEDIFF(Day, 0, @StartDate)), 'yyyy-MM-dd hh:mm:ss tt'), DATEADD(Day, 0, DATEDIFF(Day, 0, @StartDate)),DATEADD(Day, 0, DATEDIFF(Day, 0, @StartDate)),DATEADD(Day, 0, DATEDIFF(Day, 0, @StartDate)),DATEADD(Day, 0, DATEDIFF(Day, 0, @StartDate))\n\n--Dump out the table for SquaredUp to display on the dashboard\nSELECT * FROM #SqupPTF\n"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"timeAgo": {
+														"template": "{{timeago(value,true,false)}}"
+													},
+													"timeAgoDt": {
+														"template": "{{timeago(value,true,true)}}"
+													},
+													"timeAgoHowLong": {
+														"template": "{{timeago(value)}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"description",
+													"strFormatted",
+													"asDateTime",
+													"timeAgo",
+													"timeAgoDt",
+													"timeAgoHowLong"
+												],
+												"autohide": false
+											}
+										},
+										"title": "Page Time Frame",
+										"description": ""
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
