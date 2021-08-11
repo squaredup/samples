@@ -17,7 +17,7 @@ Also, a SQL Donut Tile to present the Top 8 Service by usage
 ### Start au2mator
 A Web Tile to start the au2mator – Self Service Portal in a new Tab
 
-![image](https://user-images.githubusercontent.com/37934234/129005052-d158c62f-dea7-478a-b15b-e6fccf84a195.png)
+https://github.com/squaredup/samples/blob/28c2f8e46682efe3197e92bb24e4cd182b9c3b67/dashboards/Au2mator/Images/au2mator1.png
 
 The second half is intended to present a quick Overview of our Automation Engines. So we see System Center Orchestrator and Azure Automation Runbook Health in that Area. All of these Tiles are not configured to use the “Timeframe-Option.”
 
@@ -30,7 +30,7 @@ A Quick View with SQL Grid to get a list of all Running and Queued Runbook Jobs
 ### Azure Automation
 Using the Azure Log Analytics to present the Azure Automation Runbook Jobs Sate as a Donut Tile
  
- ![image](https://user-images.githubusercontent.com/37934234/129005106-33ca3271-9c60-4234-9000-e9db372de93e.png)
+ https://github.com/squaredup/samples/blob/28c2f8e46682efe3197e92bb24e4cd182b9c3b67/dashboards/Au2mator/Images/au2mator2.png
  
 ## Au2mator Logo
 - The images folder needs to exist specifically in the IIS root i.e. C:\inetpub\wwwroot and the structure of \logos\ should be maintained (or the dashboard JSON updated to suit)
