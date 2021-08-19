@@ -10,6 +10,8 @@ This dashboard gives an overview of Pingdom checks using PowerShell scripts agai
 - Single Response Time - Line graph for single check
 - Checks Detail - Full check output
 
+Previwe:
+![screenshot](https://github.com/squaredup/samples/blob/7f52a2c034a9df186a654fc7b670223309216bdd/dashboards/Pingdom/Pingdom-PowerShell.png)
 
 ## How to use this dashboard
 ### Setup a PowerShell Profile
