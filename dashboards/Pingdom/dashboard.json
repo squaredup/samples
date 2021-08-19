@@ -91,9 +91,8 @@
 											"display": {
 												"range": "zero-fit",
 												"height": 200,
-												"label": "custom",
-												"showKey": true,
-												"customLabel": "SquaredUp.com"
+												"label": "auto",
+												"showKey": true
 											}
 										},
 										"title": "Single Response Time",
@@ -116,7 +115,7 @@
 												},
 												"split": false,
 												"profile": "Pingdom",
-												"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"Sample API\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours",
+												"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"API1\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours",
 												"__signed": {
 													"payload": {
 														"scriptTimeoutSecs": 54,
@@ -131,7 +130,7 @@
 														},
 														"split": false,
 														"profile": "Pingdom",
-														"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"Sample API\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours"
+														"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"API2\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours"
 													},
 													"signature": ""
 												}
@@ -310,7 +309,7 @@
 																		"customTemplate": ""
 																	}
 																},
-																"title": "Sample API (Function) Last Response Time",
+																"title": "Check Last Response Time",
 																"description": "Requires $checkName"
 															}
 														]
@@ -355,7 +354,7 @@
 																		"customTemplate": ""
 																	}
 																},
-																"title": "Zoom Last Response Time",
+																"title": "Check Last Response Time",
 																"description": "Requires $checkName"
 															}
 														]
