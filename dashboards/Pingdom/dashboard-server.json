@@ -1,0 +1,506 @@
+{
+	"id": "86149c29-24de-4a64-a607-cca218757898",
+	"type": "page/dashboard",
+	"title": "Pingdom",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 50,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "Pingdom",
+												"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results, pull specific fields\n$health = $results.checks | select name,status,lastresponsetime\n\n## Add state property\n$health | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n## For each loop to add health to state property based on status from response\nforeach($check in $health){\n    $check.state = if ($health.status -eq 'up'){'healthy'}\n                elseif ($health.status -eq 'down'){'critical'}\n                else {'warning'}\n}\n\n## Output data for tile\n$health | sort name",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "Pingdom",
+														"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results, pull specific fields\n$health = $results.checks | select name,status,lastresponsetime\n\n## Add state property\n$health | Add-Member -MemberType NoteProperty \"state\" -Value \"\"\n\n## For each loop to add health to state property based on status from response\nforeach($check in $health){\n    $check.state = if ($health.status -eq 'up'){'healthy'}\n                elseif ($health.status -eq 'down'){'critical'}\n                else {'warning'}\n}\n\n## Output data for tile\n$health | sort name"
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 3,
+												"height": 1,
+												"fontsize": 1,
+												"sublabel": "none",
+												"customLabel": "{{properties.name}}<br>Response Time: {{properties.lastresponsetime}} ms"
+											}
+										},
+										"title": "Check Health",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": null
+												},
+												"split": false,
+												"profile": "Pingdom",
+												"script": "## Add your own check ID here (can be found in check details tile below)\n$checkId = ''\n\n## Connection Info\n$uri = \"summary.performance/\"\n$results = Invoke-RestMethod -Uri ($url+$Uri+$checkId) -Headers $headers -Method Get\n\n## Convert results to json and store \n$summary = $results.summary | ConvertTo-Json\n\n## Parse results and adjust key names to suit SquaredUp's needs\n$results.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n}",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": null
+														},
+														"split": false,
+														"profile": "Pingdom",
+														"script": "## Add your own check ID here (can be found in check details tile below)\n$checkId = ''\n\n## Connection Info\n$uri = \"summary.performance/\"\n$results = Invoke-RestMethod -Uri ($url+$Uri+$checkId) -Headers $headers -Method Get\n\n## Convert results to json and store \n$summary = $results.summary | ConvertTo-Json\n\n## Parse results and adjust key names to suit SquaredUp's needs\n$results.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n}"
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 200,
+												"label": "custom",
+												"showKey": true,
+												"customLabel": "SquaredUp.com"
+											}
+										},
+										"title": "Single Response Time",
+										"description": "Requires $checkId in script"
+									},
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "site"
+												},
+												"split": false,
+												"profile": "Pingdom",
+												"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"Sample API\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"timestamp": "timestamp",
+															"value": "value",
+															"grouping": "site"
+														},
+														"split": false,
+														"profile": "Pingdom",
+														"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uri= \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$Uri+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$Uri+$checkId2) -Headers $headers -Method Get\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"SquaredUp.com\"\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value \"Sample API\"\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours"
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true,
+												"customLabel": ""
+											}
+										},
+										"title": "Multiple Response Times",
+										"description": "Requires $checkId1 and $checkId2"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-donut",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"scriptTimeoutSecs": 54,
+																		"scriptIntervalSecs": 56,
+																		"runAsIdentity": "Default",
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "id",
+																			"grouping": "status"
+																		},
+																		"profile": "Pingdom",
+																		"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and group by status\n$results.checks | group-object status \n",
+																		"__signed": {
+																			"payload": {
+																				"scriptTimeoutSecs": 54,
+																				"scriptIntervalSecs": 56,
+																				"runAsIdentity": "Default",
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "id",
+																					"grouping": "status"
+																				},
+																				"profile": "Pingdom",
+																				"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and group by status\n$results.checks | group-object status \n"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "default",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 0
+																	}
+																},
+																"title": "Check Status",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-donut",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"scriptTimeoutSecs": 54,
+																		"scriptIntervalSecs": 56,
+																		"runAsIdentity": "Default",
+																		"_security": "signing",
+																		"dataType": "object",
+																		"columnOverrides": {
+																			"value": "id",
+																			"grouping": "status"
+																		},
+																		"profile": "Pingdom",
+																		"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and group by type\n$results.checks | group-object type \n",
+																		"__signed": {
+																			"payload": {
+																				"scriptTimeoutSecs": 54,
+																				"scriptIntervalSecs": 56,
+																				"runAsIdentity": "Default",
+																				"_security": "signing",
+																				"dataType": "object",
+																				"columnOverrides": {
+																					"value": "id",
+																					"grouping": "status"
+																				},
+																				"profile": "Pingdom",
+																				"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and group by type\n$results.checks | group-object type \n"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "default",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 0
+																	}
+																},
+																"title": "Checks by Type",
+																"description": ""
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"scriptTimeoutSecs": 54,
+																		"scriptIntervalSecs": 56,
+																		"runAsIdentity": "Default",
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "Pingdom",
+																		"script": "## Requires Check name (can be found in check details tile below)\n$checkName = ''\n\n## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results and filter by $checkName\n$results.checks | where {$_.name -eq $checkName} | select lastresponsetime\n",
+																		"__signed": {
+																			"payload": {
+																				"scriptTimeoutSecs": 54,
+																				"scriptIntervalSecs": 56,
+																				"runAsIdentity": "Default",
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "Pingdom",
+																				"script": "## Requires Check name (can be found in check details tile below)\n$checkName = ''\n\n## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results and filter by $checkName\n$results.checks | where {$_.name -eq $checkName} | select lastresponsetime\n"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "ms",
+																		"customTemplate": ""
+																	}
+																},
+																"title": "Sample API (Function) Last Response Time",
+																"description": "Requires $checkName"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"scriptTimeoutSecs": 54,
+																		"scriptIntervalSecs": 56,
+																		"runAsIdentity": "Default",
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "Pingdom",
+																		"script": "## Requires Check name (can be found in check details tile below)\n$checkName = ''\n\n## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results and filter by $checkName\n$results.checks | where {$_.name -eq $checkName} | select lastresponsetime\n",
+																		"__signed": {
+																			"payload": {
+																				"scriptTimeoutSecs": 54,
+																				"scriptIntervalSecs": 56,
+																				"runAsIdentity": "Default",
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "Pingdom",
+																				"script": "## Requires Check name (can be found in check details tile below)\n$checkName = ''\n\n## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Parse results and filter by $checkName\n$results.checks | where {$_.name -eq $checkName} | select lastresponsetime\n"
+																			},
+																			"signature": ""
+																		}
+																	},
+																	"display": {
+																		"fontsize": 90,
+																		"coerceObject": true,
+																		"unit": "ms",
+																		"customTemplate": ""
+																	}
+																},
+																"title": "Zoom Last Response Time",
+																"description": "Requires $checkName"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "tile/powershell-as-bargraph",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "lastresponsetime",
+													"grouping": "name"
+												},
+												"profile": "Pingdom",
+												"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and sort by last response time\n$results.checks | sort lastresponsetime -Descending",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "lastresponsetime",
+															"grouping": "name"
+														},
+														"profile": "Pingdom",
+														"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output results and sort by last response time\n$results.checks | sort lastresponsetime -Descending"
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"range": "percentage",
+												"label": "auto",
+												"sort": null,
+												"customLabel": ""
+											}
+										},
+										"title": "Last Response Time",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 50
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "Pingdom",
+												"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output Results\n$results.checks",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "Pingdom",
+														"script": "## Connection Info\n$uri = \"checks\"\n$results = Invoke-RestMethod -Uri ($url+$Uri) -Headers $headers -Method Get\n\n## Output Results\n$results.checks"
+													},
+													"signature": ""
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"created": {
+														"template": "{{timeago(value)}}"
+													},
+													"lasterrortime": {
+														"template": "{{timeago(value)}}"
+													},
+													"lasttesttime": {
+														"template": "{{timeago(value)}}"
+													},
+													"lastresponsetime": {
+														"template": "{{timeago(value)}}"
+													},
+													"lastdownstart": {
+														"template": "{{timeago(value)}}"
+													},
+													"lastdownend": {
+														"template": "{{timeago(value)}}"
+													}
+												},
+												"customColumns": {},
+												"columns": [
+													"id",
+													"created",
+													"name",
+													"hostname",
+													"resolution",
+													"type",
+													"ipv6",
+													"verify_certificate",
+													"lasterrortime",
+													"lasttesttime",
+													"lastresponsetime",
+													"lastdownstart",
+													"lastdownend",
+													"status"
+												],
+												"autohide": true
+											}
+										},
+										"description": "",
+										"title": "Checks Detail"
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
