@@ -4,10 +4,10 @@ This dashboard gives an overview of Pingdom checks using PowerShell scripts agai
 - Check Health - Status block showcasing health and last response time
 - Check Status - Donut sumarrizing checks by status
 - Checks by Type - Donut summarizing checks by check type
-- Last Response Time - Scalar values for single checks
+- Last Response Time - Scalar values for single checks - Requires $checkName to be added (can be found in checks detail at bottom of dashboard)
 - Last Response Time - Bar of all checks' last response time
-- Multiple Reponse Times - Line graph of two checks (easily adapted to include more than two checks)
-- Single Response Time - Line graph for single check
+- Multiple Reponse Times - Line graph of two checks (easily adapted to include more than two checks) - Requires $checkId1 and $checkId2
+- Single Response Time - Line graph for single check - Requires $checkId in script
 - Checks Detail - Full check output
 
 Previwe:
@@ -29,5 +29,5 @@ $headers = @{
 ### Setup the dashboard
 - Copy the JSON from this project
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
-- Dashboard should display as shown below, with high level insight into the Deployments and Tasks from your OctopusDeploy instance
-
+- Tiles that require config contain a sublabel - They simply require a check name or ID to be added into the scripts (all scripts are commented to show you process)
+- Publish dashboard
