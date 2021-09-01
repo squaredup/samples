@@ -8,7 +8,7 @@ This dashboard gives an overview of Pingdom checks using PowerShell scripts agai
 - Last Response Time - Bar of all checks' last response time
 - Multiple Reponse Times - Line graph of two checks (easily adapted to include more than two checks) - Requires $checkId1 and $checkId2
 - Single Response Time - Line graph for single check - Requires $checkId in script
-- Checks Detail - Full check output
+- Checks Detail - Full check output (some returned data hidden - use the grid columns configuration in the tile to view all)
 
 Preview:
 ![screenshot](Pingdom-PowerShell.png)
