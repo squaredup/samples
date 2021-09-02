@@ -1,0 +1,323 @@
+{
+	"id": "a802ac55-0bda-4c23-bc4a-777c265d3257",
+	"title": "AX 2012 System Inforamtion",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 33.333,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-donut",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "Column1",
+													"grouping": "STATE"
+												},
+												"profile": "AX",
+												"script": "$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX'\n\n#Query to get AIF List and set the critical ones for business Operations\n$SQLQuery = \"\nSELECT count(NAME), \nCASE DEPLOYED WHEN 1 THEN 'Healthy' WHEN 0 THEN 'Critical' ELSE 'Warning' END  as STATE \nFROM AIFPORT\nWHERE NAME Like '%PPO%' or NAME LIKE '%BFA%' or NAME LIKE '%SEPA%'\nGROUP BY DEPLOYED\nUNION \nSELECT count(NAME), \nCASE DEPLOYED WHEN 0 THEN 'Warning' WHEN 1 THEN 'Healthy' ELSE 'Critical' END  as STATE \nFROM AIFPORT\nWHERE NAME NOT Like '%PPO%' or NAME NOT LIKE '%BFA%' or NAME NOT LIKE '%SEPA%'\nGROUP BY DEPLOYED\nORDER BY STATE\n\"  \n  \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd\n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows\n$Results = @($SQLResults)\n\n$Results  ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"sizeMode": "default",
+												"legendScale": 1,
+												"showLegend": true,
+												"legendPosition": "right",
+												"palette": 3
+											}
+										},
+										"description": "",
+										"title": "AIF Services"
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-scalar",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "scalar",
+												"profile": "AX",
+												"script": "$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX'\n\n$SQLQuery = \"\nselect count(A.USERID) as NumberUsers from SYSCLIENTSESSIONS A inner join USERINFO B on A.USERID = B.ID inner join SYSSERVERSESSIONS C on A.SERVERID = C.SERVERID where A.STATUS != 0 and A.ClientType = 0\n\"  \n  \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd \n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows  | Select * -ExcludeProperty RowError, RowState, Table, ItemArray, HasErrors\n$Results = @($SQLResults)\n\n$Results ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"fontsize": 90,
+												"coerceObject": true,
+												"unit": "",
+												"customTemplate": ""
+											}
+										},
+										"title": "Active Users",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 33.33334921391139
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-bargraph",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "Value",
+													"grouping": "COMPANY"
+												},
+												"resultsLimit": 100,
+												"profile": "AX",
+												"script": "\n\n$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX' \n\n$SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') GROUP BY [COMPANY]\"\nswitch ($timeFrame) {\n    \"last1Hour\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(hh, -1, GetDate())) GROUP BY [COMPANY]\"  }\n    \"last12Hours\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(hh, -12, GetDate())) GROUP BY [COMPANY]\"}\n    \"last24Hours\" {$SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(hh, -24, GetDate())) GROUP BY [COMPANY]\"}\n    \"last7Days\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(d, -7, GetDate())) GROUP BY [COMPANY]\" }\n    \"last30Days\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(d, -30, GetDate())) GROUP BY [COMPANY]\" }  \n    \"last3Months\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(m, -3, GetDate())) GROUP BY [COMPANY]\" }  \n    \"last6Months\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(m, -6, GetDate())) GROUP BY [COMPANY]\"}\n    \"last12Months\" { $SQLQuery = \"SELECT Count([CAPTION]) as Value ,[COMPANY] FROM [AX].[dbo].[BATCHJOB] where (status = '3') and (startdatetime >= DATEADD(m, -12, GetDate())) GROUP BY [COMPANY]\" }\n}\n \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd\n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows\n$Results = @($SQLResults)\n\n$Results  ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"range": "zero-fit",
+												"label": "custom",
+												"multipleColours": true,
+												"customLabel": "Legal Entity - {{properties.COMPANY}}"
+											}
+										},
+										"title": "Batch Job failures",
+										"description": "Page Time Frame"
+									}
+								]
+							}
+						],
+						"width": 33.333
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "AX",
+												"script": "$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX'\n\n$SQLQuery = \"\nSELECT NAME, \nCASE DEPLOYED WHEN 1 THEN 'Healthy' WHEN 0 THEN 'Critical' ELSE 'Warning' END  as STATE \nFROM AIFPORT\nWHERE NAME Like '%PPO%' or NAME LIKE '%BFA%' or NAME LIKE '%SEPA%'\nUNION \nSELECT NAME, \nCASE DEPLOYED WHEN 1 THEN 'Healthy' WHEN 0 THEN 'Warning' ELSE 'Critical' END  as STATE \nFROM AIFPORT\nWHERE NAME NOT Like '%PPO%' or NAME NOT LIKE '%BFA%' or NAME NOT LIKE '%SEPA%'\n\"  \n  \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd\n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows\n$Results = @($SQLResults)\n\n$Results  ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"label": "custom",
+												"sublabel": "none",
+												"drilldownTemplate": "",
+												"customLabel": "{{properties.NAME}}",
+												"zoom": "column"
+											}
+										},
+										"title": "AIF Services List",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 28.565
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"script": "\n$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX'\n\nInvoke-Sqlcmd  -ServerInstance $ServerInstance -Database $DatabaseName -Query \"select DISTINCT ME.Name, Config.EXPIRATION, Layer.Name as LayerName from [AX_Model].[DBO].[ModelElement] ME\nleft join [AX_Model].[DBO].[ModelElementData] MED on ME.ElementHandle = MED.ElementHandle\nleft join [AX].[dbo].[SYSCONFIG] Config on config.ID = ME.AxId\nleft join [AX_Model].[DBO].[Layer] layer on layer.Id = MED.LayerId\nwhere ME.ElementType = 15         -- Filter on License Code object only\nand MED.LayerId > 0     \"   ",
+												"profile": "AX",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {},
+												"customColumns": {},
+												"columns": [
+													"Name",
+													"EXPIRATION",
+													"LayerName"
+												],
+												"autohide": true
+											}
+										},
+										"title": "Licenses Information",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "AX",
+												"script": "$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n\n$DatabaseName='AX'\n\n$SQLQuery = \"\nSELECT TOP 20 [NUMBERSEQUENCE] AS [Number Sequence]\n        , (CONVERT(REAL,([NEXTREC]-[LOWEST]))/(CONVERT(REAL,[HIGHEST]-[LOWEST])))*100  AS [Percent Used]\n      ,[HIGHEST]\n      ,[NEXTREC]\n      ,[TXT]\n      ,[BLOCKED]\n      ,[FORMAT]\n      ,[CONTINUOUS],\n      CASE \n       WHEN (CONVERT(REAL,([NEXTREC]-[LOWEST]))/(CONVERT(REAL,[HIGHEST]-[LOWEST])))*100 < 80 THEN 'Good'\n       WHEN (CONVERT(REAL,([NEXTREC]-[LOWEST]))/(CONVERT(REAL,[HIGHEST]-[LOWEST])))*100 > 95 THEN 'Critical'       \nEND as Status\n  FROM [AX].[dbo].[NUMBERSEQUENCETABLE]\n  order by [Percent Used] desc\n\n\"  \n  \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd\n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows\n$Results = @($SQLResults)\n\n$Results  ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"custom_column_1": {
+														"displayName": "Status",
+														"template": "{{value.Status}}"
+													}
+												},
+												"customColumns": {
+													"custom_column_1": ""
+												},
+												"columns": [
+													"custom_column_1",
+													"Number Sequence",
+													"Percent Used",
+													"HIGHEST",
+													"NEXTREC",
+													"TXT",
+													"FORMAT"
+												],
+												"autohide": false
+											}
+										},
+										"title": "Number Sequences",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 41.249
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-grid",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "inherit"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "AX",
+												"script": "\n$ServerInstance= $dbAlias+'.'+$AppCode+'.'+$env+'.'+$dc+'.'+$Domain+','+$DBPortNumber\n$DatabaseName='AX'\n\n$SQLQuery = \"\nselect B.NETWORKALIAS, B.NETWORKDOMAIN, A.USERID, B.NAME, A.CLIENTTYPE, A.STATUS, A.LOGINDATETIME, A.SESSIONID,A.CLIENTCOMPUTER, A.SERVERID, C.AOSID, C.INSTANCE_NAME from SYSCLIENTSESSIONS A inner join USERINFO B on A.USERID = B.ID inner join SYSSERVERSESSIONS C on A.SERVERID = C.SERVERID where A.STATUS != 0 and A.ClientType = 0 order by Name asc\n\"  \n  \n  #Create a Connection to SQL Server\n$sqlConn = New-Object System.Data.SqlClient.SqlConnection\n$sqlConn.ConnectionString = \"Server=$ServerInstance;Integrated Security=true;Initial Catalog=$DatabaseName\"\n$sqlConn.Open()\n\n#Get our command pipeline set up\n$sqlcmd = $sqlConn.CreateCommand()\n$sqlcmd = New-Object System.Data.SqlClient.SqlCommand\n$sqlcmd.Connection = $sqlConn\n$sqlcmd.CommandText = $SQLQuery\n\n#Create the Data Adapter\n$adp = New-Object System.Data.SqlClient.SqlDataAdapter $sqlcmd \n\n#Create and fill the DataSet\n$ds = New-Object System.Data.DataSet\n$t = $adp.Fill($ds)\n\n#Save our SQL Results\n$SQLResults = $ds.Tables[0].Rows  | Select * -ExcludeProperty RowError, RowState, Table, ItemArray, HasErrors\n$Results = @($SQLResults)\n\n$Results ",
+												"runAsIdentity": "Default"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"NAME": {
+														"displayName": "USER"
+													},
+													"CLIENTCOMPUTER": {
+														"displayName": "CLIENT"
+													},
+													"AOSID": {
+														"displayName": "AOS"
+													},
+													"custom_column_1": {
+														"displayName": "TYPE",
+														"template": "{{#if value.match(/TS25/g)}} RemoteApp {{elseif value.match(/TS1/g) }} <span style=\"color: #D20B05;\">RDS Full</span>  {{/if}}"
+													}
+												},
+												"customColumns": {
+													"custom_column_1": "CLIENTCOMPUTER"
+												},
+												"columns": [
+													"NAME",
+													"CLIENTCOMPUTER",
+													"AOSID",
+													"custom_column_1"
+												],
+												"autohide": true
+											}
+										},
+										"title": "Active Users List",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 30.204
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"match": {
+		"type": "scom/object",
+		"groupIds": "7e590e5a-41de-0821-dd5b-374a65495561"
+	},
+	"rank": -4000,
+	"name": "SYSTEM INFORMATION"
+}
