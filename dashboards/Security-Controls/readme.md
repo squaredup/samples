@@ -25,6 +25,8 @@ For each scoped applications you will see :
 ![screenshot](IT-Auditing-dashboard.png)
 
 
-Red (Critical) -  means there is an issue and the account in red should not have Admins rights
-Orange (Warning)  - for IT to review, might be a reason for temporary Admin rights
-Green (Healthy) - all good :) 
+- ![screenshot](images/critical.png) - Red (Critical) -  means there is an issue and the account in red should not have Admins rights
+- ![screenshot](images/warning.png) - Orange (Warning)  - for IT to review, might be a reason for temporary Admin rights
+- ![screenshot](images/healthy.png) - Green (Healthy) - all good :) 
+
+
