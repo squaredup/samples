@@ -1,5 +1,5 @@
-# Label printers stauts Dashboard
-This dashboard gives an overview of your Label Printers or any other printers) installed on a list of servers
+# Label printers statuses Dashboard
+This dashboard gives an overview of your Label Printers (or any other printers) installed on a list of servers
 
 
 ## How to use this dashboard
