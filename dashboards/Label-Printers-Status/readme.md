@@ -23,3 +23,9 @@ This dashboard gives an overview of your Label Printers (or any other printers) 
 
 
 
+### And voila
+![screenshot](Label-printer-status-dashboard.png)
+
+
+
+
