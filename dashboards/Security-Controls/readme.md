@@ -1,5 +1,6 @@
 # IT Security Controls audits Dashboard
-This dashboard gives a quick way to identify Non compliant controls for accounts with high privileges.
+This dashboard gives a quick way to identify Non compliant controls for accounts with high privileges. 
+
 
 For each scoped applications you will see :	
 - Server controls (local Administrators)
@@ -10,7 +11,7 @@ For each scoped applications you will see :
 ### Setup a PowerShell profil
 - Navigate to System > PowerShell
 - Create new "Audit" Profile with some variables
-![screenshot](images/Audites- dashboard-settings.png)
+![screenshot](images/Audits-dashboard-settings.png)
 
 ### Setup the dashboard
 - Copy the JSON from this project
