@@ -1,0 +1,724 @@
+{
+	"id": "7dc52200-e884-4fce-a30d-85ad8de3cf3b",
+	"type": "page/dashboard",
+	"title": "Jira Health",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 50,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/web-content",
+										"config": {
+											"context": {},
+											"source": {},
+											"display": {
+												"height": 148,
+												"zoom": 4,
+												"border": false,
+												"scrolling": false,
+												"refresh": false,
+												"src": "",
+												"content": "<h1><center>Next Release</center><h1>"
+											}
+										},
+										"title": "",
+										"description": ""
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-scalar",
+																"config": {
+																	"context": {
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"provider": "Jira",
+																		"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate&maxResults=1",
+																		"keypath": "values.0.name",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"provider": "Jira",
+																				"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate&maxResults=1",
+																				"keypath": "values.0.name"
+																			},
+																			"signature": "81f61eb223930aed4ebdca8456730a576d1e5d8386c43b21a252a822deb3d6642732c0bf2e9fe2b121a560f3fc5c5dfa+1630585828664"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 70,
+																		"coerceObject": false,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "",
+																"title": "Next Release"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-scalar",
+																"config": {
+																	"context": {
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"provider": "Jira",
+																		"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate&maxResults=1",
+																		"keypath": "values.0.releaseDate",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"provider": "Jira",
+																				"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate&maxResults=1",
+																				"keypath": "values.0.releaseDate"
+																			},
+																			"signature": "d24d1c5987645408e645f7f7d617d352672d4e6825f10592db40879040481205a89a2ed9ff88bfc85fd43639b2253c89+1630585828664"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 70,
+																		"coerceObject": false,
+																		"unit": "",
+																		"customTemplate": ""
+																	}
+																},
+																"description": "",
+																"title": ""
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "tile/azure-resources-webapi-table",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "Jira",
+												"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate",
+												"keypath": "values",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "Jira",
+														"url": "project/SQ/version/?selectedItem=com.atlassian.jira.jira-projects-plugin%3Arelease-page&status=unreleased&expand=issuesstatus&orderBy=startDate",
+														"keypath": "values"
+													},
+													"signature": "a7e833534c94ee578af3d9dcf65685885d230aa52f5f4b3c67e728d2cafa297a124d7bcd676621a7776bc0c4ca796358+1630585828664"
+												}
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"custom_column_1": {
+														"displayName": "To Do",
+														"template": "{{value.issuesStatusForFixVersion.toDo}}"
+													},
+													"custom_column_2": {
+														"displayName": "In Progress",
+														"template": "{{value.issuesStatusForFixVersion.inProgress}}"
+													}
+												},
+												"customColumns": {
+													"custom_column_1": "",
+													"custom_column_2": ""
+												},
+												"columns": [
+													"name",
+													"startDate",
+													"releaseDate",
+													"custom_column_1",
+													"custom_column_2"
+												],
+												"autohide": false,
+												"rowLink": "https://squaredup-eng.atlassian.net/browse/SQ/fixforversion/{{id}}",
+												"openLinkInNewTab": true
+											}
+										},
+										"description": "",
+										"title": "Roadmap"
+									},
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 59.442,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-bargraph",
+																"config": {
+																	"context": {
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "count",
+																			"isCategoryOptional": false,
+																			"values": [],
+																			"category": "{{fields.status.name}}"
+																		},
+																		"provider": "Jira",
+																		"url": "search?jql=project%20%3D%20sq%20AND%20fixversion%20in%20unreleasedVersions()%20AND%20type%3dEpic%20order%20by%20status%20desc",
+																		"keypath": "issues",
+																		"desc": true,
+																		"topn": 10,
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "count",
+																					"isCategoryOptional": false,
+																					"values": [],
+																					"category": "{{fields.status.name}}"
+																				},
+																				"provider": "Jira",
+																				"url": "search?jql=project%20%3D%20sq%20AND%20fixversion%20in%20unreleasedVersions()%20AND%20type%3dEpic%20order%20by%20status%20desc",
+																				"keypath": "issues",
+																				"desc": true,
+																				"topn": 10
+																			},
+																			"signature": "37076bfb2d2274e0cfaabfe7fb8c23df74c72d1e85ee6f4401dcfa00a0c2f4de95ab37cf9bc925481a2993a4603f11f0+1630585828664"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"label": "auto",
+																		"sort": {
+																			"order": "desc",
+																			"property": "values",
+																			"option": "values"
+																		},
+																		"multipleColours": true
+																	}
+																},
+																"description": "",
+																"title": "Epic Status"
+															},
+															{
+																"_type": "tile/powershell-as-scalar",
+																"config": {
+																	"context": {
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"scriptTimeoutSecs": 54,
+																		"scriptIntervalSecs": 56,
+																		"runAsIdentity": "Default",
+																		"_security": "signing",
+																		"dataType": "scalar",
+																		"profile": "Jira",
+																		"script": "#Total divided by closed + merged\n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq and fixversion in unreleasedversions() order by created asc&startAt=0&maxResults=100\" -Headers $Headers\n$totalBugs = $jsonFrag.total \n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND fixversion in unreleasedversions() and status in (closed, merged)  order by created asc&startAt=0&maxResults=100\" -Headers $Headers\n$completedbugs = $jsonFrag.total \n$results = ($completedbugs/$totalbugs)*100\n$results",
+																		"__signed": {
+																			"payload": {
+																				"scriptTimeoutSecs": 54,
+																				"scriptIntervalSecs": 56,
+																				"runAsIdentity": "Default",
+																				"_security": "signing",
+																				"dataType": "scalar",
+																				"profile": "Jira",
+																				"script": "#Total divided by closed + merged\n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq and fixversion in unreleasedversions() order by created asc&startAt=0&maxResults=100\" -Headers $Headers\n$totalBugs = $jsonFrag.total \n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND fixversion in unreleasedversions() and status in (closed, merged)  order by created asc&startAt=0&maxResults=100\" -Headers $Headers\n$completedbugs = $jsonFrag.total \n$results = ($completedbugs/$totalbugs)*100\n$results"
+																			},
+																			"signature": "b743f3b5602f07920c33a066ccd4daefa3ae5bc9de9b7716742708c676de073d960f609b60b5af783402d6c8ddfbcf48+1630585828664"
+																		}
+																	},
+																	"display": {
+																		"fontsize": 100,
+																		"coerceObject": true,
+																		"unit": "",
+																		"customTemplate": "{{Math.round(value)}}%"
+																	}
+																},
+																"description": "Issues in Closed or Merged",
+																"title": "Release completion"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 40.558,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/azure-resources-webapi-donut",
+																"config": {
+																	"context": {
+																		"scope": {
+																			"type": "specific"
+																		}
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"method": "GET",
+																		"columns": {
+																			"aggregation": "count",
+																			"isCategoryOptional": false,
+																			"values": [],
+																			"category": "{{fields.status.name}}"
+																		},
+																		"provider": "Jira",
+																		"url": "search?jql=project%20%3D%20sq%20AND%20fixversion%20in%20unreleasedVersions()%20order%20by%20priority%20desc",
+																		"keypath": "issues",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"method": "GET",
+																				"columns": {
+																					"aggregation": "count",
+																					"isCategoryOptional": false,
+																					"values": [],
+																					"category": "{{fields.status.name}}"
+																				},
+																				"provider": "Jira",
+																				"url": "search?jql=project%20%3D%20sq%20AND%20fixversion%20in%20unreleasedVersions()%20order%20by%20priority%20desc",
+																				"keypath": "issues"
+																			},
+																			"signature": "ae5baa4dbe070872f4fb79cff6570aab1530c21e2769f7cc0bac5e44363b52d60aa4919398f3878d1d1e438ad29b700b+1630585828664"
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "fill",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 0
+																	}
+																},
+																"title": "Task status",
+																"description": "All Jira issues"
+															}
+														]
+													}
+												]
+											}
+										]
+									},
+									{
+										"_type": "tile/azure-resources-webapi-status",
+										"config": {
+											"context": {
+												"sign": true,
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"healthTransform": {
+													"healthTemplate": "{{fields.customfield_10032.value}}",
+													"healthyValue": null,
+													"warningValue": null,
+													"criticalValue": null,
+													"states": [
+														{
+															"key": "Healthy",
+															"value": "Low"
+														},
+														{
+															"key": "Healthy",
+															"value": "Logged"
+														},
+														{
+															"key": "Warning",
+															"value": "Medium"
+														},
+														{
+															"key": "Critical",
+															"value": "Critical"
+														},
+														{
+															"key": "Critical",
+															"value": "High"
+														}
+													]
+												},
+												"provider": "Jira",
+												"url": "search?jql=project%20%3D%20sq%20and%20type%20%3D%20bug%20and%20fixversion%20in%20unreleasedVersions()%20and%20fixversion%20!%3D%20test",
+												"keypath": "issues",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"healthTransform": {
+															"healthTemplate": "{{fields.customfield_10032.value}}",
+															"healthyValue": null,
+															"warningValue": null,
+															"criticalValue": null,
+															"states": [
+																{
+																	"key": "Healthy",
+																	"value": "Low"
+																},
+																{
+																	"key": "Healthy",
+																	"value": "Logged"
+																},
+																{
+																	"key": "Warning",
+																	"value": "Medium"
+																},
+																{
+																	"key": "Critical",
+																	"value": "Critical"
+																},
+																{
+																	"key": "Critical",
+																	"value": "High"
+																}
+															]
+														},
+														"provider": "Jira",
+														"url": "search?jql=project%20%3D%20sq%20and%20type%20%3D%20bug%20and%20fixversion%20in%20unreleasedVersions()%20and%20fixversion%20!%3D%20test",
+														"keypath": "issues"
+													},
+													"signature": "80f09e2982c7f6dd10b016af4f05df6219722d93c3c2b86baa6e16e502d1353dba338f3fe53658bb88fcfea8a02fb65a+1630585828664"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"sublabel": "none",
+												"drilldownTemplate": "https://squaredup-eng.atlassian.net/browse/{{properties.key}}",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												},
+												"customLabel": "{{properties.key}}:  {{properties.fields.summary}}",
+												"zoom": "list"
+											}
+										},
+										"title": "Bug fixes in the next release",
+										"description": ""
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/web-content",
+										"config": {
+											"context": {},
+											"source": {},
+											"display": {
+												"height": 148,
+												"zoom": 4,
+												"border": false,
+												"scrolling": false,
+												"refresh": false,
+												"src": "",
+												"content": "<h1><center>Project Status</center><h1>"
+											}
+										},
+										"title": "",
+										"description": ""
+									},
+									{
+										"_type": "tile/azure-resources-webapi-table",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"_security": "signing",
+												"method": "GET",
+												"provider": "Jira",
+												"url": "search?jql=type%20%3D%20epic%20and%20project%20%3D%20sq%20and%20status%20%3D%20open%20order%20by%20rank%20&maxResults=10",
+												"keypath": "issues"
+											},
+											"display": {
+												"showHeaders": true,
+												"columnOverrides": {
+													"key": {
+														"displayName": "Key"
+													},
+													"custom_column_1": {
+														"displayName": "Summary",
+														"template": "{{value.fields.summary}}"
+													},
+													"fields": {
+														"displayName": "Reporter",
+														"template": "{{value.reporter.displayName}}"
+													}
+												},
+												"customColumns": {
+													"custom_column_1": ""
+												},
+												"columns": [
+													"key",
+													"custom_column_1",
+													"fields"
+												],
+												"autohide": false,
+												"rowLink": "https://squaredup-eng.atlassian.net/browse/{{key}}",
+												"openLinkInNewTab": true
+											}
+										},
+										"title": "Backlog Top 10 (Epics)",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"timestamp": "Date",
+													"value": "createdcount",
+													"grouping": null
+												},
+												"split": true,
+												"profile": "Jira",
+												"script": "$pagination = 0\n$dayAgo = 90\n$createdShort = @()\n$resolutionShort = @()\n\n#count of bugs for the last period - this works regardless of how many bugs returned\n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers\n$totalBugs = $jsonFrag.total\n\n#Count each bug per date\n$results = Do {\n    $jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers \n        \n        #use only zero hh m s\n        #Created is a list of dates, but how compare against each date?\n        #$created = $jsonFrag.issues.fields.created | get-date -format d\n        $created = $jsonFrag.issues.fields.created \n        foreach ($createdDate in $created) {\n            $createdDate = Get-Date $createdDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $createdShort += $createdDate\n        }\n        \n        $resolution = $jsonFrag.issues.fields.resolutiondate\n        foreach ($resolutionDate in $resolution) {\n            if ($null -ne $resolutiondate) {\n            $resolutionDate = Get-Date $resolutionDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $resolutionShort += $resolutionDate\n            }\n        }\n            \n        #Build array for each date whether bug exists or not\n        #1..$daysago | ForEach \n        For ($i=0; $i -le $dayAgo; $i++)\n        {\n            $date = (Get-Date -hour 00 -Minute 00 -Second 00 -Millisecond 000).AddDays(-$i)\n                \n            #Count each match of date to created date\n            $createdCount = ($createdShort | where-object {$_ -eq $date}).count\n            $resolvedCount = ($resolutionShort | where-object {$_ -eq $date}).count\n\n            New-Object -TypeName PSObject -Property @{\n                Date = $date\n                createdcount = [int]$createdCount\n                resolvedcount = [int]$resolvedCount\n\n            }\n        }\n        \n        #Build object\n    $pagination += $pagination + 100\n} While ($totalBugs -gt $pagination)\n      \n$results",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 56,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"timestamp": "Date",
+															"value": "createdcount",
+															"grouping": null
+														},
+														"split": true,
+														"profile": "Jira",
+														"script": "$pagination = 0\n$dayAgo = 90\n$createdShort = @()\n$resolutionShort = @()\n\n#count of bugs for the last period - this works regardless of how many bugs returned\n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers\n$totalBugs = $jsonFrag.total\n\n#Count each bug per date\n$results = Do {\n    $jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers \n        \n        #use only zero hh m s\n        #Created is a list of dates, but how compare against each date?\n        #$created = $jsonFrag.issues.fields.created | get-date -format d\n        $created = $jsonFrag.issues.fields.created \n        foreach ($createdDate in $created) {\n            $createdDate = Get-Date $createdDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $createdShort += $createdDate\n        }\n        \n        $resolution = $jsonFrag.issues.fields.resolutiondate\n        foreach ($resolutionDate in $resolution) {\n            if ($null -ne $resolutiondate) {\n            $resolutionDate = Get-Date $resolutionDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $resolutionShort += $resolutionDate\n            }\n        }\n            \n        #Build array for each date whether bug exists or not\n        #1..$daysago | ForEach \n        For ($i=0; $i -le $dayAgo; $i++)\n        {\n            $date = (Get-Date -hour 00 -Minute 00 -Second 00 -Millisecond 000).AddDays(-$i)\n                \n            #Count each match of date to created date\n            $createdCount = ($createdShort | where-object {$_ -eq $date}).count\n            $resolvedCount = ($resolutionShort | where-object {$_ -eq $date}).count\n\n            New-Object -TypeName PSObject -Property @{\n                Date = $date\n                createdcount = [int]$createdCount\n                resolvedcount = [int]$resolvedCount\n\n            }\n        }\n        \n        #Build object\n    $pagination += $pagination + 100\n} While ($totalBugs -gt $pagination)\n      \n$results"
+													},
+													"signature": "e2f25a24f9e0d5580ec3a9dc388ab9282ff993fdabdd8d462d08d29af3af737be15e69dd7314fd65bd340e2ac33be9e1+1630585828664"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true
+											}
+										},
+										"title": "Bugs over time",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"timestamp": "Date",
+													"value": "trendcount",
+													"grouping": null
+												},
+												"split": true,
+												"profile": "Jira",
+												"script": "## Bugs created per day\n## Bugs resolved per day\n## Bug total trendline - Total open bugs on StartofDay(-time frame eg 60days)\n$dayAgo = 90\n$pagination = 0\n$createdShort = @()\n$resolutionShort = @()\n\n#count all open bugs\n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and status not in (closed, merged, rejected) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers\n$trendcount = $jsonFrag.total\n\n#count of bugs for the last period \n$jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers\n$totalBugs = $jsonFrag.total\n\n\n#Count each bug per date\n$results = Do {\n    $jsonFrag = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and created > startofday(-$dayAgo) order by created asc&startAt=$pagination&maxResults=100\" -Headers $Headers \n        \n        #use only zero hh m s\n        #Created is a list of dates, but how compare against each date?\n        #$created = $jsonFrag.issues.fields.created | get-date -format d\n        $created = $jsonFrag.issues.fields.created \n        foreach ($createdDate in $created) {\n            $createdDate = Get-Date $createdDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $createdShort += $createdDate\n        }\n        \n        $resolution = $jsonFrag.issues.fields.resolutiondate\n        foreach ($resolutionDate in $resolution) {\n            if ($null -ne $resolutiondate) {\n            $resolutionDate = Get-Date $resolutionDate -hour 00 -Minute 00 -Second 00 -Millisecond 000\n            $resolutionShort += $resolutionDate\n            }\n        }\n            \n        #Build array for each date whether bug exists or not\n        #1..$daysago | ForEach \n        For ($i=0; $i -le $dayAgo; $i++)\n        {\n            $date = (Get-Date -hour 00 -Minute 00 -Second 00 -Millisecond 000).AddDays(-$i)\n                \n            #Count each match of date to created date\n            $createdCount = ($createdShort | where-object {$_ -eq $date}).count\n            $resolvedCount = ($resolutionShort | where-object {$_ -eq $date}).count\n            $trendCount = $trendcount - $createdCount + $resolvedCount\n\n            New-Object -TypeName PSObject -Property @{\n                Date = $date\n                #createdcount = [int]$createdCount\n                #resolvedcount = [int]$resolvedCount\n                trendcount = [int]$trendcount\n\n            }\n        }\n        \n        #Build object\n    $pagination += $pagination + 100\n} While ($totalBugs -gt $pagination)\n      \n$results"
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true,
+												"customLabel": ""
+											}
+										},
+										"title": "Bug trend ",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-bargraph",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 1196,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "Value",
+													"grouping": "Key"
+												},
+												"profile": "Jira",
+												"script": "$pagination = 0\n$objTotal = @()\n\nDo {\n\t$json = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and status not in (merged, closed) order by created desc&startAt=$pagination&maxResults=50\" -Headers $Headers\n    $bugCount = $json.total\n    foreach ($issue in $json.issues) {\n    \t$obj = New-Object -TypeName psobject\n        $obj | Add-Member -MemberType NoteProperty -Name key -Value $issue.key\n        foreach ($field in $issue.fields) {\n        \tif ($null -eq $field.customfield_10031.value) {$severity='NotSet'}\n\t\t\telse { $severity = $field.customfield_10031.value }\n\t\t$obj | Add-Member -MemberType NoteProperty -Name severity -Value $severity\n    \t}\n    \t$objTotal += $obj\n\t}\n\t$pagination += 50\n} While ($bugCount -gt $pagination)\n\n$severity = [Ordered]@{}\n$severity.add('S1', 'Critical')\n$severity.add('S2', 'High')\n$severity.add('S3', 'Medium')\n$severity.add('S4', 'Low')\n$severity.add('NotSet', 'NotSet')\n$t = $objTotal.severity | Group-Object -NoElement | Sort-Object Name\n$results = @()\n\tforeach ($code in $severity.GetEnumerator()) {\n\tforeach($s in $t.GetEnumerator()){\n    \tif ($code.Name -eq $s.Name) {\n        \t$r = $s.Count\n        }\n    }\n    if ($null -eq $r){$r=0}\n    $temp = New-Object -TypeName psobject\n    $temp | Add-Member -MemberType NoteProperty -Name Key -Value $code.Name\n    $temp | Add-Member -MemberType NoteProperty -Name Desc -Value $code.value\n    $temp | Add-Member -MemberType NoteProperty -Name Value -Value $r -Force\n    $results += $temp\n    }\n$results",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 1196,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "Value",
+															"grouping": "Key"
+														},
+														"profile": "Jira",
+														"script": "$pagination = 0\n$objTotal = @()\n\nDo {\n\t$json = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and status not in (merged, closed) order by created desc&startAt=$pagination&maxResults=50\" -Headers $Headers\n    $bugCount = $json.total\n    foreach ($issue in $json.issues) {\n    \t$obj = New-Object -TypeName psobject\n        $obj | Add-Member -MemberType NoteProperty -Name key -Value $issue.key\n        foreach ($field in $issue.fields) {\n        \tif ($null -eq $field.customfield_10031.value) {$severity='NotSet'}\n\t\t\telse { $severity = $field.customfield_10031.value }\n\t\t$obj | Add-Member -MemberType NoteProperty -Name severity -Value $severity\n    \t}\n    \t$objTotal += $obj\n\t}\n\t$pagination += 50\n} While ($bugCount -gt $pagination)\n\n$severity = [Ordered]@{}\n$severity.add('S1', 'Critical')\n$severity.add('S2', 'High')\n$severity.add('S3', 'Medium')\n$severity.add('S4', 'Low')\n$severity.add('NotSet', 'NotSet')\n$t = $objTotal.severity | Group-Object -NoElement | Sort-Object Name\n$results = @()\n\tforeach ($code in $severity.GetEnumerator()) {\n\tforeach($s in $t.GetEnumerator()){\n    \tif ($code.Name -eq $s.Name) {\n        \t$r = $s.Count\n        }\n    }\n    if ($null -eq $r){$r=0}\n    $temp = New-Object -TypeName psobject\n    $temp | Add-Member -MemberType NoteProperty -Name Key -Value $code.Name\n    $temp | Add-Member -MemberType NoteProperty -Name Desc -Value $code.value\n    $temp | Add-Member -MemberType NoteProperty -Name Value -Value $r -Force\n    $results += $temp\n    }\n$results"
+													},
+													"signature": "bc786058414a72ef396bc21fef3294c53f214856fb07c78c03d0efb28c04788f3653c434a2ebb082db532111fcd996ef+1630585828664"
+												}
+											},
+											"display": {
+												"range": "percentage",
+												"label": "auto",
+												"sort": null,
+												"rangemin": 0,
+												"rangemax": 50,
+												"multipleColours": true,
+												"customLabel": ""
+											}
+										},
+										"title": "Bug Severity",
+										"description": ""
+									},
+									{
+										"_type": "tile/powershell-as-bargraph",
+										"config": {
+											"context": {
+												"scope": {
+													"type": "specific"
+												}
+											},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 1196,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"value": "Value",
+													"grouping": "Key"
+												},
+												"profile": "Jira",
+												"script": "Do {\n    $json = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and status not in (merged, closed) order by created desc&startAt=$pagination&maxResults=100\" -Headers $Headers\n    $objTotal += $json.issues.fields.priority.name | Group-Object \n    $bugCount = $json.total\n    $pagination += 100\n    #$results = $temp + $results\n} While ($bugCount -gt $pagination)\n\n$priority = [Ordered]@{}\n$priority.add('Critical', 'Critical')\n$priority.add('High', 'High')\n$priority.add('Medium', 'Medium')\n$priority.add('Low', 'Low')\n$priority.add('Logged', 'NotSet')\n\n$results = @()\n\t\nforeach ($code in $priority.GetEnumerator()) {\n\tforeach($s in $objtotal.GetEnumerator()){\n    \tif ($code.Name -eq $s.Name) {\n        \t$r = $r+$s.Count\n        }\n    }\n    if ($null -eq $r){$r=0}\n    $temp = New-Object -TypeName psobject\n    $temp | Add-Member -MemberType NoteProperty -Name Key -Value $code.Name\n    $temp | Add-Member -MemberType NoteProperty -Name Value -Value $r -Force\n    $results += $temp\n    $r=0\n    }\n$results",
+												"__signed": {
+													"payload": {
+														"scriptTimeoutSecs": 54,
+														"scriptIntervalSecs": 1196,
+														"runAsIdentity": "Default",
+														"_security": "signing",
+														"dataType": "object",
+														"columnOverrides": {
+															"value": "Value",
+															"grouping": "Key"
+														},
+														"profile": "Jira",
+														"script": "Do {\n    $json = Invoke-RestMethod -Uri \"https://squaredup-eng.atlassian.net/rest/api/3/search?jql=project = sq AND type = Bug and status not in (merged, closed) order by created desc&startAt=$pagination&maxResults=100\" -Headers $Headers\n    $objTotal += $json.issues.fields.priority.name | Group-Object \n    $bugCount = $json.total\n    $pagination += 100\n    #$results = $temp + $results\n} While ($bugCount -gt $pagination)\n\n$priority = [Ordered]@{}\n$priority.add('Critical', 'Critical')\n$priority.add('High', 'High')\n$priority.add('Medium', 'Medium')\n$priority.add('Low', 'Low')\n$priority.add('Logged', 'NotSet')\n\n$results = @()\n\t\nforeach ($code in $priority.GetEnumerator()) {\n\tforeach($s in $objtotal.GetEnumerator()){\n    \tif ($code.Name -eq $s.Name) {\n        \t$r = $r+$s.Count\n        }\n    }\n    if ($null -eq $r){$r=0}\n    $temp = New-Object -TypeName psobject\n    $temp | Add-Member -MemberType NoteProperty -Name Key -Value $code.Name\n    $temp | Add-Member -MemberType NoteProperty -Name Value -Value $r -Force\n    $results += $temp\n    $r=0\n    }\n$results"
+													},
+													"signature": "cb2906a37655acd4f00dbdca536fafb510c23db6d7abcce9d25a4df47cbd70069b715fd88ea0d85480ff7b2ea1c4e182+1630585828664"
+												}
+											},
+											"display": {
+												"range": "zero-fit",
+												"label": "auto",
+												"sort": null,
+												"rangemin": 0,
+												"rangemax": 50,
+												"multipleColours": true,
+												"customLabel": ""
+											}
+										},
+										"title": "Bug Priority",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 50
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"openAccess": {
+		"enabled": true,
+		"contexts": null
+	},
+	"colourMatching": true
+}
