@@ -64,70 +64,53 @@
 												"columnOverrides": {
 													"timestamp": "timestamp",
 													"value": "value",
-													"grouping": null
+													"grouping": "site"
 												},
 												"split": false,
 												"profile": "Pingdom",
-												"script": "## Add your own check ID here (can be found in check details tile below)\n$checkId = ''\n\n## Connection Info\n$uri = \"summary.performance/\"\n$results = Invoke-RestMethod -Uri ($url+$Uri+$checkId) -Headers $headers -Method Get\n\n## Convert results to json and store \n$summary = $results.summary | ConvertTo-Json\n\n## Parse results and adjust key names to suit SquaredUp's needs\n$results.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n}",
-												"__signed": {
-													"payload": {
-														"scriptTimeoutSecs": 54,
-														"scriptIntervalSecs": 56,
-														"runAsIdentity": "Default",
-														"_security": "signing",
-														"dataType": "object",
-														"columnOverrides": {
-															"timestamp": "timestamp",
-															"value": "value",
-															"grouping": null
-														},
-														"split": false,
-														"profile": "Pingdom",
-														"script": "## Add your own check ID here (can be found in check details tile below)\n$checkId = ''\n\n## Connection Info\n$uri = \"summary.performance/\"\n$results = Invoke-RestMethod -Uri ($url+$Uri+$checkId) -Headers $headers -Method Get\n\n## Convert results to json and store \n$summary = $results.summary | ConvertTo-Json\n\n## Parse results and adjust key names to suit SquaredUp's needs\n$results.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n}"
-													},
-													"signature": ""
-												}
+												"script": "## Set URIs\n$uriPerf = \"summary.performance/\"\n$uriCheck = \"checks/\"\n\n## Set checkID\n$checkID = \"\"\n\n## Check Name\n$checkName = Invoke-RestMethod -Uri ($url+$uriCheck+$checkID) -Headers $headers -Method Get\n\n## Get Perf data\n$results = Invoke-RestMethod -Uri ($url+$uriPerf+$checkID) -Headers $headers -Method Get\n\n## Add site name to Perf data\nforeach ($item in $results) {\n        $item.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value ($checkName.check.name)\n        }\n\n## Select data\n$results.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}"
 											},
 											"display": {
 												"range": "zero-fit",
 												"height": 200,
 												"label": "auto",
-												"showKey": true
+												"showKey": true,
+												"customLabel": ""
 											}
 										},
 										"title": "Single Response Time",
 										"description": "Requires $checkId in script"
 									},
-									{
-	"_type": "tile/powershell-as-linegraph",
-	"config": {
-		"context": {},
-		"source": {
-			"scriptTimeoutSecs": 54,
-			"scriptIntervalSecs": 56,
-			"runAsIdentity": "Default",
-			"_security": "signing",
-			"dataType": "object",
-			"columnOverrides": {
-				"timestamp": "timestamp",
-				"value": "value",
-				"grouping": "site"
-			},
-			"split": false,
-			"profile": "Pingdom",
-			"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uriPerf = \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$uriPerf+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$uriPerf+$checkId2) -Headers $headers -Method Get\n\n## Check Name\n$uriCheck = \"checks/\"\n$check1Name = Invoke-RestMethod -Uri ($url+$uriCheck+$checkId1) -Headers $headers -Method Get\n$check2Name = Invoke-RestMethod -Uri ($url+$uriCheck+$checkId2) -Headers $headers -Method Get\n\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value ($check1Name.check.name)\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value ($check2Name.check.name)\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours"
-		},
-		"display": {
-			"range": "zero-fit",
-			"height": 200,
-			"label": "auto",
-			"showKey": true,
-			"customLabel": ""
-		}
-	},
-	"title": "Multiple Response Times",
-	"description": ""
-}
+																		{
+										"_type": "tile/powershell-as-linegraph",
+										"config": {
+											"context": {},
+											"source": {
+												"scriptTimeoutSecs": 54,
+												"scriptIntervalSecs": 56,
+												"runAsIdentity": "Default",
+												"_security": "signing",
+												"dataType": "object",
+												"columnOverrides": {
+													"timestamp": "timestamp",
+													"value": "value",
+													"grouping": "site"
+												},
+												"split": false,
+												"profile": "Pingdom",
+												"script": "## Enter check IDs (can be found in check detail below)\n$checkId1 = ''\n$checkId2 = ''\n\n## Connection Info\n$uriPerf = \"summary.performance/\"\n$check1 = Invoke-RestMethod -Uri ($url+$uriPerf+$checkId1) -Headers $headers -Method Get\n$check2 = Invoke-RestMethod -Uri ($url+$uriPerf+$checkId2) -Headers $headers -Method Get\n\n## Check Name\n$uriCheck = \"checks/\"\n$check1Name = Invoke-RestMethod -Uri ($url+$uriCheck+$checkId1) -Headers $headers -Method Get\n$check2Name = Invoke-RestMethod -Uri ($url+$uriCheck+$checkId2) -Headers $headers -Method Get\n\n\n## Foreach loop to add site property for both checks\nforeach ($item1 in $check1) {\n        $item1.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value ($check1Name.check.name)\n        }\n\nforeach ($item2 in $check2) {\n        $item2.summary.hours | Add-Member -MemberType NoteProperty \"site\" -Value ($check2Name.check.name)\n        }\n\n## Parse results and adjust key names to suit SquaredUp's needs\n### Check1\n$check1.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n### Check2\n$check2.summary.hours | select-object @{\n        Name = \"value\";\n        Expression = {$_.avgresponse}\n},\n@{\n        Name = \"timestamp\";\n        Expression = {(Get-Date 01.01.1970) + ([System.TimeSpan]::fromseconds([int]$_.starttime))}\n},\n@{\n        Name = \"site\";\n        Expression = {$_.site}\n}\n\n## Combine to queries\n$combined = @($check1;$check2)\n\n## Output results\n$combined.summary.hours"
+											},
+											"display": {
+												"range": "zero-fit",
+												"height": 200,
+												"label": "auto",
+												"showKey": true,
+												"customLabel": ""
+											}
+										},
+										"title": "Multiple Response Times",
+										"description": "Requires $checkId1 and $checkId2"
+									}
 								]
 							}
 						]
