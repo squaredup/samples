@@ -8,23 +8,22 @@ Release completion is calculated by total issues Closed or Merged, divided by th
 Similarly on the Project side the Top 10 list (Web API) could be set to be any issue type by adjusting the API call.
 The trend line is calculated by creating an array
 
-
 ## How to use this dashboard
 
 ### Prerequisities
-* A Jira cloud instance with at least one project and version in it.
-* **SquaredUp minimum version 5.2** --> [Download](https://download.squaredup.com/)
+- A Jira cloud instance with at least one project and version in it.
+- **SquaredUp minimum version 5.2** --> [Download](https://download.squaredup.com/)
 
 ### Setup the Web API integration
 - Navigate to System > Integrations
-- Create new Web API integration called "Jira"
-- Enter base url for your Jira instance API endpoint: i.e. `https://<your-prometheus-url/api/v1/`
+- Create a new 'Basic Auth' Web API integration called "Jira"
+- Enter base url for your Jira instance API endpoint: i.e. `https://<JIRA domain>.atlassian.net/rest/api/3/search?jql=`
 - Save with appropriate authentication details
 
 ### Setup the PowerShell tile
-- The Default provider can be used
 - Add a profile that contains the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair - https://community.atlassian.com/t5/Jira-questions/JIRA-API-with-Powershell/qaq-p/992343
-- In the dashboard the profile is called Jira PS
+- The profile should be named "Jira PS"
+- On the tile select Default in Environment, under 'Run As'.
 
 ### Setup the dashboard
 - Copy the JSON from this project
