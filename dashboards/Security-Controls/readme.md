@@ -1,4 +1,4 @@
-# IT Security Controls audits Dashboard
+# IT Security Controls Audit Dashboard
 This dashboard gives a quick way to identify Non compliant controls for accounts with high privileges. 
 
 
@@ -8,7 +8,7 @@ For each scoped applications you will see :
 - DB controls (Database level controls)
 
 ## How to use this dashboard
-### Setup a PowerShell profil
+### Setup a PowerShell profile
 - Navigate to System > PowerShell
 - Create new "Audit" Profile with some variables
 ![screenshot](images/Audits-dashboard-settings.png)
