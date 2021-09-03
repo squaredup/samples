@@ -169,7 +169,7 @@
 	"draft": false,
 	"actions": [],
 	"openAccess": {
-		"enabled": true,
+		"enabled": false,
 		"contexts": []
 	},
 	"colourMatching": true
