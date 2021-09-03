@@ -42,7 +42,7 @@
 														"_type": "layout/list",
 														"contents": [
 															{
-																"_type": "tile/azure-resources-webapi-scalar",
+																"_type": "tile/generic-webapi-scalar",
 																"config": {
 																	"context": {},
 																	"source": {
@@ -83,7 +83,7 @@
 														"_type": "layout/list",
 														"contents": [
 															{
-																"_type": "tile/azure-resources-webapi-scalar",
+																"_type": "tile/generic-webapi-scalar",
 																"config": {
 																	"context": {},
 																	"source": {
@@ -120,7 +120,7 @@
 										]
 									},
 									{
-										"_type": "tile/azure-resources-webapi-table",
+										"_type": "tile/generic-webapi-table",
 										"config": {
 											"context": {},
 											"source": {
@@ -181,7 +181,7 @@
 														"_type": "layout/list",
 														"contents": [
 															{
-																"_type": "tile/azure-resources-webapi-bargraph",
+																"_type": "tile/generic-webapi-bargraph",
 																"config": {
 																	"context": {},
 																	"source": {
@@ -277,7 +277,7 @@
 														"_type": "layout/list",
 														"contents": [
 															{
-																"_type": "tile/azure-resources-webapi-donut",
+																"_type": "tile/generic-webapi-donut",
 																"config": {
 																	"context": {},
 																	"source": {
@@ -327,7 +327,7 @@
 										]
 									},
 									{
-										"_type": "tile/azure-resources-webapi-status",
+										"_type": "tile/generic-webapi-status",
 										"config": {
 											"context": {
 												"sign": true
@@ -448,7 +448,7 @@
 										"description": ""
 									},
 									{
-										"_type": "tile/azure-resources-webapi-table",
+										"_type": "tile/generic-webapi-table",
 										"config": {
 											"context": {},
 											"source": {
