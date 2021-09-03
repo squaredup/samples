@@ -14,7 +14,7 @@ For each scoped applications you will see :
 ![screenshot](images/Audits-dashboard-settings.png)
 
 ### Setup the dashboard
-- Copy the JSON from this project
+- Copy the JSON from [dashboard.json](dashboard.json) in this project
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
 - For each tile check the PowerShell script to update some DB connection strings and SQL queries to list Admins from an application
 ![screenshot](images/Queries-tiles.png)
