@@ -59,4 +59,4 @@ $start = Get-Date -Date ((Get-Date).AddHours($timeago)) -UFormat %s
 - Click **Publish** and you're done!
 
 ## Screenshot
-![Kubernetes Monitoring](https://github.com/squaredup/samples/blob/master/dashboards/kubernetes-monitoring/images/Kubernetes%20Monitoring.png)
+![Kubernetes Monitoring](images/Kubernetes%20Monitoring.png)
