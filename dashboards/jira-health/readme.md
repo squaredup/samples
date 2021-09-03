@@ -16,7 +16,7 @@ The trend line is calculated by creating an array
 
 ### Setup the Web API integration
 - Navigate to System > Integrations
-- Create a new 'Basic Auth' Web API integration called "Jira"
+- Create a new 'Basic Auth' Web API integration called "Jira API basic"
 - Enter base url for your Jira instance API endpoint: i.e. `https://<JIRA domain>.atlassian.net/rest/api/3/`
 - Save with appropriate authentication details
 
