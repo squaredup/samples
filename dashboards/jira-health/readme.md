@@ -15,10 +15,11 @@ The trend line is calculated by creating an array
 - **SquaredUp minimum version 5.2** --> [Download](https://download.squaredup.com/)
 
 ### Setup the Web API integration
+- Create a Web API token in Jira - https://support.siteimprove.com/hc/en-gb/articles/360004317332-How-to-create-an-API-token-from-your-Atlassian-account
 - Navigate to System > Integrations
 - Create a new 'Basic Auth' Web API integration called "Jira API basic"
 - Enter base url for your Jira instance API endpoint: i.e. `https://<JIRA domain>.atlassian.net/rest/api/3/`
-- Save with appropriate authentication details
+- Save with appropriate authentication details, using the API token as the password.
 
 ### Setup the PowerShell tile
 - Add a profile that contains the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair - https://community.atlassian.com/t5/Jira-questions/JIRA-API-with-Powershell/qaq-p/992343
