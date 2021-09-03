@@ -10,7 +10,7 @@ For each scoped applications you will see :
 ## How to use this dashboard
 ### Setup a PowerShell profile
 - Navigate to System > PowerShell
-- Create new "Audit" Profile with some variables
+- Create new "Audit" Profile with some variables (see [example profile](SOX-Profile.ps1))
 ![screenshot](images/Audits-dashboard-settings.png)
 
 ### Setup the dashboard
