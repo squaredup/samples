@@ -1,0 +1,176 @@
+{
+	"id": "f7df4611-77c8-48f9-927f-0b94a816aedb",
+	"type": "page/dashboard",
+	"title": "BarTender Printers",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "BarTender EU",
+												"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTEUServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n            [void]$mylist.add($myobj)                           \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "BarTender EU",
+														"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTEUServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n            [void]$mylist.add($myobj)                           \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+														"runAsIdentity": "Default"
+													},
+													"signature": "1240351a9a934215095ff5e18301950ca7ef75fc3e45c8245edfce3e6e41336d331701c30028b78f00d082eec172eead+1630327588348"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 3,
+												"height": 2,
+												"fontsize": 1,
+												"sublabel": "custom",
+												"customLabel": "{{properties.PrinterName}}",
+												"sublabelCustomLabel": "Status : {{properties.Status}}  <br> Jobs in the queue : {{properties.JobCount}} <br> {{properties.Driver}}",
+												"drilldownTemplate": "http://{{properties.PortName}}",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												}
+											}
+										},
+										"title": "BARTENDER EU PRINTERS",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 33.333
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "BarTender EU",
+												"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTCNServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n     \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            [void]$mylist.add($myobj)\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n                         \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "BarTender EU",
+														"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTCNServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n     \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            [void]$mylist.add($myobj)\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n                         \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+														"runAsIdentity": "Default"
+													},
+													"signature": "573e5b9471584e66b81d425347db2c3c1cb4552aa2102bfd29dddf43d5fae4c3d0cdf921eef36499455aa734889e6c70+1630327588348"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 3,
+												"height": 2,
+												"fontsize": 1,
+												"sublabel": "custom",
+												"customLabel": "{{properties.PrinterName}}",
+												"sublabelCustomLabel": "Status : {{properties.Status}}  <br> Jobs in the queue : {{properties.JobCount}} <br> {{properties.Driver}}",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												},
+												"drilldownTemplate": "http://{{properties.PortName}}"
+											}
+										},
+										"title": "BARTENDER CN PRINTERS",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 33.333
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/powershell-as-status-block",
+										"config": {
+											"context": {
+												"sign": true
+											},
+											"source": {
+												"_security": "signing",
+												"dataType": "object",
+												"profile": "BarTender EU",
+												"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTASServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n    \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            [void]$mylist.add($myobj)\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n                       \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+												"runAsIdentity": "Default",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"dataType": "object",
+														"profile": "BarTender EU",
+														"script": "\n[System.Collections.ArrayList]$myList = @()\n\n$PrintersQueues = Invoke-Command -Computer $BTASServer -ScriptBlock {Get-Printer -CimSession localhost} \n\nForEach ($Printer in $PrintersQueues ) {\n     $myobj = New-Object PSObject\n    \n            Add-Member -InputObject $myobj -NotePropertyName PrinterName -NotePropertyValue $Printer.Name\n            Switch ($Printer.PrinterStatus)\n            {\n                0 {$PrintStatus=\"Printer ready\"\n                    $PrintState=\"Healthy\"}\n                1  {$PrintStatus=\"Printer paused\"\n                    $PrintState=\"Warning\"}\n                2  {$PrintStatus=\"Printer error\"\n                $PrintState=\"Critical\"}\n                4  {$PrintStatus=\"Printer pending deletion\"\n                                        $PrintState=\"Warning\"}\n                8  {$PrintStatus=\"Paper jam\"\n                \n                    $PrintState=\"Warning\"}\n                16  {$PrintStatus=\"Out of paper\"\n                    $PrintState=\"Warning\"}\n                32  {$PrintStatus=\"Manual feed\"\n                    $PrintState=\"Warning\"}\n                64  {$PrintStatus=\"Paper problem\"\n                    $PrintState=\"Critical\"}\n                128  {$PrintStatus=\"Printer offline\"\n                    $PrintState=\"Warning\"}\n                256  {$PrintStatus=\"IO active\"\n                    $PrintState=\"Warning\"}\n                512  {$PrintStatus=\"Printer busy\"\n                    $PrintState=\"Warning\"}\n                1024  {$PrintStatus=\"Printing\"                \n                    $PrintState=\"Healthy\"}\n                2048  {$PrintStatus=\"Printer output bin full\"\n                    $PrintState=\"Warning\"}\n                4096  {$PrintStatus=\"Printer Not available\"\n                    $PrintState=\"Critical\"}\n                8192  {$PrintStatus=\"Waiting\"\n                    $PrintState=\"Healthy\"}\n                16384  {$PrintStatus=\"Processing\"\n                    $PrintState=\"Healthy\"}\n                32768  {$PrintStatus=\"Initializing\"\n                \n                    $PrintState=\"Healthy\"}\n                65536  {$PrintStatus=\"Warming up\"                \n                    $PrintState=\"Healthy\"}\n                131072  {$PrintStatus=\"Toner low\"\n                    $PrintState=\"Warning\"}\n                262144  {$PrintStatus=\"No toner\"}\n                524288  {$PrintStatus=\"Page punt\"}\n                1048576  {$PrintStatus=\"User intervention\"}\n                2097152  {$PrintStatus=\"Out of memory\"}\n                4194304  {$PrintStatus=\"Door open\"}\n                8388608  {$PrintStatus=\"Server unknown\"}\n                6777216  {$PrintStatus=\"Power save\"}\n  \n            }\n            Add-Member -InputObject $myobj -NotePropertyName StatusCode -NotePropertyValue $Printer.PrinterStatus    \n             Add-Member -InputObject $myobj -NotePropertyName Status -NotePropertyValue $PrintStatus\n            Add-Member -InputObject $myobj -NotePropertyName State -NotePropertyValue $PrintState\n            Add-Member -InputObject $myobj -NotePropertyName JobCount -NotePropertyValue $Printer.JobCount\n            Add-Member -InputObject $myobj -NotePropertyName Driver -NotePropertyValue $Printer.DriverName\n            Add-Member -InputObject $myobj -NotePropertyName Error -NotePropertyValue $Printer.ErrorInformation\n            [void]$mylist.add($myobj)\n            Add-Member -InputObject $myobj -NotePropertyName PortName -NotePropertyValue $Printer.Name.split('-')[0]\n                       \n        \n}$mylist | Select PrinterName,StatusCode, State,Status, JobCount, Driver, Error,PortName",
+														"runAsIdentity": "Default"
+													},
+													"signature": "757f13904e14491158a4fa7243ba5086e81bf1eb0c7c343d3493413e40ff9a016a893bd65719b282db516f590c303cd0+1630327588348"
+												}
+											},
+											"display": {
+												"label": "custom",
+												"columns": 3,
+												"height": 3,
+												"fontsize": 1,
+												"sublabel": "custom",
+												"customLabel": "{{properties.PrinterName}}",
+												"sublabelCustomLabel": "Status : {{properties.Status}}  <br> Jobs in the queue : {{properties.JobCount}} <br> {{properties.Driver}}",
+												"group": {
+													"property": "healthState",
+													"order": "desc"
+												},
+												"drilldownTemplate": "http://{{properties.PortName}}"
+											}
+										},
+										"title": "BARTENDER AS  PRINTERS",
+										"description": ""
+									}
+								]
+							}
+						],
+						"width": 33.33334921391139
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false,
+	"actions": [],
+	"openAccess": {
+		"enabled": true,
+		"contexts": []
+	},
+	"colourMatching": true
+}
