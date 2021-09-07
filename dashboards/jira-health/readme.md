@@ -22,7 +22,22 @@ The trend line is calculated by creating an array
 - Save with appropriate authentication details, using the API token as the password.
 
 ### Setup the PowerShell tile
-- Add a profile that contains the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair - https://community.atlassian.com/t5/Jira-questions/JIRA-API-with-Powershell/qaq-p/992343
+- Add a profile that contains the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair 
+```
+$user = 'username'
+$pass = 'password'
+$pair = "$($user):$($pass)"
+
+$encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
+
+$basicAuthValue = "Basic $encodedCreds"
+
+$Headers = @{
+ Authorization = $basicAuthValue
+}
+```
+Invoke-WebRequest -Uri 'https://<jira_base_url>/rest/api/2/search?jql=project = CIT AND issuetype = "JIRA Request" AND (created >= startOfDay(-30d) OR updated >= startOfDay(-30d))' `
+-Headers $Headers
 - The profile should be named "Jira PS"
 - On the tile select Default in Environment, under 'Run As'.
 
