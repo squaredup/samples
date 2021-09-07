@@ -35,9 +35,10 @@ $basicAuthValue = "Basic $encodedCreds"
 $Headers = @{
  Authorization = $basicAuthValue
 }
-```
+
 Invoke-WebRequest -Uri 'https://<jira_base_url>/rest/api/2/search?jql=project = CIT AND issuetype = "JIRA Request" AND (created >= startOfDay(-30d) OR updated >= startOfDay(-30d))' `
 -Headers $Headers
+```
 - The profile should be named "Jira PS"
 - On the tile select Default in Environment, under 'Run As'.
 
