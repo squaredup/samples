@@ -6,7 +6,7 @@ One of the main issues to overcome when returning a large number of issues from 
 
 Release completion is calculated by total issues Closed or Merged, divided by the total issues in the release. This could be further fine tuned to only look at specific issue types that you care about by changing the API call in the script.
 Similarly on the Project side the Top 10 list (Web API) could be set to be any issue type by adjusting the API call.
-The trend line is calculated by creating an array
+The trend line is calculated by creating an array.
 
 ## How to use this dashboard
 
@@ -21,8 +21,10 @@ The trend line is calculated by creating an array
 - Enter base url for your Jira instance API endpoint: i.e. `https://<JIRA domain>.atlassian.net/rest/api/3/`
 - Save with appropriate authentication details, using the API token as the password.
 
-### Setup the PowerShell tile
-- Add a profile that contains the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair 
+### Setup the PowerShell Profile
+- Add a profile called named "Jira PS"
+- The profile will contain the details you will send in the Header variable of your API. This will be an encoded version of your username and password pair
+- Copy and paste the sample below and update accordingly
 ```
 $user = 'username'
 $pass = 'password'
@@ -39,8 +41,6 @@ $Headers = @{
 Invoke-WebRequest -Uri 'https://<jira_base_url>/rest/api/2/search?jql=project = CIT AND issuetype = "JIRA Request" AND (created >= startOfDay(-30d) OR updated >= startOfDay(-30d))' `
 -Headers $Headers
 ```
-- The profile should be named "Jira PS"
-- On the tile select Default in Environment, under 'Run As'.
 
 ### Setup the dashboard
 - Copy the JSON from this project
