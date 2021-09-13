@@ -13,7 +13,7 @@ This dashboard gives an overview of monitoring configured using Uptime Robot’s
 ### Setup a Web API integration
 - Navigate to System > Integrations
 - Create new WebAPI integration, using Simple auth, called "UptimeRobot"
-- Enter base url for the PagerDuty API i.e. https://api.uptimerobot.com/v2/ 
+- Enter base url for the UpTimeRobot API i.e. https://api.uptimerobot.com/v2/ 
 
 
 ### Setup the dashboard
