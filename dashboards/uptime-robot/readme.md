@@ -19,6 +19,7 @@ This dashboard gives an overview of monitoring configured using Uptime Robot’s
 ### Setup the dashboard
 - Copy the JSON from this project
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
+- Add your api_Key to the headers/data section in each tile
 - Dashboard should display as shown below, with high level insight into the web monitoring from your UptimeRobot instance
   
   
