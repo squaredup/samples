@@ -1,5 +1,5 @@
 {
-	"id": "109ad020-0c7f-4362-82b7-d9e03b5f4e16",
+	"id": "520f60c2-e7b4-445b-9356-65811345ed3c",
 	"type": "page/dashboard",
 	"title": "PagerDuty",
 	"content": {
@@ -15,22 +15,241 @@
 								"_type": "layout/list",
 								"contents": [
 									{
-										"_type": "tile/web-content",
-										"config": {
-											"context": {},
-											"source": {},
-											"display": {
-												"height": 70,
-												"zoom": 1,
-												"border": false,
-												"scrolling": false,
-												"refresh": false,
-												"src": "",
-												"content": "<img src=\"/images/logos/pagerduty.png\" height=\"70\"/>"
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 36.462,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/web-content",
+																"config": {
+																	"context": {},
+																	"source": {},
+																	"display": {
+																		"height": 122,
+																		"zoom": 1,
+																		"border": false,
+																		"scrolling": false,
+																		"refresh": false,
+																		"src": "",
+																		"content": "<p style=\"text-align:center;\"><img src=\"/images/logos/PagerDuty-GreenRGB-599x123-b832f3c.png\" height=\"120\"/></p>"
+																	}
+																},
+																"title": "",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 63.538,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "layout/column",
+																"columns": [
+																	{
+																		"width": 33.333,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/generic-webapi-scalar",
+																						"config": {
+																							"context": {
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "PagerDuty",
+																								"url": "incidents",
+																								"keypath": "incidents",
+																								"data": [
+																									{
+																										"key": "statuses%5B%5D",
+																										"value": "resolved"
+																									},
+																									{
+																										"key": "limit",
+																										"value": "2"
+																									}
+																								],
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "PagerDuty",
+																										"url": "incidents",
+																										"keypath": "incidents",
+																										"data": [
+																											{
+																												"key": "statuses%5B%5D",
+																												"value": "resolved"
+																											},
+																											{
+																												"key": "limit",
+																												"value": "2"
+																											}
+																										]
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"fontsize": 90,
+																								"coerceObject": false
+																							}
+																						},
+																						"title": "Triggered",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"width": 33.333,
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/generic-webapi-scalar",
+																						"config": {
+																							"context": {
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "PagerDuty",
+																								"url": "incidents",
+																								"keypath": "incidents",
+																								"data": [
+																									{
+																										"key": "statuses%5B%5D",
+																										"value": "resolved"
+																									},
+																									{
+																										"key": "limit",
+																										"value": "17"
+																									}
+																								],
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "PagerDuty",
+																										"url": "incidents",
+																										"keypath": "incidents",
+																										"data": [
+																											{
+																												"key": "statuses%5B%5D",
+																												"value": "resolved"
+																											},
+																											{
+																												"key": "limit",
+																												"value": "17"
+																											}
+																										]
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"fontsize": 90,
+																								"coerceObject": false
+																							}
+																						},
+																						"title": "Acknowledged",
+																						"description": ""
+																					}
+																				]
+																			}
+																		]
+																	},
+																	{
+																		"contents": [
+																			{
+																				"_type": "layout/list",
+																				"contents": [
+																					{
+																						"_type": "tile/generic-webapi-scalar",
+																						"config": {
+																							"context": {
+																								"scope": {
+																									"type": "specific"
+																								}
+																							},
+																							"source": {
+																								"_security": "signing",
+																								"method": "GET",
+																								"provider": "PagerDuty",
+																								"url": "incidents",
+																								"keypath": "incidents",
+																								"data": [
+																									{
+																										"key": "statuses%5B%5D",
+																										"value": "resolved"
+																									},
+																									{
+																										"key": "limit",
+																										"value": "91"
+																									}
+																								],
+																								"__signed": {
+																									"payload": {
+																										"_security": "signing",
+																										"method": "GET",
+																										"provider": "PagerDuty",
+																										"url": "incidents",
+																										"keypath": "incidents",
+																										"data": [
+																											{
+																												"key": "statuses%5B%5D",
+																												"value": "resolved"
+																											},
+																											{
+																												"key": "limit",
+																												"value": "91"
+																											}
+																										]
+																									},
+																									"signature": ""
+																								}
+																							},
+																							"display": {
+																								"fontsize": 90,
+																								"coerceObject": false
+																							}
+																						},
+																						"title": "Resolved",
+																						"description": ""
+																					}
+																				]
+																			}
+																		],
+																		"width": 33.33336177474403
+																	}
+																]
+															}
+														]
+													}
+												]
 											}
-										},
-										"title": "",
-										"description": ""
+										]
 									}
 								]
 							}
@@ -106,200 +325,6 @@
 								"_type": "layout/list",
 								"contents": [
 									{
-										"_type": "layout/column",
-										"columns": [
-											{
-												"width": 33.333,
-												"contents": [
-													{
-														"_type": "layout/list",
-														"contents": [
-															{
-																"_type": "tile/generic-webapi-scalar",
-																"config": {
-																	"context": {
-																		"scope": {
-																			"type": "specific"
-																		}
-																	},
-																	"source": {
-																		"_security": "signing",
-																		"method": "GET",
-																		"provider": "PagerDuty",
-																		"url": "incidents",
-																		"keypath": "incidents",
-																		"data": [
-																			{
-																				"key": "statuses%5B%5D",
-																				"value": "resolved"
-																			},
-																			{
-																				"key": "limit",
-																				"value": "2"
-																			}
-																		],
-																		"__signed": {
-																			"payload": {
-																				"_security": "signing",
-																				"method": "GET",
-																				"provider": "PagerDuty",
-																				"url": "incidents",
-																				"keypath": "incidents",
-																				"data": [
-																					{
-																						"key": "statuses%5B%5D",
-																						"value": "resolved"
-																					},
-																					{
-																						"key": "limit",
-																						"value": "2"
-																					}
-																				]
-																			},
-																			"signature": ""
-																		}
-																	},
-																	"display": {
-																		"fontsize": 90,
-																		"coerceObject": false
-																	}
-																},
-																"title": "Triggered",
-																"description": ""
-															}
-														]
-													}
-												]
-											},
-											{
-												"contents": [
-													{
-														"_type": "layout/list",
-														"contents": [
-															{
-																"_type": "tile/generic-webapi-scalar",
-																"config": {
-																	"context": {
-																		"scope": {
-																			"type": "specific"
-																		}
-																	},
-																	"source": {
-																		"_security": "signing",
-																		"method": "GET",
-																		"provider": "PagerDuty",
-																		"url": "incidents",
-																		"keypath": "incidents",
-																		"data": [
-																			{
-																				"key": "statuses%5B%5D",
-																				"value": "resolved"
-																			},
-																			{
-																				"key": "limit",
-																				"value": "17"
-																			}
-																		],
-																		"__signed": {
-																			"payload": {
-																				"_security": "signing",
-																				"method": "GET",
-																				"provider": "PagerDuty",
-																				"url": "incidents",
-																				"keypath": "incidents",
-																				"data": [
-																					{
-																						"key": "statuses%5B%5D",
-																						"value": "resolved"
-																					},
-																					{
-																						"key": "limit",
-																						"value": "17"
-																					}
-																				]
-																			},
-																			"signature": ""
-																		}
-																	},
-																	"display": {
-																		"fontsize": 90,
-																		"coerceObject": false
-																	}
-																},
-																"title": "Acknowledged",
-																"description": ""
-															}
-														]
-													}
-												],
-												"width": 33.33333333333333
-											},
-											{
-												"width": 33.333,
-												"contents": [
-													{
-														"_type": "layout/list",
-														"contents": [
-															{
-																"_type": "tile/generic-webapi-scalar",
-																"config": {
-																	"context": {
-																		"scope": {
-																			"type": "specific"
-																		}
-																	},
-																	"source": {
-																		"_security": "signing",
-																		"method": "GET",
-																		"provider": "PagerDuty",
-																		"url": "incidents",
-																		"keypath": "incidents",
-																		"data": [
-																			{
-																				"key": "statuses%5B%5D",
-																				"value": "resolved"
-																			},
-																			{
-																				"key": "limit",
-																				"value": "91"
-																			}
-																		],
-																		"__signed": {
-																			"payload": {
-																				"_security": "signing",
-																				"method": "GET",
-																				"provider": "PagerDuty",
-																				"url": "incidents",
-																				"keypath": "incidents",
-																				"data": [
-																					{
-																						"key": "statuses%5B%5D",
-																						"value": "resolved"
-																					},
-																					{
-																						"key": "limit",
-																						"value": "91"
-																					}
-																				]
-																			},
-																			"signature": ""
-																		}
-																	},
-																	"display": {
-																		"fontsize": 90,
-																		"coerceObject": false
-																	}
-																},
-																"title": "Resolved",
-																"description": ""
-															}
-														]
-													}
-												]
-											}
-										]
-									},
-									{
 										"_type": "tile/generic-webapi-linegraph",
 										"config": {
 											"context": {
@@ -323,7 +348,7 @@
 													"timestamp": "{{range_start}}"
 												},
 												"topn": 0,
-												"provider": "PagerDuty",
+												"provider": "Pagerduty",
 												"url": "analytics/metrics/incidents/all",
 												"headers": [
 													{
@@ -340,8 +365,46 @@
 													}
 												],
 												"contentType": "application/json",
-												"contentBody": "{\n    \"filters\": {\n        \"created_at_start\": \"2020-09-01T00:00:00-05:00\",\n        \"created_at_end\": \"2020-11-20T00:00:00-05:00\"\n    },\n    \"aggregate_unit\": \"day\",\n    \"time_zone\": \"Etc/UTC\"\n}",
-												"keypath": "data"
+												"contentBody": "{\n    \"filters\": {\n        \"created_at_start\": \"2020-09-14T00:00:00-05:00\",\n        \"created_at_end\": \"2021-09-13T00:00:00-05:00\"\n    },\n    \"aggregate_unit\": \"day\",\n    \"time_zone\": \"Etc/UTC\"\n}",
+												"keypath": "data",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "POST",
+														"columns": {
+															"isCategoryOptional": true,
+															"values": [
+																{
+																	"key": "Incident Count",
+																	"value": "{{total_incident_count}}"
+																}
+															],
+															"category": "",
+															"timestamp": "{{range_start}}"
+														},
+														"topn": 0,
+														"provider": "Pagerduty",
+														"url": "analytics/metrics/incidents/all",
+														"headers": [
+															{
+																"key": "X-EARLY-ACCESS",
+																"value": "analytics-v2"
+															},
+															{
+																"key": "Accept",
+																"value": "application/vnd.pagerduty+json;version=2"
+															},
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															}
+														],
+														"contentType": "application/json",
+														"contentBody": "{\n    \"filters\": {\n        \"created_at_start\": \"2020-09-14T00:00:00-05:00\",\n        \"created_at_end\": \"2021-09-13T00:00:00-05:00\"\n    },\n    \"aggregate_unit\": \"day\",\n    \"time_zone\": \"Etc/UTC\"\n}",
+														"keypath": "data"
+													},
+													"signature": ""
+												}
 											},
 											"display": {
 												"range": "zero-fit",
@@ -476,9 +539,19 @@
 											"source": {
 												"_security": "signing",
 												"method": "GET",
-												"provider": "PagerDuty",
+												"provider": "Pagerduty",
 												"url": "alerts",
-												"keypath": "alerts"
+												"keypath": "alerts",
+												"__signed": {
+													"payload": {
+														"_security": "signing",
+														"method": "GET",
+														"provider": "Pagerduty",
+														"url": "alerts",
+														"keypath": "alerts"
+													},
+													"signature": ""
+												}
 											},
 											"display": {
 												"showHeaders": true,
@@ -490,6 +563,9 @@
 													"custom_column_3": {
 														"displayName": "Service",
 														"template": "{{value.service.summary}}"
+													},
+													"summary": {
+														"displayName": "Summary"
 													},
 													"status": {
 														"displayName": "Status"
@@ -524,6 +600,7 @@
 												"columns": [
 													"created_at",
 													"custom_column_3",
+													"summary",
 													"status",
 													"severity",
 													"custom_column_1",
@@ -531,8 +608,9 @@
 													"custom_column_4",
 													"custom_column_5"
 												],
-												"autohide": true,
-												"rowLink": "{{incident.html_url}}"
+												"autohide": false,
+												"rowLink": "{{incident.html_url}}",
+												"openLinkInNewTab": true
 											}
 										},
 										"title": "Recent Alerts",
@@ -548,6 +626,10 @@
 	},
 	"derivedFrom": "00000000-0000-0000-0000-000000000000",
 	"draft": false,
+	"openAccess": {
+		"enabled": false,
+		"contexts": []
+	},
 	"actions": [
 		{
 			"global": false,
@@ -560,9 +642,5 @@
 				"text": "PagerDuty"
 			}
 		}
-	],
-	"openAccess": {
-		"enabled": false,
-		"contexts": []
-	}
+	]
 }
