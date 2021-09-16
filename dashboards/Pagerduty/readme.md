@@ -13,7 +13,7 @@ This dashboard gives an overview of incidents and alerting from PagerDuty.
 - Copy the PagerDuty.png logo from the images folder in the repo to this folder
 ### Setup a Web API integration
 - Navigate to System > Integrations in SquaredUp
-- Create new WebAPI integration, using Simple auth, called "PagerDuty"
+- Create new WebAPI integration, using Simple auth, called "Pagerduty"
 - Enter base url for the PagerDuty API i.e. https://api.pagerduty.com/
 - Add the authorization default header with your token i.e. ```Token token=jaskdjASdjhasdk```
 
