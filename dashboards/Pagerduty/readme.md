@@ -10,7 +10,7 @@ This dashboard gives an overview of incidents and alerting from PagerDuty.
 ## How to use this dashboard
 ### PagerDuty Logo
 - The images folder needs to exist specifically in the IIS root i.e. C:\inetpub\wwwroot and the structure of \images\logos\ should be maintained (or the dashboard JSON updated to suit)
-- Copy the PagerDuty.png logo from the images folder in the repo to that folder
+- Copy the PagerDuty.png logo from the images folder in the repo to this folder
 ### Setup a Web API integration
 - Navigate to System > Integrations in SquaredUp
 - Create new WebAPI integration, using Simple auth, called "PagerDuty"
