@@ -1,5 +1,5 @@
 # PagerDuty Dashboard
-This dashboard gives an overview of incidents and alerting from PagerDuty
+This dashboard gives an overview of incidents and alerting from PagerDuty.
 
 - Resolved – Summary donut - Resolved incidents
 - Triggered, Acknowledged, Resolved – Scalar – Insight into the current incidents of each priority
