@@ -1,5 +1,5 @@
 # PagerDuty Dashboard
-This dashboard gives an overview of incidents and alerting from PagerDuty
+This dashboard gives an overview of incidents and alerting from PagerDuty.
 
 - Resolved – Summary donut - Resolved incidents
 - Triggered, Acknowledged, Resolved – Scalar – Insight into the current incidents of each priority
@@ -24,7 +24,8 @@ This dashboard gives an overview of incidents and alerting from PagerDuty
 - Copy the JSON from this project
 - Create a new dashboard, select the </> on the top right and paste the content of the .json and click **Apply Changes**.
 - Dashboard should display as shown below, with high level insight into the Incidents and Alerting from your PagerDuty instance
-  
-![screenshot](https://github.com/squaredup/samples/blob/0c3976838e097a6c9adabbfa17b43f13b21434eb/dashboards/Pagerduty/Images/Pagerduty-Dark.png)
 
-![screenshot](https://github.com/squaredup/samples/blob/0c3976838e097a6c9adabbfa17b43f13b21434eb/dashboards/Pagerduty/Images/Pagerduty-Light.png)
+#### Dark Mode
+![screenshot](Images/PagerDuty-Dark.png)
+#### Light Mode
+![screenshot](Images/PagerDuty-Light.png)
