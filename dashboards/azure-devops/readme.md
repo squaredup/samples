@@ -15,7 +15,7 @@ This dashboard gives an overview of the performance of build and release pipelin
 - Navigate to System > Integrations
 - Create new Web API integration called "Azure Devops"
 - Enter base url for your Azure DevOps Analytics account: i.e. https://analytics.dev.azure.com/your-org/tenant-id/
-- Save with appropriate authentication details
+- Use an Azure DevOps access token that has read access for Analytics as both the username and password
 
 ### Setup the dashboard
 - Copy the JSON from this project
