@@ -1,3 +1,5 @@
+[<img alt="alt_text" width="1216px" src="https://squaredup-app-assets-bucket-us-east-1.s3.amazonaws.com/deprecated.png" />](https://dashboards.squaredup.com/)
+
 # Sample Dashboards
 
 This folder contains sample dashboards from the community that can be used to get a quickstart on a new dashboarding project.
