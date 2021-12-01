@@ -3,6 +3,9 @@ This is a SquaredUp Dashboard that computes WebAPI for ServiceNow and PowerShell
 
 In our continous improvement to have a "Single Pane of Glass" entry point, we created some ServiceNow Dashboards per teams to have a quick view of current Incidents / Requests / Changes / Problems.
 
+![screenshot](images/ServiceNowBoad.png)
+
+
 ## How to use this dashboard
 
 ### Setup a PowerShell Profile 
