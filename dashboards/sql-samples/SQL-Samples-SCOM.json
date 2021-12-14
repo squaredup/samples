@@ -1,0 +1,403 @@
+{
+	"id": "ff0e0149-5b70-4f36-837d-79262b866746",
+	"type": "page/dashboard",
+	"title": "SQL Samples",
+	"content": {
+		"_type": "layout/list",
+		"contents": [
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 50,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 49.779,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-donut",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"value": "count",
+																			"grouping": "state"
+																		},
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT \ncase\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\n,case\n    WHEN PercentFree < 40 THEN 3\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 2\n\t\tELSE 1\n \tend as OrderSeq\n, count(case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend) as count\nFROM @CounterResults\nGROUP BY case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend \n,case\n    WHEN PercentFree < 40 THEN 3\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 2\n\t\tELSE 1\n \tend",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"value": "count",
+																					"grouping": "state"
+																				},
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT \ncase\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\n,case\n    WHEN PercentFree < 40 THEN 3\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 2\n\t\tELSE 1\n \tend as OrderSeq\n, count(case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend) as count\nFROM @CounterResults\nGROUP BY case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend \n,case\n    WHEN PercentFree < 40 THEN 3\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 2\n\t\tELSE 1\n \tend"
+																			},
+																			"signature": "0d6f0584cb28198ae7d79b7bb53d69088be70c6799ec8236247b289f11189da5213fd75f3dd28e0d2cd629b35f828171+1639497386022"
+																		}
+																	},
+																	"display": {
+																		"sizeMode": "default",
+																		"legendScale": 1,
+																		"showLegend": true,
+																		"legendPosition": "right",
+																		"palette": 3
+																	}
+																},
+																"title": "SQL (donut) Count of Health Status",
+																"description": ""
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50.221,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-bar",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"value": "percentFree",
+																			"grouping": "path"
+																		},
+																		"split": false,
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT * \nFROM @CounterResults\nWHERE PercentFree < 40\nOrder by PercentFree\n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"value": "percentFree",
+																					"grouping": "path"
+																				},
+																				"split": false,
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT * \nFROM @CounterResults\nWHERE PercentFree < 40\nOrder by PercentFree\n"
+																			},
+																			"signature": "7ab75e528b65e4849ff701a525445bea7188c0318194775843b51d15e6d7be3365c381276ac891dd800382c263d68c81+1639497386022"
+																		}
+																	},
+																	"display": {
+																		"range": "percentage",
+																		"label": "custom",
+																		"customLabel": "{{properties.instanceName}} - {{properties.path.split('.')[0]}}",
+																		"multipleColours": false
+																	}
+																},
+																"title": "SQL (bar) Percent Remaining Query",
+																"description": "Servers with Less Than 40% Free Space"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					},
+					{
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "tile/sql-as-status-block",
+										"config": {
+											"context": {},
+											"source": {
+												"_security": "signing",
+												"connectionstring": "global:dw",
+												"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 12 [DateTime]\n, PercentFree\n, Path as name\n, GUID as ID\n, MERowID\n, RuleRowID\n, InstanceName\n, ObjectName\n, CounterName\n, case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree"
+											},
+											"display": {
+												"label": "custom",
+												"columns": 4,
+												"height": 1,
+												"fontsize": 1,
+												"sublabel": "custom",
+												"drilldownTemplate": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{id}}",
+												"sublabelCustomLabel": "<img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2BgYAAAAAQAAVzN/2kAAAAASUVORK5CYII=\"  width={{properties.percentFree*2}} height=25 /><img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAMSURBVBhXY2hoaAAAAwQBgeEJFSwAAAAASUVORK5CYII=\"  width={{(100-properties.percentFree)*2}} height=25 /> {{properties.percentFree}} % <br> {{properties.instanceName}}",
+												"customLabel": "{{properties.name.split('.')[0]}}"
+											}
+										},
+										"title": "SQL (status block) Percent Remaining Query",
+										"description": "Top 12 "
+									}
+								]
+							}
+						],
+						"width": 50
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-table",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 6 * \nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree\n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 6 * \nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree\n"
+																			},
+																			"signature": "878bd27517d18164108ecd38e2c9a06ee7327229527bae6c27a0aedeae4b73a2bbb8ce77ac5119b4792cc77efeb4c093+1639497386022"
+																		}
+																	},
+																	"display": {
+																		"showHeaders": true,
+																		"columnOverrides": {
+																			"path": {
+																				"template": "{{value.split('.')[0]}}"
+																			},
+																			"dateTime": {
+																				"template": "{{timeago(value)}}"
+																			},
+																			"percentFree": {
+																				"template": "<img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAMSURBVBhXY/Br+Q8AAvUB0lj6Q3gAAAAASUVORK5CYII=\"  width={{value*4}} height=15 /><img alt=\"Embedded Image\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAO4AAAAZCAMAAAABp+KxAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABFUExURSwxNy0xNywxNi0xNi0yNy4yOC0yOC4zOC4zOS8zOS80OS80OjA0OjA1OjA1OzE1OzE2OzE2PDI2PDI3PDI3PTM3PTM4PmYWE4sAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAE3SURBVFhH7dNLcoQwDARQmMGAAWM+Ge5/1LQk2wiSmiTrSF3N/hXuqqofyLN+NHVdNyquaVGV1rWdO9Mjvus7n9P7fqD6gepHysAdJsooCZQpjPOUElJwEVm4y7xSIjeuC5JuQ3d8P3I2dMdX3Qs97qGrKjCfVyZVpXVN55xioh1RC1OohVmoQKKjUAOVmSEzhTrPIRYqMdErk6knc9dUYu5sTHcAq5DEFCpd+ruUG7tFmXtllz98stMf/gsbec+OwpY/TOyY2XTbV/YK6Y19+8PEpr97DdNUNJGZmijM/Ig5ieiZ+ItHrInqEQvx8og3AG/Enx7xC9Vn27Xtcmy7iWnbPdm23cz85hHbdm27hWjbpbPtytl2NRGx7QrbtivMN4/YtjvbdgvRtmvbte3adun+1XaP4xMyMh9m2isL3gAAAABJRU5ErkJggg==\"  width={{(100-value)*4}} height=15 /> {{value}} %"
+																			}
+																		},
+																		"customColumns": {},
+																		"columns": [
+																			"path",
+																			"instanceName",
+																			"dateTime",
+																			"percentFree"
+																		],
+																		"autohide": false,
+																		"rowLink": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{guid}}"
+																	}
+																},
+																"title": "SQL (grid) Percent Remaining Query",
+																"description": "Top 5"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-status",
+																"config": {
+																	"context": {},
+																	"source": {
+																		"_security": "signing",
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 12 [DateTime]\n, PercentFree\n, Path as name\n, GUID as ID\n, MERowID\n, RuleRowID\n, InstanceName\n, ObjectName\n, CounterName\n, case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nSELECT top 12 [DateTime]\n, PercentFree\n, Path as name\n, GUID as ID\n, MERowID\n, RuleRowID\n, InstanceName\n, ObjectName\n, CounterName\n, case\n    WHEN PercentFree < 40 THEN 'Critical'\n    WHEN PercentFree >= 40 AND PercentFree < 60 THEN 'Warning'\n\t\tELSE 'Healthy'\n \tend as state\nFROM @CounterResults\n--WHERE PercentFree < 40\nOrder by PercentFree"
+																			},
+																			"signature": "c97b67016370fb3f9ecca97993127cdb8535da5ec0de2e8d3e2d9c048444c9ba4710fc6c30744cbe05f855d4c1af8387+1639497386024"
+																		}
+																	},
+																	"display": {
+																		"label": "custom",
+																		"columns": 5,
+																		"height": 5,
+																		"fontsize": 5,
+																		"sublabel": "custom",
+																		"drilldownTemplate": "https://solutionsteam.squaredup.com/SCOM5/drilldown/scomobject?id={{id}}",
+																		"zoom": "column",
+																		"sublabelCustomLabel": "{{properties.percentFree}}% Free",
+																		"customLabel": "{{properties.name.split('.')[0]}}"
+																	}
+																},
+																"description": "Top 12",
+																"title": "SQL (status Icons) Percent Remaining Query"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"_type": "layout/column",
+				"columns": [
+					{
+						"width": 100,
+						"contents": [
+							{
+								"_type": "layout/list",
+								"contents": [
+									{
+										"_type": "layout/column",
+										"columns": [
+											{
+												"width": 49.83,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-sparklines",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"timestamp": "dateTime",
+																			"value": "averageValue",
+																			"grouping": "label"
+																		},
+																		"split": false,
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nDECLARE @GraphIDs TABLE(ManagedEntityRowId INT, RuleRowID INT, Path nvarchar(255), DisplayName nvarchar(255))\nINSERT INTO @GraphIDs\nSELECT top 8 MERowID\n, RuleRowID\n, Path\n, InstanceName\nFROM @CounterResults\nOrder by PercentFree\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-2,GetDate()) as int) as float) as datetime));\nSELECT   me.ManagedEntityRowId\n     , me.DisplayName\n\t , me.Path\n     , me.Path + me.DisplayName AS Label\n     , vRule.RuleRowId\n\t , vRule.RuleSystemName\n\t , vRule.RuleDefaultName\n\t , vPerformanceRuleInstance.InstanceName\n\t , vPerformanceRule.ObjectName\n\t , vPerformanceRule.CounterName\n\t , vPerformanceRule.MultiInstanceInd\n\t , Perf.vPerfHourly.AverageValue\n\t , Perf.vPerfHourly.MinValue\n\t , Perf.vPerfHourly.MaxValue\n\t , Perf.vPerfHourly.StandardDeviation\n\t , Perf.vPerfHourly.DateTime\n\t , Perf.vPerfHourly.SampleCount\nFROM   vRule \nINNER JOIN vPerformanceRuleInstance ON vRule.RuleRowId = vPerformanceRuleInstance.RuleRowId \nINNER JOIN Perf.vPerfHourly ON vPerformanceRuleInstance.PerformanceRuleInstanceRowId = Perf.vPerfHourly.PerformanceRuleInstanceRowId \nINNER JOIN @GraphIDs as me ON Perf.vPerfHourly.ManagedEntityRowId = me.ManagedEntityRowId AND vRule.RuleRowId = me.RuleRowID\nINNER JOIN vPerformanceRule ON vPerformanceRuleInstance.RuleRowId = vPerformanceRule.RuleRowId\nWHERE Perf.vPerfHourly.DateTime >= @StartDate\nOrder BY me.ManagedEntityRowId, vRule.RuleRowId, Perf.vPerfHourly.DateTime\n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"timestamp": "dateTime",
+																					"value": "averageValue",
+																					"grouping": "label"
+																				},
+																				"split": false,
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nDECLARE @GraphIDs TABLE(ManagedEntityRowId INT, RuleRowID INT, Path nvarchar(255), DisplayName nvarchar(255))\nINSERT INTO @GraphIDs\nSELECT top 8 MERowID\n, RuleRowID\n, Path\n, InstanceName\nFROM @CounterResults\nOrder by PercentFree\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-2,GetDate()) as int) as float) as datetime));\nSELECT   me.ManagedEntityRowId\n     , me.DisplayName\n\t , me.Path\n     , me.Path + me.DisplayName AS Label\n     , vRule.RuleRowId\n\t , vRule.RuleSystemName\n\t , vRule.RuleDefaultName\n\t , vPerformanceRuleInstance.InstanceName\n\t , vPerformanceRule.ObjectName\n\t , vPerformanceRule.CounterName\n\t , vPerformanceRule.MultiInstanceInd\n\t , Perf.vPerfHourly.AverageValue\n\t , Perf.vPerfHourly.MinValue\n\t , Perf.vPerfHourly.MaxValue\n\t , Perf.vPerfHourly.StandardDeviation\n\t , Perf.vPerfHourly.DateTime\n\t , Perf.vPerfHourly.SampleCount\nFROM   vRule \nINNER JOIN vPerformanceRuleInstance ON vRule.RuleRowId = vPerformanceRuleInstance.RuleRowId \nINNER JOIN Perf.vPerfHourly ON vPerformanceRuleInstance.PerformanceRuleInstanceRowId = Perf.vPerfHourly.PerformanceRuleInstanceRowId \nINNER JOIN @GraphIDs as me ON Perf.vPerfHourly.ManagedEntityRowId = me.ManagedEntityRowId AND vRule.RuleRowId = me.RuleRowID\nINNER JOIN vPerformanceRule ON vPerformanceRuleInstance.RuleRowId = vPerformanceRule.RuleRowId\nWHERE Perf.vPerfHourly.DateTime >= @StartDate\nOrder BY me.ManagedEntityRowId, vRule.RuleRowId, Perf.vPerfHourly.DateTime\n"
+																			},
+																			"signature": "9027459843f7db9de65483e061835589fc54de68287723e3e8715825e9470396a9ae0711dd0e345181d3c5a07dc28dd9+1639497386024"
+																		}
+																	},
+																	"display": {
+																		"range": "fit",
+																		"label": "custom",
+																		"sort": {
+																			"order": "asc",
+																			"property": "label",
+																			"option": "label"
+																		},
+																		"customLabel": "{{key.split('.')[0]}} - {{properties.objectName}} - {{properties.counterName}} - {{properties.displayName}}"
+																	}
+																},
+																"title": "SQL (sparklines)",
+																"description": "Top 8, Last 2 Days"
+															}
+														]
+													}
+												]
+											},
+											{
+												"width": 50.17,
+												"contents": [
+													{
+														"_type": "layout/list",
+														"contents": [
+															{
+																"_type": "tile/sql-as-linegraph",
+																"config": {
+																	"context": {
+																		"sign": "true"
+																	},
+																	"source": {
+																		"_security": "signing",
+																		"columnOverrides": {
+																			"timestamp": "dateTime",
+																			"value": "averageValue",
+																			"grouping": "label"
+																		},
+																		"split": false,
+																		"connectionstring": "global:dw",
+																		"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nDECLARE @GraphIDs TABLE(ManagedEntityRowId INT, RuleRowID INT, Path nvarchar(255), DisplayName nvarchar(255))\nINSERT INTO @GraphIDs\nSELECT top 12 MERowID\n, RuleRowID\n, Path\n, InstanceName\nFROM @CounterResults\nOrder by PercentFree\n\nSET @StartDate = cast(cast(cast(DATEADD(DAY,-12,GetDate()) as int) as float) as datetime);\nSELECT  me.ManagedEntityRowId\n     , me.DisplayName\n\t , me.Path\n     , me.Path + me.DisplayName AS Label\n     , vRule.RuleRowId\n\t , vRule.RuleSystemName\n\t , vRule.RuleDefaultName\n\t , vPerformanceRuleInstance.InstanceName\n\t , vPerformanceRule.ObjectName\n\t , vPerformanceRule.CounterName\n\t , vPerformanceRule.MultiInstanceInd\n\t , Perf.vPerfHourly.AverageValue\n\t , Perf.vPerfHourly.MinValue\n\t , Perf.vPerfHourly.MaxValue\n\t , Perf.vPerfHourly.StandardDeviation\n\t , Perf.vPerfHourly.DateTime\n\t , Perf.vPerfHourly.SampleCount\nFROM   vRule \nINNER JOIN vPerformanceRuleInstance ON vRule.RuleRowId = vPerformanceRuleInstance.RuleRowId \nINNER JOIN Perf.vPerfHourly ON vPerformanceRuleInstance.PerformanceRuleInstanceRowId = Perf.vPerfHourly.PerformanceRuleInstanceRowId \nINNER JOIN @GraphIDs as me ON Perf.vPerfHourly.ManagedEntityRowId = me.ManagedEntityRowId AND vRule.RuleRowId = me.RuleRowID\nINNER JOIN vPerformanceRule ON vPerformanceRuleInstance.RuleRowId = vPerformanceRule.RuleRowId\nWHERE Perf.vPerfHourly.DateTime >= @StartDate\nOrder BY me.ManagedEntityRowId, vRule.RuleRowId, Perf.vPerfHourly.DateTime\n",
+																		"__signed": {
+																			"payload": {
+																				"_security": "signing",
+																				"columnOverrides": {
+																					"timestamp": "dateTime",
+																					"value": "averageValue",
+																					"grouping": "label"
+																				},
+																				"split": false,
+																				"connectionstring": "global:dw",
+																				"querystring": "USE OperationsManagerDW\n\nDECLARE @StartDate datetime\nDECLARE @EndDate datetime\nDECLARE @LastPerfDate datetime\n\nSELECT  @LastPerfDate =  max(vPerf.DateTime)\nFROM Perf.vPerfRaw AS vPerf\n\nSET @StartDate = ISNULL(@StartDate, cast(cast(cast(DATEADD(DAY,-1,@LastPerfDate) as int) as float) as datetime));\nSET @EndDate = ISNULL(@EndDate, cast(cast(cast(DATEADD(DAY,0,GetDate()) as int) as float) as datetime));\n\n--These statements select the counter we want to retreive from the Data Warehouse\n--Data is pulled and then placed into a temporary table\nDECLARE @CounterIDs TABLE(RuleRowID INT, ObjectName NVARCHAR(60), CounterName NVARCHAR(60))\nINSERT INTO @CounterIDs\nSELECT RuleRowId, ObjectName, CounterName\nFROM vPerformanceRule vPR\n--Use this for Windows\nWHERE objectName in ('LogicalDisk') AND (counterName = '% Free Space')\n\n--Using a Common Table Expression to group the data and select the top values\nDECLARE @CounterResults TABLE([DateTime] datetime, PercentFree int, Path nvarchar(255), GUID UniqueIdentifier, MERowID INT, RuleRowID INT, InstanceName nvarchar(255), ObjectName nvarchar(255), CounterName nvarchar(255))\n;WITH cte AS\n(\n  SELECT\n      Path as Computer\n    , ManagedEntityGuid\n    , vManagedEntity.ManagedEntityRowId\n    , DisplayName as InstanceName\n    , ObjectName\n    , CounterName\n    , SampleValue\n    , DateTime\n    , vPRI.RuleRowId\n    , ROW_NUMBER() OVER (PARTITION BY vPRI.RuleRowId, Path, DisplayName ORDER BY DateTime DESC) AS rn\n  FROM Perf.vPerfRaw as p INNER JOIN\n       vPerformanceRuleInstance vPRI ON p.PerformanceRuleInstanceRowId = vPRI.PerformanceRuleInstanceRowId INNER JOIN\n       vManagedEntity ON p.ManagedEntityRowId = vManagedEntity.ManagedEntityRowId\n       INNER JOIN @CounterIDs cID ON vPRI.RuleRowId = cID.RuleRowID\n  WHERE p.DateTime >= @StartDate\n)\nINSERT INTO @CounterResults\nSELECT DateTime\n     , SampleValue\n     , Computer\n     , ManagedEntityGuid\n     , ManagedEntityRowId\n     , RuleRowId\n     , InstanceName\n     , ObjectName\n     , CounterName\nFROM cte\nWHERE rn = 1\n\nDECLARE @GraphIDs TABLE(ManagedEntityRowId INT, RuleRowID INT, Path nvarchar(255), DisplayName nvarchar(255))\nINSERT INTO @GraphIDs\nSELECT top 12 MERowID\n, RuleRowID\n, Path\n, InstanceName\nFROM @CounterResults\nOrder by PercentFree\n\nSET @StartDate = cast(cast(cast(DATEADD(DAY,-12,GetDate()) as int) as float) as datetime);\nSELECT  me.ManagedEntityRowId\n     , me.DisplayName\n\t , me.Path\n     , me.Path + me.DisplayName AS Label\n     , vRule.RuleRowId\n\t , vRule.RuleSystemName\n\t , vRule.RuleDefaultName\n\t , vPerformanceRuleInstance.InstanceName\n\t , vPerformanceRule.ObjectName\n\t , vPerformanceRule.CounterName\n\t , vPerformanceRule.MultiInstanceInd\n\t , Perf.vPerfHourly.AverageValue\n\t , Perf.vPerfHourly.MinValue\n\t , Perf.vPerfHourly.MaxValue\n\t , Perf.vPerfHourly.StandardDeviation\n\t , Perf.vPerfHourly.DateTime\n\t , Perf.vPerfHourly.SampleCount\nFROM   vRule \nINNER JOIN vPerformanceRuleInstance ON vRule.RuleRowId = vPerformanceRuleInstance.RuleRowId \nINNER JOIN Perf.vPerfHourly ON vPerformanceRuleInstance.PerformanceRuleInstanceRowId = Perf.vPerfHourly.PerformanceRuleInstanceRowId \nINNER JOIN @GraphIDs as me ON Perf.vPerfHourly.ManagedEntityRowId = me.ManagedEntityRowId AND vRule.RuleRowId = me.RuleRowID\nINNER JOIN vPerformanceRule ON vPerformanceRuleInstance.RuleRowId = vPerformanceRule.RuleRowId\nWHERE Perf.vPerfHourly.DateTime >= @StartDate\nOrder BY me.ManagedEntityRowId, vRule.RuleRowId, Perf.vPerfHourly.DateTime\n"
+																			},
+																			"signature": "2575ab26bc7b08e2d7880754d02ccfb8a902d5c7b22b338a7362cbb92264fb0fe688ef8d2627fe0056451bac2843b896+1639497386024"
+																		}
+																	},
+																	"display": {
+																		"range": "zero-fit",
+																		"height": 200,
+																		"label": "custom",
+																		"showKey": true,
+																		"customLabel": "{{displayName.split('.')[0]}} - {{properties.displayName}}"
+																	}
+																},
+																"description": "Top 12, Last 12 Days",
+																"title": "SQL (graph)"
+															}
+														]
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"derivedFrom": "00000000-0000-0000-0000-000000000000",
+	"draft": false
+}
