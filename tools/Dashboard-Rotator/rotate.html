@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Dashboard Rotator</title>
+        <style type="text/css">
+            iframe {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-width: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <iframe id="dashboards"></iframe>
+        <script>
+            (function() {
+                var e = document.getElementById('dashboards'),
+                    f = function( el, url ) {
+                        el.src = url;
+                        el.sandbox = 'allow-scripts allow-forms allow-top-navigation allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-top-navigation-by-user-activation';
+                    },
+                    urls = [
+                    'https://squaredup.com',
+                    'https://demo.squaredup.com',
+                    'https://download.squaredup.com'
+                    ],
+                    i = 0,
+                    l = urls.length;
+
+                    (function rotation() {
+                        if ( i != l-1 ) { 
+                            i++
+                        } else {
+                            i = 0;
+                        }
+                        f( e, urls[i] );
+                        setTimeout( arguments.callee, 8000 );
+                    })();
+            })();
+        </script>
+    </body>
+</html>
