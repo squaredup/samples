@@ -2,8 +2,8 @@ Select
 	vme.DisplayName,
 	vme.Path,	
 	vmet.ManagedEntityTypeDefaultName as 'Class',	
-	vmm.StartDateTime as 'Start',	
-	vmm.EndDateTime as 'End',
+        CONVERT(varchar(64), vmm.StartDateTime, 20) as 'Start',           
+	CONVERT(varchar(64), vmm.EndDateTime, 20) as 'End',
 	CASE vmm.PlannedMaintenanceInd
 		WHEN '1' THEN 'Scheduled'
 		WHEN '0' THEN 'Unscheduled'
